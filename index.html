@@ -1,11 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>我的个人网站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的个人主页</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      background: #f4f6f8;
+      color: #333;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .header h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 18px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      color: #4f46e5;
+      margin-top: 0;
+    }
+
+    .button {
+      display: inline-block;
+      background: #4f46e5;
+      color: white;
+      padding: 12px 20px;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .button:hover {
+      background: #3730a3;
+    }
+
+    .footer {
+      text-align: center;
+      color: #777;
+      padding: 30px;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>欢迎来到我的网站</h1>
-  <p>你好，我是 wuxuewen307-ux。</p>
-  <p>这是我创建的第一个免费网站。</p>
+
+  <div class="header">
+    <h1>你好，我是 wuxuewen307-ux</h1>
+    <p>欢迎来到我的个人主页</p>
+  </div>
+
+  <div class="container">
+
+    <div class="card">
+      <h2>关于我</h2>
+      <p>
+        你好！这是我的个人网站。我正在学习如何制作网页，
+        这里以后会展示我的个人介绍、学习记录和作品。
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>我的兴趣</h2>
+      <p>我喜欢学习新知识、制作网站、研究技术和记录自己的成长。</p>
+    </div>
+
+    <div class="card">
+      <h2>我的作品</h2>
+      <p>这里以后可以放我的项目、文章、图片、学习笔记等内容。</p>
+      <a class="button" href="https://github.com/wuxuewen307-ux" target="_blank">
+        查看我的 GitHub
+      </a>
+    </div>
+
+    <div class="card">
+      <h2>联系我</h2>
+      <p>邮箱：这里可以写你的邮箱</p>
+      <p>QQ：这里可以写你的 QQ</p>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    © 2026 我的个人主页
+  </div>
+
 </body>
+</html>
