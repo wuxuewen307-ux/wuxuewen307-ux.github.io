@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>wuxuewen307-ux 的个人主页</title>
+
+  <title>wuxuewen307-ux 的科幻个人主页</title>
 
   <style>
     /* =========================================================
-       1. 全局基础设置：颜色、字体、页面基础样式
-       想改网站主色，可以优先改这里
+       1. 全局设置
     ========================================================= */
 
     :root {
-      --main-color: #8b5cf6;
-      --pink-color: #ec4899;
-      --blue-color: #06b6d4;
-      --yellow-color: #facc15;
-      --glass-bg: rgba(255, 255, 255, 0.13);
-      --glass-border: rgba(255, 255, 255, 0.25);
-      --text-light: #ffffff;
-      --text-soft: #e0f2fe;
+      --bg-dark: #020617;
+      --cyan: #22d3ee;
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
+      --pink: #ec4899;
+      --yellow: #facc15;
+      --green: #34d399;
+      --text: #ffffff;
+      --soft: #c7d2fe;
+      --glass: rgba(15, 23, 42, 0.65);
+      --border: rgba(125, 211, 252, 0.35);
+      --shadow: rgba(34, 211, 238, 0.35);
     }
 
     * {
@@ -31,47 +35,87 @@
 
     body {
       font-family: Arial, "Microsoft YaHei", sans-serif;
-      color: var(--text-light);
-      min-height: 100vh;
+      background: var(--bg-dark);
+      color: var(--text);
       overflow-x: hidden;
-      background: linear-gradient(135deg, #12002f, #1e1b4b, #0f766e, #4c1d95);
-      background-size: 400% 400%;
-      animation: bgMove 12s ease infinite;
-    }
-
-    @keyframes bgMove {
-      0% {
-        background-position: 0% 50%;
-      }
-
-      50% {
-        background-position: 100% 50%;
-      }
-
-      100% {
-        background-position: 0% 50%;
-      }
+      min-height: 100vh;
     }
 
     a {
       color: inherit;
+      text-decoration: none;
+    }
+
+    img,
+    video {
+      max-width: 100%;
+      display: block;
     }
 
     /* =========================================================
-       2. 背景装饰特效：星空、发光球、浮动装饰
+       2. 科幻动态背景
     ========================================================= */
+
+    .space-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -10;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.2), transparent 30%),
+        radial-gradient(circle at 80% 10%, rgba(236, 72, 153, 0.18), transparent 28%),
+        radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.25), transparent 35%),
+        linear-gradient(135deg, #020617, #0f172a, #111827);
+    }
 
     .stars {
       position: fixed;
       inset: 0;
+      z-index: -9;
       background-image:
-        radial-gradient(white 1px, transparent 1px),
-        radial-gradient(white 1px, transparent 1px);
-      background-size: 80px 80px, 130px 130px;
-      background-position: 0 0, 40px 60px;
-      opacity: 0.25;
-      z-index: -3;
-      pointer-events: none;
+        radial-gradient(#ffffff 1px, transparent 1px),
+        radial-gradient(#67e8f9 1px, transparent 1px),
+        radial-gradient(#f0abfc 1px, transparent 1px);
+      background-size: 70px 70px, 120px 120px, 180px 180px;
+      background-position: 0 0, 40px 60px, 90px 120px;
+      opacity: 0.28;
+      animation: starMove 35s linear infinite;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-180px);
+      }
+    }
+
+    .grid-floor {
+      position: fixed;
+      left: -10%;
+      right: -10%;
+      bottom: -20%;
+      height: 48%;
+      z-index: -8;
+      background:
+        linear-gradient(rgba(34, 211, 238, 0.35) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.35) 1px, transparent 1px);
+      background-size: 55px 55px;
+      transform: perspective(550px) rotateX(62deg);
+      transform-origin: bottom;
+      box-shadow: 0 -40px 100px rgba(34, 211, 238, 0.22);
+      animation: gridMove 3s linear infinite;
+    }
+
+    @keyframes gridMove {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: 0 55px;
+      }
     }
 
     .glow {
@@ -80,42 +124,39 @@
       height: 360px;
       border-radius: 50%;
       filter: blur(90px);
-      opacity: 0.65;
-      z-index: -2;
-      animation: floatGlow 8s ease-in-out infinite;
+      opacity: 0.48;
+      z-index: -7;
       pointer-events: none;
+      animation: glowFloat 9s ease-in-out infinite;
     }
 
-    .glow1 {
-      background: #ff00cc;
-      top: 8%;
-      left: 4%;
+    .glow-a {
+      top: 9%;
+      left: 6%;
+      background: var(--cyan);
     }
 
-    .glow2 {
-      background: #00ffff;
-      right: 5%;
-      bottom: 8%;
+    .glow-b {
+      right: 8%;
+      top: 18%;
+      background: var(--pink);
       animation-delay: 2s;
     }
 
-    .glow3 {
-      background: #facc15;
-      left: 35%;
-      bottom: 20%;
-      width: 260px;
-      height: 260px;
-      opacity: 0.28;
+    .glow-c {
+      left: 40%;
+      bottom: 8%;
+      background: var(--purple);
       animation-delay: 4s;
     }
 
-    @keyframes floatGlow {
+    @keyframes glowFloat {
       0%, 100% {
-        transform: translateY(0px) translateX(0px);
+        transform: translate(0, 0);
       }
 
       50% {
-        transform: translateY(-45px) translateX(25px);
+        transform: translate(35px, -45px);
       }
     }
 
@@ -126,266 +167,559 @@
     .navbar {
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 50;
       display: flex;
       justify-content: center;
-      gap: 14px;
+      align-items: center;
+      gap: 12px;
       flex-wrap: wrap;
-      padding: 16px 20px;
-      background: rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 15px 18px;
+      background: rgba(2, 6, 23, 0.72);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(34, 211, 238, 0.25);
+      box-shadow: 0 0 25px rgba(34, 211, 238, 0.12);
     }
 
     .nav-link {
-      text-decoration: none;
-      padding: 10px 18px;
+      padding: 10px 17px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      transition: 0.3s;
+      border: 1px solid rgba(125, 211, 252, 0.28);
+      background: rgba(15, 23, 42, 0.6);
+      color: #e0f2fe;
       font-size: 15px;
+      transition: 0.3s;
     }
 
     .nav-link:hover {
-      transform: translateY(-4px);
-      background: linear-gradient(135deg, var(--pink-color), var(--main-color), var(--blue-color));
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+      color: white;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.35), rgba(139, 92, 246, 0.35));
+      box-shadow: 0 0 22px rgba(34, 211, 238, 0.45);
+      transform: translateY(-3px);
     }
 
     /* =========================================================
-       4. 首页头部区域：头像、名字、简介、按钮
-       想改名字，可以在 HTML 的 header 区域改
+       4. 首页英雄区
     ========================================================= */
 
     .hero {
-      text-align: center;
-      padding: 95px 20px 65px;
+      min-height: 92vh;
+      display: grid;
+      place-items: center;
+      padding: 80px 20px 60px;
+      position: relative;
     }
 
-    .avatar {
-      width: 135px;
-      height: 135px;
-      margin: 0 auto 26px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--yellow-color), var(--pink-color), var(--main-color));
-      display: flex;
+    .hero-wrap {
+      max-width: 1150px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
       align-items: center;
-      justify-content: center;
-      font-size: 62px;
-      box-shadow: 0 0 45px rgba(255, 255, 255, 0.65);
-      animation: avatarPulse 2.8s infinite;
     }
 
-    @keyframes avatarPulse {
-      0% {
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-        transform: scale(1);
-      }
+    .hero-text {
+      padding: 30px;
+    }
 
-      50% {
-        box-shadow: 0 0 65px rgba(255, 255, 255, 0.9);
-        transform: scale(1.04);
-      }
-
-      100% {
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-        transform: scale(1);
-      }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 15px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 211, 238, 0.45);
+      background: rgba(8, 47, 73, 0.35);
+      color: #a5f3fc;
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.18);
+      margin-bottom: 20px;
     }
 
     .hero h1 {
-      font-size: 56px;
-      margin-bottom: 16px;
-      background: linear-gradient(90deg, #ffffff, #facc15, #38bdf8, #f472b6);
+      font-size: clamp(42px, 7vw, 82px);
+      line-height: 1.05;
+      margin-bottom: 22px;
+      background: linear-gradient(90deg, #ffffff, #22d3ee, #a78bfa, #f472b6);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 28px rgba(255, 255, 255, 0.25);
+      text-shadow: 0 0 35px rgba(34, 211, 238, 0.25);
     }
 
-    .hero .subtitle {
-      font-size: 22px;
-      color: var(--text-soft);
-      margin-bottom: 32px;
-      line-height: 1.7;
+    .hero p {
+      color: #dbeafe;
+      font-size: 18px;
+      line-height: 1.9;
+      max-width: 650px;
+      margin-bottom: 28px;
     }
 
     .hero-buttons {
       display: flex;
-      justify-content: center;
-      gap: 16px;
+      gap: 15px;
       flex-wrap: wrap;
     }
 
     .btn {
-      padding: 14px 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
       border-radius: 999px;
-      text-decoration: none;
+      border: 1px solid rgba(125, 211, 252, 0.4);
+      background: rgba(15, 23, 42, 0.72);
       color: white;
       font-weight: bold;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(12px);
       transition: 0.3s;
       cursor: pointer;
     }
 
+    .btn.primary {
+      background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+      box-shadow: 0 0 30px rgba(34, 211, 238, 0.32);
+    }
+
     .btn:hover {
-      transform: translateY(-6px) scale(1.05);
-      background: linear-gradient(135deg, var(--pink-color), var(--main-color), var(--blue-color));
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 0 32px rgba(34, 211, 238, 0.5);
     }
 
     /* =========================================================
-       5. 页面主体布局：标题、卡片、网格
+       5. 全息头像区域
+    ========================================================= */
+
+    .hologram-card {
+      position: relative;
+      min-height: 480px;
+      display: grid;
+      place-items: center;
+      border-radius: 36px;
+      background:
+        linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(139, 92, 246, 0.12)),
+        rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(125, 211, 252, 0.28);
+      box-shadow:
+        0 0 50px rgba(34, 211, 238, 0.18),
+        inset 0 0 35px rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+    }
+
+    .hologram-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 8px,
+        rgba(34, 211, 238, 0.08) 9px
+      );
+      animation: scanLine 4s linear infinite;
+    }
+
+    @keyframes scanLine {
+      from {
+        transform: translateY(-40px);
+      }
+
+      to {
+        transform: translateY(40px);
+      }
+    }
+
+    .avatar-ring {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+    }
+
+    .avatar-ring::before,
+    .avatar-ring::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px dashed rgba(34, 211, 238, 0.75);
+      animation: rotateRing 12s linear infinite;
+      box-shadow: 0 0 25px rgba(34, 211, 238, 0.25);
+    }
+
+    .avatar-ring::after {
+      inset: 28px;
+      border-color: rgba(244, 114, 182, 0.75);
+      animation-direction: reverse;
+      animation-duration: 9s;
+    }
+
+    @keyframes rotateRing {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .avatar {
+      width: 185px;
+      height: 185px;
+      border-radius: 50%;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 30% 20%, #ffffff, transparent 18%),
+        linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+      border: 3px solid rgba(255, 255, 255, 0.75);
+      display: grid;
+      place-items: center;
+      font-size: 72px;
+      box-shadow: 0 0 55px rgba(34, 211, 238, 0.55);
+      z-index: 2;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .orbit-dot {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 20px var(--cyan);
+    }
+
+    .dot1 {
+      top: 35px;
+      left: 55px;
+    }
+
+    .dot2 {
+      right: 45px;
+      bottom: 60px;
+      background: var(--pink);
+      box-shadow: 0 0 20px var(--pink);
+    }
+
+    .dot3 {
+      left: 42px;
+      bottom: 78px;
+      background: var(--yellow);
+      box-shadow: 0 0 20px var(--yellow);
+    }
+
+    /* =========================================================
+       6. 通用内容区
     ========================================================= */
 
     .container {
-      max-width: 1120px;
+      max-width: 1180px;
       margin: auto;
-      padding: 30px 20px 80px;
+      padding: 60px 20px 95px;
     }
 
     .section-title {
       text-align: center;
-      margin: 70px 0 32px;
-      font-size: 38px;
-      color: #fff7ed;
-      text-shadow: 0 0 22px rgba(255, 255, 255, 0.35);
+      font-size: clamp(32px, 5vw, 52px);
+      margin: 50px 0 18px;
+      background: linear-gradient(90deg, #ffffff, #22d3ee, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .section-desc {
       text-align: center;
+      color: #bfdbfe;
       max-width: 760px;
-      margin: -15px auto 35px;
-      color: #e0e7ff;
-      line-height: 1.8;
+      margin: 0 auto 36px;
+      line-height: 1.9;
       font-size: 17px;
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
+      gap: 24px;
     }
 
     .card {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 26px;
-      padding: 28px;
-      backdrop-filter: blur(18px);
-      box-shadow: 0 15px 42px rgba(0, 0, 0, 0.25);
-      transition: 0.35s;
       position: relative;
+      padding: 28px;
+      border-radius: 28px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.35),
+        inset 0 0 24px rgba(255, 255, 255, 0.035);
+      backdrop-filter: blur(18px);
       overflow: hidden;
+      transition: 0.35s;
     }
 
     .card::before {
       content: "";
       position: absolute;
-      top: -60%;
+      top: -70%;
       left: -80%;
-      width: 220%;
-      height: 220%;
+      width: 230%;
+      height: 230%;
       background: linear-gradient(
         120deg,
         transparent,
-        rgba(255, 255, 255, 0.22),
+        rgba(34, 211, 238, 0.16),
         transparent
       );
       transform: rotate(25deg);
-      transition: 0.75s;
       opacity: 0;
+      transition: 0.8s;
     }
 
     .card:hover::before {
       opacity: 1;
-      left: 70%;
+      left: 75%;
     }
 
     .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.42);
+      transform: translateY(-8px);
+      box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.48),
+        0 0 32px rgba(34, 211, 238, 0.22);
     }
 
     .card h2 {
-      font-size: 25px;
-      margin-bottom: 15px;
-      color: #fef3c7;
       position: relative;
-      z-index: 1;
+      z-index: 2;
+      color: #cffafe;
+      margin-bottom: 14px;
+      font-size: 25px;
     }
 
     .card h3 {
-      color: #7dd3fc;
-      margin-bottom: 8px;
       position: relative;
-      z-index: 1;
+      z-index: 2;
+      color: #fef3c7;
+      margin-bottom: 10px;
     }
 
     .card p {
-      line-height: 1.85;
-      color: #f8fafc;
-      font-size: 16px;
       position: relative;
-      z-index: 1;
+      z-index: 2;
+      color: #e5e7eb;
+      line-height: 1.85;
+      font-size: 16px;
     }
 
     .tag-list {
+      position: relative;
+      z-index: 2;
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-top: 17px;
-      position: relative;
-      z-index: 1;
+      margin-top: 16px;
     }
 
     .tag {
-      padding: 8px 14px;
+      padding: 8px 13px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(34, 211, 238, 0.12);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      color: #cffafe;
       font-size: 14px;
     }
 
-    .project {
-      margin-top: 16px;
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(0, 0, 0, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      position: relative;
-      z-index: 1;
+    /* =========================================================
+       7. 数据面板
+    ========================================================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      margin-top: 25px;
+    }
+
+    .stat {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 34px;
+      color: #67e8f9;
+      margin-bottom: 8px;
+      text-shadow: 0 0 16px rgba(34, 211, 238, 0.45);
+    }
+
+    .stat span {
+      color: #c7d2fe;
     }
 
     /* =========================================================
-       6. 小游戏区域样式：30 秒抓星星
+       8. 图片画廊
+    ========================================================= */
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 22px;
+    }
+
+    .gallery-item {
+      position: relative;
+      min-height: 260px;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(125, 211, 252, 0.32);
+      background:
+        radial-gradient(circle at 25% 20%, rgba(34, 211, 238, 0.38), transparent 28%),
+        radial-gradient(circle at 70% 80%, rgba(236, 72, 153, 0.3), transparent 30%),
+        rgba(15, 23, 42, 0.75);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+      transition: 0.35s;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 0 38px rgba(34, 211, 238, 0.28);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      min-height: 260px;
+      object-fit: cover;
+      opacity: 0.86;
+      transition: 0.4s;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+
+    .gallery-label {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(2, 6, 23, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    .gallery-label h3 {
+      color: #cffafe;
+      margin-bottom: 5px;
+    }
+
+    .gallery-label p {
+      color: #dbeafe;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* =========================================================
+       9. 视频区
+    ========================================================= */
+
+    .video-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .video-box {
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(125, 211, 252, 0.35);
+      background: rgba(2, 6, 23, 0.65);
+      box-shadow: 0 0 40px rgba(34, 211, 238, 0.16);
+      min-height: 320px;
+    }
+
+    .video-box video {
+      width: 100%;
+      height: 100%;
+      min-height: 320px;
+      object-fit: cover;
+      background: black;
+    }
+
+    .video-placeholder {
+      min-height: 320px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 30px;
+      background:
+        radial-gradient(circle at center, rgba(34, 211, 238, 0.22), transparent 32%),
+        linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.9));
+      color: #dbeafe;
+      line-height: 1.8;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 15px;
+    }
+
+    .timeline-item {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(2, 6, 23, 0.45);
+      border: 1px solid rgba(34, 211, 238, 0.22);
+    }
+
+    .timeline-item h3 {
+      color: #67e8f9;
+      margin-bottom: 8px;
+    }
+
+    .timeline-item p {
+      color: #dbeafe;
+      line-height: 1.75;
+    }
+
+    /* =========================================================
+       10. 小游戏：30 秒抓星星
     ========================================================= */
 
     .game-card {
-      max-width: 920px;
+      max-width: 940px;
       margin: auto;
     }
 
     .game-panel {
+      position: relative;
+      z-index: 2;
       display: flex;
-      gap: 18px;
+      gap: 14px;
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
       margin: 22px 0;
-      font-size: 18px;
       font-weight: bold;
-      position: relative;
-      z-index: 2;
     }
 
     .score-box {
-      padding: 10px 18px;
+      padding: 10px 17px;
       border-radius: 999px;
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px solid rgba(34, 211, 238, 0.28);
+      color: #e0f2fe;
     }
 
     .game-btn {
@@ -395,41 +729,42 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
-      background: linear-gradient(135deg, #f97316, #ec4899, #8b5cf6);
-      box-shadow: 0 0 25px rgba(236, 72, 153, 0.6);
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899);
+      box-shadow: 0 0 28px rgba(34, 211, 238, 0.45);
       transition: 0.3s;
     }
 
     .game-btn:hover {
       transform: scale(1.08);
-      box-shadow: 0 0 40px rgba(236, 72, 153, 0.95);
+      box-shadow: 0 0 42px rgba(236, 72, 153, 0.75);
     }
 
     .game-area {
       position: relative;
+      z-index: 2;
       height: 380px;
       border-radius: 25px;
       overflow: hidden;
-      background:
-        radial-gradient(circle at top left, rgba(255, 255, 255, 0.25), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.25), transparent 35%),
-        rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.25);
       cursor: crosshair;
-      box-shadow: inset 0 0 35px rgba(255, 255, 255, 0.08);
-      position: relative;
-      z-index: 2;
+      border: 1px solid rgba(125, 211, 252, 0.35);
+      background:
+        linear-gradient(rgba(34, 211, 238, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.12) 1px, transparent 1px),
+        radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.25), transparent 30%),
+        rgba(2, 6, 23, 0.65);
+      background-size: 32px 32px, 32px 32px, auto, auto;
+      box-shadow: inset 0 0 40px rgba(34, 211, 238, 0.12);
     }
 
     .game-tip {
       position: absolute;
       width: 100%;
       text-align: center;
-      top: 44%;
-      color: rgba(255, 255, 255, 0.78);
+      top: 42%;
+      padding: 0 20px;
+      color: rgba(219, 234, 254, 0.85);
       font-size: 18px;
       line-height: 1.8;
-      padding: 0 20px;
     }
 
     .game-star {
@@ -441,70 +776,85 @@
       align-items: center;
       justify-content: center;
       font-size: 31px;
-      background: radial-gradient(circle, #fff7ad, #facc15, #f97316);
-      box-shadow: 0 0 36px #facc15;
+      background: radial-gradient(circle, #ffffff, #facc15, #fb7185);
+      box-shadow: 0 0 35px #facc15;
       user-select: none;
       animation: starFlash 0.75s infinite alternate;
-      z-index: 3;
+      z-index: 5;
     }
 
     @keyframes starFlash {
       from {
         transform: scale(1);
-        box-shadow: 0 0 20px #facc15;
       }
 
       to {
-        transform: scale(1.18) rotate(12deg);
-        box-shadow: 0 0 48px #fde047;
+        transform: scale(1.2) rotate(16deg);
       }
     }
 
     /* =========================================================
-       7. 页脚
+       11. 页脚
     ========================================================= */
 
     footer {
       text-align: center;
-      padding: 36px 20px;
-      color: #e0e7ff;
-      background: rgba(0, 0, 0, 0.22);
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 40px 20px;
+      color: #bfdbfe;
+      background: rgba(2, 6, 23, 0.78);
+      border-top: 1px solid rgba(34, 211, 238, 0.2);
       line-height: 1.8;
     }
 
     /* =========================================================
-       8. 手机适配
+       12. 手机适配
     ========================================================= */
 
-    @media (max-width: 650px) {
+    @media (max-width: 850px) {
+      .hero-wrap,
+      .video-layout {
+        grid-template-columns: 1fr;
+      }
+
       .hero {
-        padding-top: 70px;
+        min-height: auto;
       }
 
-      .hero h1 {
-        font-size: 38px;
+      .hologram-card {
+        min-height: 390px;
       }
 
-      .hero .subtitle {
-        font-size: 18px;
+      .avatar-ring {
+        width: 240px;
+        height: 240px;
       }
 
-      .section-title {
-        font-size: 31px;
+      .avatar {
+        width: 160px;
+        height: 160px;
       }
+    }
 
-      .game-area {
-        height: 330px;
-      }
-
+    @media (max-width: 560px) {
       .navbar {
         gap: 8px;
       }
 
       .nav-link {
+        padding: 8px 12px;
         font-size: 14px;
-        padding: 8px 13px;
+      }
+
+      .hero-text {
+        padding: 15px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .game-area {
+        height: 330px;
       }
     }
   </style>
@@ -513,21 +863,24 @@
 <body>
 
   <!-- =========================================================
-       A. 背景特效
+       A. 背景层
   ========================================================= -->
+  <div class="space-bg"></div>
   <div class="stars"></div>
-  <div class="glow glow1"></div>
-  <div class="glow glow2"></div>
-  <div class="glow glow3"></div>
+  <div class="grid-floor"></div>
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+  <div class="glow glow-c"></div>
 
 
   <!-- =========================================================
-       B. 顶部导航栏
+       B. 导航栏
   ========================================================= -->
   <nav class="navbar">
     <a class="nav-link" href="#home">首页</a>
     <a class="nav-link" href="#about">关于我</a>
-    <a class="nav-link" href="#works">我的作品</a>
+    <a class="nav-link" href="#gallery">图片</a>
+    <a class="nav-link" href="#video">视频</a>
     <a class="nav-link" href="#game">小游戏</a>
     <a class="nav-link" href="#contact">联系我</a>
   </nav>
@@ -535,67 +888,185 @@
 
   <!-- =========================================================
        C. 首页头部
-       想改名字、简介，就改这里
+       想改名字，就改 h1 里的文字
+       想换头像，把 myphoto.jpg 上传到仓库
   ========================================================= -->
   <header class="hero" id="home">
-    <div class="avatar">✨</div>
+    <div class="hero-wrap">
 
-    <h1>你好，我是 wuxuewen307-ux</h1>
+      <div class="hero-text">
+        <div class="badge">🛸 SYSTEM ONLINE · PERSONAL WEBSITE</div>
 
-    <p class="subtitle">
-      欢迎来到我的梦幻个人主页<br />
-      这里记录我的兴趣、作品、学习和成长
-    </p>
+        <h1>wuxuewen307-ux</h1>
 
-    <div class="hero-buttons">
-      <a class="btn" href="#about">了解我</a>
-      <a class="btn" href="#game">玩小游戏</a>
-      <a class="btn" href="#contact">联系我</a>
+        <p>
+          欢迎进入我的科幻个人主页。这里是我的数字空间站，
+          用来展示我的兴趣、作品、图片、视频、小游戏和未来计划。
+        </p>
+
+        <div class="hero-buttons">
+          <a class="btn primary" href="#gallery">进入视觉空间</a>
+          <a class="btn" href="#video">观看视频</a>
+          <a class="btn" href="#game">启动小游戏</a>
+        </div>
+      </div>
+
+      <div class="hologram-card">
+        <div class="avatar-ring">
+          <div class="orbit-dot dot1"></div>
+          <div class="orbit-dot dot2"></div>
+          <div class="orbit-dot dot3"></div>
+
+          <div class="avatar">
+            <img src="myphoto.jpg" alt="我的照片" onerror="this.style.display='none'; this.parentElement.innerHTML='🚀';">
+          </div>
+        </div>
+      </div>
+
     </div>
   </header>
 
 
   <!-- =========================================================
-       D. 页面主体内容
+       D. 主体内容
   ========================================================= -->
   <main class="container">
 
     <!-- 关于我 -->
     <section id="about">
-      <h2 class="section-title">关于我</h2>
+      <h2 class="section-title">我的数字档案</h2>
       <p class="section-desc">
-        这是我的个人网站。我正在学习制作网页，希望把它慢慢变成一个漂亮、有趣、实用的个人主页。
+        这里可以写你的个人介绍、兴趣方向、学习记录和作品计划。
+        这个页面的风格偏科幻、霓虹、太空、全息界面。
       </p>
 
       <div class="grid">
         <div class="card">
-          <h2>🌟 我的介绍</h2>
+          <h2>🌌 关于我</h2>
           <p>
             你好！我是 wuxuewen307-ux。
-            这是我亲手创建的免费网站，以后这里可以展示我的个人资料、学习经历和成长记录。
-          </p>
-        </div>
-
-        <div class="card">
-          <h2>🚀 我的目标</h2>
-          <p>
-            我希望把这个网站做得越来越漂亮，
-            以后可以加入图片、视频、音乐、文章、作品集，甚至更多小游戏。
-          </p>
-        </div>
-
-        <div class="card">
-          <h2>🎨 我的兴趣</h2>
-          <p>
-            我喜欢探索新鲜事物，也喜欢华丽、梦幻、科技感的网页设计。
+            这是我自己创建的免费网站，我正在一步步把它改造成更漂亮、更丰富、更有科技感的个人主页。
           </p>
 
           <div class="tag-list">
             <span class="tag">网页制作</span>
-            <span class="tag">学习记录</span>
-            <span class="tag">创意设计</span>
-            <span class="tag">小游戏</span>
-            <span class="tag">科技感</span>
+            <span class="tag">个人主页</span>
+            <span class="tag">科幻风格</span>
+            <span class="tag">创意空间</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>🧬 我的兴趣</h2>
+          <p>
+            我喜欢酷炫的设计、动态效果、未来科技感，也希望这个网站以后能放更多照片、视频、作品和互动内容。
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>🛰️ 未来目标</h2>
+          <p>
+            以后可以继续加入留言功能、音乐播放器、更多小游戏、作品集页面、博客页面，甚至做成一个完整的个人网站。
+          </p>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong>01</strong>
+          <span>个人主页</span>
+        </div>
+
+        <div class="stat">
+          <strong>04</strong>
+          <span>内容板块</span>
+        </div>
+
+        <div class="stat">
+          <strong>30s</strong>
+          <span>小游戏挑战</span>
+        </div>
+
+        <div class="stat">
+          <strong>∞</strong>
+          <span>持续升级</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 图片展示区 -->
+    <section id="gallery">
+      <h2 class="section-title">视觉展示舱</h2>
+      <p class="section-desc">
+        这里可以放你的照片、风景图、作品图、设计图。把图片上传到 GitHub 仓库后，文件名对应下面的 space1.jpg、space2.jpg、space3.jpg 即可。
+      </p>
+
+      <div class="gallery">
+        <div class="gallery-item">
+          <img src="space1.jpg" alt="展示图片1" onerror="this.style.display='none';">
+          <div class="gallery-label">
+            <h3>图片展示 01</h3>
+            <p>可以放你的个人照片、作品图或者喜欢的风景。</p>
+          </div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="space2.jpg" alt="展示图片2" onerror="this.style.display='none';">
+          <div class="gallery-label">
+            <h3>图片展示 02</h3>
+            <p>这里可以展示学习成果、设计作品或生活记录。</p>
+          </div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="space3.jpg" alt="展示图片3" onerror="this.style.display='none';">
+          <div class="gallery-label">
+            <h3>图片展示 03</h3>
+            <p>你可以继续复制这个模块，添加更多图片。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 视频展示区 -->
+    <section id="video">
+      <h2 class="section-title">视频播放舱</h2>
+      <p class="section-desc">
+        这里可以放你自己的视频。把视频文件改名为 myvideo.mp4，上传到 GitHub 仓库后，网页就能直接播放。
+      </p>
+
+      <div class="video-layout">
+        <div class="video-box">
+          <video controls poster="space1.jpg">
+            <source src="myvideo.mp4" type="video/mp4" />
+            你的浏览器暂不支持视频播放。
+          </video>
+        </div>
+
+        <div class="card">
+          <h2>🎬 视频说明</h2>
+          <p>
+            你可以在这里放个人介绍视频、旅行视频、作品展示视频、学习记录视频。
+            如果暂时没有视频，可以以后再上传。
+          </p>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <h3>步骤 1</h3>
+              <p>把视频文件命名为 myvideo.mp4。</p>
+            </div>
+
+            <div class="timeline-item">
+              <h3>步骤 2</h3>
+              <p>上传到 GitHub 仓库，和 index.html 放在同一级。</p>
+            </div>
+
+            <div class="timeline-item">
+              <h3>步骤 3</h3>
+              <p>等待网站刷新后，视频就会出现在这个区域。</p>
+            </div>
           </div>
         </div>
       </div>
@@ -604,30 +1075,31 @@
 
     <!-- 我的作品 -->
     <section id="works">
-      <h2 class="section-title">我的作品</h2>
+      <h2 class="section-title">任务日志</h2>
       <p class="section-desc">
-        这里可以展示我的项目、文章、图片、学习笔记或其他作品。
+        这里可以写你的作品、学习记录、计划、项目进度。
       </p>
 
       <div class="grid">
         <div class="card">
-          <h2>💎 作品展示</h2>
-
-          <div class="project">
-            <h3>我的第一个网站</h3>
-            <p>这是我使用 GitHub Pages 创建的免费网站，也是我的第一个个人主页。</p>
-          </div>
-
-          <div class="project">
-            <h3>学习笔记</h3>
-            <p>以后这里可以放我的学习记录、文章、图片或项目介绍。</p>
-          </div>
+          <h2>💎 我的第一个网站</h2>
+          <p>
+            这是我使用 GitHub Pages 创建的免费网站。
+            它现在已经从简单页面升级成了科幻风格个人主页。
+          </p>
         </div>
 
         <div class="card">
-          <h2>🔥 未来计划</h2>
+          <h2>⚙️ 下一步升级</h2>
           <p>
-            下一步我可以继续给网站添加更多页面、图片墙、背景音乐、留言入口、动态特效和作品展示区。
+            以后可以加入更多页面，比如：作品集页面、个人博客页面、图片墙页面、音乐页面、留言页面。
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>🚀 网站愿景</h2>
+          <p>
+            把这个网站变成属于自己的数字名片，让别人打开后能看到你的个性、作品、兴趣和成长过程。
           </p>
         </div>
       </div>
@@ -636,15 +1108,15 @@
 
     <!-- 小游戏 -->
     <section id="game">
-      <h2 class="section-title">网页小游戏</h2>
+      <h2 class="section-title">星际小游戏</h2>
       <p class="section-desc">
-        这是一个可以直接在网页里玩的小游戏：30 秒内点击尽可能多的星星。
+        30 秒内点击尽可能多的星星，挑战你的反应速度。
       </p>
 
       <div class="card game-card">
         <h2>⭐ 30 秒抓星星</h2>
         <p>
-          点击“开始游戏”，星星会随机出现。你需要尽快点击星星，30 秒内分数越高越厉害！
+          点击“开始游戏”，星星会随机出现。你需要快速点击它，分数越高越厉害。
         </p>
 
         <div class="game-panel">
@@ -657,7 +1129,7 @@
         <div class="game-area" id="gameArea">
           <div class="game-tip" id="gameTip">
             点击“开始游戏”后，星星会出现在这里 ✨<br />
-            尽快点击它！
+            准备启动反应测试！
           </div>
 
           <div class="game-star" id="star">⭐</div>
@@ -666,26 +1138,26 @@
     </section>
 
 
-    <!-- 联系我 -->
+    <!-- 联系方式 -->
     <section id="contact">
-      <h2 class="section-title">联系我</h2>
+      <h2 class="section-title">通讯频道</h2>
       <p class="section-desc">
         这里可以放你的邮箱、QQ、GitHub 或其他联系方式。
       </p>
 
       <div class="grid">
         <div class="card">
-          <h2>📮 联系方式</h2>
+          <h2>📮 联系我</h2>
           <p>邮箱：这里写你的邮箱</p>
           <p>QQ：这里写你的 QQ</p>
           <p>GitHub：wuxuewen307-ux</p>
         </div>
 
         <div class="card">
-          <h2>🌈 留言</h2>
+          <h2>🌠 留言</h2>
           <p>
-            欢迎来到我的网站！这个主页还会继续升级，
-            以后会变得更加丰富、漂亮和个性化。
+            欢迎来到我的科幻主页。这个网站会继续升级，
+            以后可以加入更多动画、音乐、留言入口和作品内容。
           </p>
         </div>
       </div>
@@ -698,26 +1170,17 @@
        E. 页脚
   ========================================================= -->
   <footer>
-    <p>© 2026 wuxuewen307-ux 的个人主页</p>
-    <p>Made with GitHub Pages · 梦幻科技风主页</p>
+    <p>© 2026 wuxuewen307-ux 的科幻个人主页</p>
+    <p>Made with GitHub Pages · Sci-Fi Digital Space</p>
   </footer>
 
 
   <!-- =========================================================
-       F. JavaScript：小游戏逻辑
-       想改游戏时间，可以改 gameTotalTime 的数值
+       F. JavaScript 小游戏代码
   ========================================================= -->
   <script>
-    /* =========================
-       小游戏配置区
-    ========================= */
-
     const gameTotalTime = 30;
-    const starMoveSpeed = 850;
-
-    /* =========================
-       获取页面元素
-    ========================= */
+    const starMoveSpeed = 820;
 
     const scoreText = document.getElementById("score");
     const timeText = document.getElementById("time");
@@ -727,10 +1190,6 @@
     const gameArea = document.getElementById("gameArea");
     const gameTip = document.getElementById("gameTip");
 
-    /* =========================
-       游戏变量
-    ========================= */
-
     let score = 0;
     let timeLeft = gameTotalTime;
     let gameRunning = false;
@@ -739,10 +1198,6 @@
 
     let bestScore = localStorage.getItem("bestScore") || 0;
     bestScoreText.textContent = bestScore;
-
-    /* =========================
-       开始游戏
-    ========================= */
 
     function startGame() {
       score = 0;
@@ -777,17 +1232,13 @@
       }, starMoveSpeed);
     }
 
-    /* =========================
-       随机移动星星
-    ========================= */
-
     function moveStar() {
       if (!gameRunning) return;
 
       const areaWidth = gameArea.clientWidth;
       const areaHeight = gameArea.clientHeight;
-
       const starSize = 60;
+
       const maxX = areaWidth - starSize;
       const maxY = areaHeight - starSize;
 
@@ -798,10 +1249,6 @@
       star.style.top = randomY + "px";
     }
 
-    /* =========================
-       点击星星得分
-    ========================= */
-
     function hitStar(event) {
       event.stopPropagation();
 
@@ -809,13 +1256,8 @@
 
       score++;
       scoreText.textContent = score;
-
       moveStar();
     }
-
-    /* =========================
-       结束游戏
-    ========================= */
 
     function endGame() {
       gameRunning = false;
@@ -831,18 +1273,14 @@
         localStorage.setItem("bestScore", bestScore);
         bestScoreText.textContent = bestScore;
 
-        gameTip.innerHTML = "游戏结束！你的得分是：" + score + " 分 🎉<br />恭喜你创造了新的最高分！";
+        gameTip.innerHTML = "任务完成！你的得分是：" + score + " 分 🎉<br />恭喜你刷新了最高纪录！";
       } else {
-        gameTip.innerHTML = "游戏结束！你的得分是：" + score + " 分 🎉<br />再来一次，挑战最高分吧！";
+        gameTip.innerHTML = "任务完成！你的得分是：" + score + " 分 🎉<br />再次启动，挑战最高分！";
       }
 
       startBtn.textContent = "重新开始";
       startBtn.disabled = false;
     }
-
-    /* =========================
-       绑定点击事件
-    ========================= */
 
     startBtn.addEventListener("click", startGame);
     star.addEventListener("click", hitStar);
