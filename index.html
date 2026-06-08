@@ -1,119 +1,219 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的个人主页</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>wuxuewen307-ux 的个人主页</title>
 
   <style>
+    /* =========================================================
+       1. 全局基础设置：颜色、字体、页面基础样式
+       想改网站主色，可以优先改这里
+    ========================================================= */
+
+    :root {
+      --main-color: #8b5cf6;
+      --pink-color: #ec4899;
+      --blue-color: #06b6d4;
+      --yellow-color: #facc15;
+      --glass-bg: rgba(255, 255, 255, 0.13);
+      --glass-border: rgba(255, 255, 255, 0.25);
+      --text-light: #ffffff;
+      --text-soft: #e0f2fe;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      scroll-behavior: smooth;
     }
 
     body {
       font-family: Arial, "Microsoft YaHei", sans-serif;
-      color: white;
+      color: var(--text-light);
+      min-height: 100vh;
+      overflow-x: hidden;
       background: linear-gradient(135deg, #12002f, #1e1b4b, #0f766e, #4c1d95);
       background-size: 400% 400%;
       animation: bgMove 12s ease infinite;
-      min-height: 100vh;
-      overflow-x: hidden;
     }
 
     @keyframes bgMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
     }
+
+    a {
+      color: inherit;
+    }
+
+    /* =========================================================
+       2. 背景装饰特效：星空、发光球、浮动装饰
+    ========================================================= */
 
     .stars {
       position: fixed;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       background-image:
         radial-gradient(white 1px, transparent 1px),
         radial-gradient(white 1px, transparent 1px);
       background-size: 80px 80px, 130px 130px;
       background-position: 0 0, 40px 60px;
       opacity: 0.25;
-      z-index: -2;
+      z-index: -3;
+      pointer-events: none;
     }
 
     .glow {
       position: fixed;
-      width: 350px;
-      height: 350px;
+      width: 360px;
+      height: 360px;
       border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.6;
-      z-index: -1;
-      animation: float 8s ease-in-out infinite;
+      filter: blur(90px);
+      opacity: 0.65;
+      z-index: -2;
+      animation: floatGlow 8s ease-in-out infinite;
+      pointer-events: none;
     }
 
     .glow1 {
       background: #ff00cc;
-      top: 10%;
-      left: 5%;
+      top: 8%;
+      left: 4%;
     }
 
     .glow2 {
       background: #00ffff;
       right: 5%;
-      bottom: 10%;
+      bottom: 8%;
       animation-delay: 2s;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-40px); }
+    .glow3 {
+      background: #facc15;
+      left: 35%;
+      bottom: 20%;
+      width: 260px;
+      height: 260px;
+      opacity: 0.28;
+      animation-delay: 4s;
     }
 
-    header {
+    @keyframes floatGlow {
+      0%, 100% {
+        transform: translateY(0px) translateX(0px);
+      }
+
+      50% {
+        transform: translateY(-45px) translateX(25px);
+      }
+    }
+
+    /* =========================================================
+       3. 顶部导航栏
+    ========================================================= */
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 16px 20px;
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .nav-link {
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      transition: 0.3s;
+      font-size: 15px;
+    }
+
+    .nav-link:hover {
+      transform: translateY(-4px);
+      background: linear-gradient(135deg, var(--pink-color), var(--main-color), var(--blue-color));
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    /* =========================================================
+       4. 首页头部区域：头像、名字、简介、按钮
+       想改名字，可以在 HTML 的 header 区域改
+    ========================================================= */
+
+    .hero {
       text-align: center;
-      padding: 100px 20px 60px;
+      padding: 95px 20px 65px;
     }
 
     .avatar {
-      width: 130px;
-      height: 130px;
-      margin: 0 auto 25px;
+      width: 135px;
+      height: 135px;
+      margin: 0 auto 26px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #facc15, #ec4899, #8b5cf6);
+      background: linear-gradient(135deg, var(--yellow-color), var(--pink-color), var(--main-color));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 60px;
-      box-shadow: 0 0 40px rgba(255,255,255,0.6);
-      animation: pulse 2.5s infinite;
+      font-size: 62px;
+      box-shadow: 0 0 45px rgba(255, 255, 255, 0.65);
+      animation: avatarPulse 2.8s infinite;
     }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 20px rgba(255,255,255,0.4); }
-      50% { box-shadow: 0 0 60px rgba(255,255,255,0.9); }
-      100% { box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+    @keyframes avatarPulse {
+      0% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        transform: scale(1);
+      }
+
+      50% {
+        box-shadow: 0 0 65px rgba(255, 255, 255, 0.9);
+        transform: scale(1.04);
+      }
+
+      100% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        transform: scale(1);
+      }
     }
 
-    h1 {
-      font-size: 54px;
-      margin-bottom: 15px;
-      background: linear-gradient(90deg, #fff, #facc15, #38bdf8, #f472b6);
+    .hero h1 {
+      font-size: 56px;
+      margin-bottom: 16px;
+      background: linear-gradient(90deg, #ffffff, #facc15, #38bdf8, #f472b6);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 25px rgba(255,255,255,0.3);
+      text-shadow: 0 0 28px rgba(255, 255, 255, 0.25);
     }
 
-    .subtitle {
+    .hero .subtitle {
       font-size: 22px;
-      color: #e0f2fe;
-      margin-bottom: 30px;
+      color: var(--text-soft);
+      margin-bottom: 32px;
+      line-height: 1.7;
     }
 
-    .buttons {
+    .hero-buttons {
       display: flex;
       justify-content: center;
-      gap: 15px;
+      gap: 16px;
       flex-wrap: wrap;
     }
 
@@ -123,22 +223,44 @@
       text-decoration: none;
       color: white;
       font-weight: bold;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       backdrop-filter: blur(12px);
       transition: 0.3s;
+      cursor: pointer;
     }
 
     .btn:hover {
       transform: translateY(-6px) scale(1.05);
-      background: linear-gradient(135deg, #ec4899, #8b5cf6, #06b6d4);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      background: linear-gradient(135deg, var(--pink-color), var(--main-color), var(--blue-color));
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
     }
 
+    /* =========================================================
+       5. 页面主体布局：标题、卡片、网格
+    ========================================================= */
+
     .container {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: auto;
       padding: 30px 20px 80px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 70px 0 32px;
+      font-size: 38px;
+      color: #fff7ed;
+      text-shadow: 0 0 22px rgba(255, 255, 255, 0.35);
+    }
+
+    .section-desc {
+      text-align: center;
+      max-width: 760px;
+      margin: -15px auto 35px;
+      color: #e0e7ff;
+      line-height: 1.8;
+      font-size: 17px;
     }
 
     .grid {
@@ -148,12 +270,12 @@
     }
 
     .card {
-      background: rgba(255,255,255,0.13);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 25px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 26px;
       padding: 28px;
       backdrop-filter: blur(18px);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      box-shadow: 0 15px 42px rgba(0, 0, 0, 0.25);
       transition: 0.35s;
       position: relative;
       overflow: hidden;
@@ -162,98 +284,227 @@
     .card::before {
       content: "";
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
+      top: -60%;
+      left: -80%;
+      width: 220%;
+      height: 220%;
       background: linear-gradient(
         120deg,
         transparent,
-        rgba(255,255,255,0.22),
+        rgba(255, 255, 255, 0.22),
         transparent
       );
       transform: rotate(25deg);
-      transition: 0.6s;
+      transition: 0.75s;
       opacity: 0;
     }
 
     .card:hover::before {
       opacity: 1;
-      left: 100%;
+      left: 70%;
     }
 
     .card:hover {
       transform: translateY(-10px);
-      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.42);
     }
 
     .card h2 {
-      font-size: 26px;
+      font-size: 25px;
       margin-bottom: 15px;
       color: #fef3c7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card h3 {
+      color: #7dd3fc;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
     }
 
     .card p {
-      line-height: 1.8;
+      line-height: 1.85;
       color: #f8fafc;
       font-size: 16px;
+      position: relative;
+      z-index: 1;
     }
 
     .tag-list {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-top: 15px;
+      margin-top: 17px;
+      position: relative;
+      z-index: 1;
     }
 
     .tag {
       padding: 8px 14px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       font-size: 14px;
     }
 
-    .section-title {
-      text-align: center;
-      margin: 60px 0 30px;
-      font-size: 36px;
-      color: #fff7ed;
-      text-shadow: 0 0 20px rgba(255,255,255,0.35);
-    }
-
     .project {
-      margin-top: 15px;
+      margin-top: 16px;
       padding: 16px;
       border-radius: 18px;
-      background: rgba(0,0,0,0.18);
-      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      position: relative;
+      z-index: 1;
     }
 
-    .project h3 {
-      color: #7dd3fc;
-      margin-bottom: 8px;
+    /* =========================================================
+       6. 小游戏区域样式：30 秒抓星星
+    ========================================================= */
+
+    .game-card {
+      max-width: 920px;
+      margin: auto;
     }
+
+    .game-panel {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 22px 0;
+      font-size: 18px;
+      font-weight: bold;
+      position: relative;
+      z-index: 2;
+    }
+
+    .score-box {
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .game-btn {
+      border: none;
+      padding: 12px 24px;
+      border-radius: 999px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(135deg, #f97316, #ec4899, #8b5cf6);
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.6);
+      transition: 0.3s;
+    }
+
+    .game-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 40px rgba(236, 72, 153, 0.95);
+    }
+
+    .game-area {
+      position: relative;
+      height: 380px;
+      border-radius: 25px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.25), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.25), transparent 35%),
+        rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      cursor: crosshair;
+      box-shadow: inset 0 0 35px rgba(255, 255, 255, 0.08);
+      position: relative;
+      z-index: 2;
+    }
+
+    .game-tip {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 44%;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 18px;
+      line-height: 1.8;
+      padding: 0 20px;
+    }
+
+    .game-star {
+      position: absolute;
+      display: none;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-size: 31px;
+      background: radial-gradient(circle, #fff7ad, #facc15, #f97316);
+      box-shadow: 0 0 36px #facc15;
+      user-select: none;
+      animation: starFlash 0.75s infinite alternate;
+      z-index: 3;
+    }
+
+    @keyframes starFlash {
+      from {
+        transform: scale(1);
+        box-shadow: 0 0 20px #facc15;
+      }
+
+      to {
+        transform: scale(1.18) rotate(12deg);
+        box-shadow: 0 0 48px #fde047;
+      }
+    }
+
+    /* =========================================================
+       7. 页脚
+    ========================================================= */
 
     footer {
       text-align: center;
-      padding: 35px 20px;
+      padding: 36px 20px;
       color: #e0e7ff;
-      background: rgba(0,0,0,0.2);
-      border-top: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0, 0, 0, 0.22);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      line-height: 1.8;
     }
 
-    @media (max-width: 600px) {
-      h1 {
+    /* =========================================================
+       8. 手机适配
+    ========================================================= */
+
+    @media (max-width: 650px) {
+      .hero {
+        padding-top: 70px;
+      }
+
+      .hero h1 {
         font-size: 38px;
       }
 
-      .subtitle {
+      .hero .subtitle {
         font-size: 18px;
       }
 
-      header {
-        padding-top: 70px;
+      .section-title {
+        font-size: 31px;
+      }
+
+      .game-area {
+        height: 330px;
+      }
+
+      .navbar {
+        gap: 8px;
+      }
+
+      .nav-link {
+        font-size: 14px;
+        padding: 8px 13px;
       }
     }
   </style>
@@ -261,107 +512,341 @@
 
 <body>
 
+  <!-- =========================================================
+       A. 背景特效
+  ========================================================= -->
   <div class="stars"></div>
   <div class="glow glow1"></div>
   <div class="glow glow2"></div>
+  <div class="glow glow3"></div>
 
-  <header>
+
+  <!-- =========================================================
+       B. 顶部导航栏
+  ========================================================= -->
+  <nav class="navbar">
+    <a class="nav-link" href="#home">首页</a>
+    <a class="nav-link" href="#about">关于我</a>
+    <a class="nav-link" href="#works">我的作品</a>
+    <a class="nav-link" href="#game">小游戏</a>
+    <a class="nav-link" href="#contact">联系我</a>
+  </nav>
+
+
+  <!-- =========================================================
+       C. 首页头部
+       想改名字、简介，就改这里
+  ========================================================= -->
+  <header class="hero" id="home">
     <div class="avatar">✨</div>
-    <h1>你好，我是 wuxuewen307-ux</h1>
-    <p class="subtitle">欢迎来到我的梦幻个人主页</p>
 
-    <div class="buttons">
-      <a class="btn" href="#about">关于我</a>
-      <a class="btn" href="#works">我的作品</a>
+    <h1>你好，我是 wuxuewen307-ux</h1>
+
+    <p class="subtitle">
+      欢迎来到我的梦幻个人主页<br />
+      这里记录我的兴趣、作品、学习和成长
+    </p>
+
+    <div class="hero-buttons">
+      <a class="btn" href="#about">了解我</a>
+      <a class="btn" href="#game">玩小游戏</a>
       <a class="btn" href="#contact">联系我</a>
     </div>
   </header>
 
+
+  <!-- =========================================================
+       D. 页面主体内容
+  ========================================================= -->
   <main class="container">
 
-    <h2 class="section-title" id="about">关于我</h2>
+    <!-- 关于我 -->
+    <section id="about">
+      <h2 class="section-title">关于我</h2>
+      <p class="section-desc">
+        这是我的个人网站。我正在学习制作网页，希望把它慢慢变成一个漂亮、有趣、实用的个人主页。
+      </p>
 
-    <div class="grid">
-      <div class="card">
-        <h2>🌟 我的介绍</h2>
-        <p>
-          你好！这是我的个人网站。我正在学习制作网页，
-          这里会记录我的成长、兴趣、作品和想法。
-        </p>
-      </div>
-
-      <div class="card">
-        <h2>🚀 我的目标</h2>
-        <p>
-          我希望把这个网站做得越来越漂亮，
-          以后可以放学习笔记、个人作品、图片展示和更多有趣内容。
-        </p>
-      </div>
-
-      <div class="card">
-        <h2>🎨 我的兴趣</h2>
-        <p>
-          我喜欢探索新鲜事物，也喜欢漂亮、有创意、有科技感的设计。
-        </p>
-        <div class="tag-list">
-          <span class="tag">网页制作</span>
-          <span class="tag">学习记录</span>
-          <span class="tag">设计</span>
-          <span class="tag">科技感</span>
-        </div>
-      </div>
-    </div>
-
-    <h2 class="section-title" id="works">我的作品</h2>
-
-    <div class="grid">
-      <div class="card">
-        <h2>💎 作品展示</h2>
-
-        <div class="project">
-          <h3>我的第一个网站</h3>
-          <p>这是我使用 GitHub Pages 创建的免费网站。</p>
+      <div class="grid">
+        <div class="card">
+          <h2>🌟 我的介绍</h2>
+          <p>
+            你好！我是 wuxuewen307-ux。
+            这是我亲手创建的免费网站，以后这里可以展示我的个人资料、学习经历和成长记录。
+          </p>
         </div>
 
-        <div class="project">
-          <h3>学习笔记</h3>
-          <p>以后这里可以放我的学习记录、文章、图片或项目。</p>
+        <div class="card">
+          <h2>🚀 我的目标</h2>
+          <p>
+            我希望把这个网站做得越来越漂亮，
+            以后可以加入图片、视频、音乐、文章、作品集，甚至更多小游戏。
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>🎨 我的兴趣</h2>
+          <p>
+            我喜欢探索新鲜事物，也喜欢华丽、梦幻、科技感的网页设计。
+          </p>
+
+          <div class="tag-list">
+            <span class="tag">网页制作</span>
+            <span class="tag">学习记录</span>
+            <span class="tag">创意设计</span>
+            <span class="tag">小游戏</span>
+            <span class="tag">科技感</span>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <h2>🔥 未来计划</h2>
+
+    <!-- 我的作品 -->
+    <section id="works">
+      <h2 class="section-title">我的作品</h2>
+      <p class="section-desc">
+        这里可以展示我的项目、文章、图片、学习笔记或其他作品。
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <h2>💎 作品展示</h2>
+
+          <div class="project">
+            <h3>我的第一个网站</h3>
+            <p>这是我使用 GitHub Pages 创建的免费网站，也是我的第一个个人主页。</p>
+          </div>
+
+          <div class="project">
+            <h3>学习笔记</h3>
+            <p>以后这里可以放我的学习记录、文章、图片或项目介绍。</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>🔥 未来计划</h2>
+          <p>
+            下一步我可以继续给网站添加更多页面、图片墙、背景音乐、留言入口、动态特效和作品展示区。
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 小游戏 -->
+    <section id="game">
+      <h2 class="section-title">网页小游戏</h2>
+      <p class="section-desc">
+        这是一个可以直接在网页里玩的小游戏：30 秒内点击尽可能多的星星。
+      </p>
+
+      <div class="card game-card">
+        <h2>⭐ 30 秒抓星星</h2>
         <p>
-          下一步我可以继续给网站添加图片、音乐、视频、留言按钮、
-          更多页面和更酷的动画效果。
+          点击“开始游戏”，星星会随机出现。你需要尽快点击星星，30 秒内分数越高越厉害！
         </p>
-      </div>
-    </div>
 
-    <h2 class="section-title" id="contact">联系我</h2>
+        <div class="game-panel">
+          <div class="score-box">分数：<span id="score">0</span></div>
+          <div class="score-box">时间：<span id="time">30</span> 秒</div>
+          <div class="score-box">最高分：<span id="bestScore">0</span></div>
+          <button class="game-btn" id="startBtn">开始游戏</button>
+        </div>
 
-    <div class="grid">
-      <div class="card">
-        <h2>📮 联系方式</h2>
-        <p>邮箱：这里写你的邮箱</p>
-        <p>QQ：这里写你的 QQ</p>
-        <p>GitHub：wuxuewen307-ux</p>
-      </div>
+        <div class="game-area" id="gameArea">
+          <div class="game-tip" id="gameTip">
+            点击“开始游戏”后，星星会出现在这里 ✨<br />
+            尽快点击它！
+          </div>
 
-      <div class="card">
-        <h2>🌈 留言</h2>
-        <p>
-          欢迎来到我的网站！这个主页还会继续升级，
-          以后会变得更加丰富和个性化。
-        </p>
+          <div class="game-star" id="star">⭐</div>
+        </div>
       </div>
-    </div>
+    </section>
+
+
+    <!-- 联系我 -->
+    <section id="contact">
+      <h2 class="section-title">联系我</h2>
+      <p class="section-desc">
+        这里可以放你的邮箱、QQ、GitHub 或其他联系方式。
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <h2>📮 联系方式</h2>
+          <p>邮箱：这里写你的邮箱</p>
+          <p>QQ：这里写你的 QQ</p>
+          <p>GitHub：wuxuewen307-ux</p>
+        </div>
+
+        <div class="card">
+          <h2>🌈 留言</h2>
+          <p>
+            欢迎来到我的网站！这个主页还会继续升级，
+            以后会变得更加丰富、漂亮和个性化。
+          </p>
+        </div>
+      </div>
+    </section>
 
   </main>
 
+
+  <!-- =========================================================
+       E. 页脚
+  ========================================================= -->
   <footer>
-    © 2026 wuxuewen307-ux 的个人主页 · Made with GitHub Pages
+    <p>© 2026 wuxuewen307-ux 的个人主页</p>
+    <p>Made with GitHub Pages · 梦幻科技风主页</p>
   </footer>
+
+
+  <!-- =========================================================
+       F. JavaScript：小游戏逻辑
+       想改游戏时间，可以改 gameTotalTime 的数值
+  ========================================================= -->
+  <script>
+    /* =========================
+       小游戏配置区
+    ========================= */
+
+    const gameTotalTime = 30;
+    const starMoveSpeed = 850;
+
+    /* =========================
+       获取页面元素
+    ========================= */
+
+    const scoreText = document.getElementById("score");
+    const timeText = document.getElementById("time");
+    const bestScoreText = document.getElementById("bestScore");
+    const startBtn = document.getElementById("startBtn");
+    const star = document.getElementById("star");
+    const gameArea = document.getElementById("gameArea");
+    const gameTip = document.getElementById("gameTip");
+
+    /* =========================
+       游戏变量
+    ========================= */
+
+    let score = 0;
+    let timeLeft = gameTotalTime;
+    let gameRunning = false;
+    let countdownTimer = null;
+    let moveTimer = null;
+
+    let bestScore = localStorage.getItem("bestScore") || 0;
+    bestScoreText.textContent = bestScore;
+
+    /* =========================
+       开始游戏
+    ========================= */
+
+    function startGame() {
+      score = 0;
+      timeLeft = gameTotalTime;
+      gameRunning = true;
+
+      scoreText.textContent = score;
+      timeText.textContent = timeLeft;
+
+      gameTip.style.display = "none";
+      star.style.display = "flex";
+
+      startBtn.textContent = "游戏进行中";
+      startBtn.disabled = true;
+
+      clearInterval(countdownTimer);
+      clearInterval(moveTimer);
+
+      moveStar();
+
+      countdownTimer = setInterval(function () {
+        timeLeft--;
+        timeText.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+
+      moveTimer = setInterval(function () {
+        moveStar();
+      }, starMoveSpeed);
+    }
+
+    /* =========================
+       随机移动星星
+    ========================= */
+
+    function moveStar() {
+      if (!gameRunning) return;
+
+      const areaWidth = gameArea.clientWidth;
+      const areaHeight = gameArea.clientHeight;
+
+      const starSize = 60;
+      const maxX = areaWidth - starSize;
+      const maxY = areaHeight - starSize;
+
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+
+      star.style.left = randomX + "px";
+      star.style.top = randomY + "px";
+    }
+
+    /* =========================
+       点击星星得分
+    ========================= */
+
+    function hitStar(event) {
+      event.stopPropagation();
+
+      if (!gameRunning) return;
+
+      score++;
+      scoreText.textContent = score;
+
+      moveStar();
+    }
+
+    /* =========================
+       结束游戏
+    ========================= */
+
+    function endGame() {
+      gameRunning = false;
+
+      clearInterval(countdownTimer);
+      clearInterval(moveTimer);
+
+      star.style.display = "none";
+      gameTip.style.display = "block";
+
+      if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem("bestScore", bestScore);
+        bestScoreText.textContent = bestScore;
+
+        gameTip.innerHTML = "游戏结束！你的得分是：" + score + " 分 🎉<br />恭喜你创造了新的最高分！";
+      } else {
+        gameTip.innerHTML = "游戏结束！你的得分是：" + score + " 分 🎉<br />再来一次，挑战最高分吧！";
+      }
+
+      startBtn.textContent = "重新开始";
+      startBtn.disabled = false;
+    }
+
+    /* =========================
+       绑定点击事件
+    ========================= */
+
+    startBtn.addEventListener("click", startGame);
+    star.addEventListener("click", hitStar);
+  </script>
 
 </body>
 </html>
