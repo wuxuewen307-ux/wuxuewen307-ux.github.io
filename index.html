@@ -6,111 +6,362 @@
   <title>我的个人主页</title>
 
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: Arial, "Microsoft YaHei", sans-serif;
-      background: #f4f6f8;
-      color: #333;
-    }
-
-    .header {
-      background: linear-gradient(135deg, #4f46e5, #06b6d4);
       color: white;
+      background: linear-gradient(135deg, #12002f, #1e1b4b, #0f766e, #4c1d95);
+      background-size: 400% 400%;
+      animation: bgMove 12s ease infinite;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(white 1px, transparent 1px);
+      background-size: 80px 80px, 130px 130px;
+      background-position: 0 0, 40px 60px;
+      opacity: 0.25;
+      z-index: -2;
+    }
+
+    .glow {
+      position: fixed;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.6;
+      z-index: -1;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .glow1 {
+      background: #ff00cc;
+      top: 10%;
+      left: 5%;
+    }
+
+    .glow2 {
+      background: #00ffff;
+      right: 5%;
+      bottom: 10%;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-40px); }
+    }
+
+    header {
       text-align: center;
-      padding: 80px 20px;
+      padding: 100px 20px 60px;
     }
 
-    .header h1 {
-      font-size: 42px;
-      margin-bottom: 10px;
+    .avatar {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 25px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #facc15, #ec4899, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      box-shadow: 0 0 40px rgba(255,255,255,0.6);
+      animation: pulse 2.5s infinite;
     }
 
-    .header p {
-      font-size: 18px;
+    @keyframes pulse {
+      0% { box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+      50% { box-shadow: 0 0 60px rgba(255,255,255,0.9); }
+      100% { box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+    }
+
+    h1 {
+      font-size: 54px;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, #fff, #facc15, #38bdf8, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px rgba(255,255,255,0.3);
+    }
+
+    .subtitle {
+      font-size: 22px;
+      color: #e0f2fe;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(12px);
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-6px) scale(1.05);
+      background: linear-gradient(135deg, #ec4899, #8b5cf6, #06b6d4);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     }
 
     .container {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 20px;
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px 80px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
     }
 
     .card {
-      background: white;
-      padding: 25px;
-      margin-bottom: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 25px;
+      padding: 28px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      transition: 0.35s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.22),
+        transparent
+      );
+      transform: rotate(25deg);
+      transition: 0.6s;
+      opacity: 0;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+      left: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
     }
 
     .card h2 {
-      color: #4f46e5;
-      margin-top: 0;
+      font-size: 26px;
+      margin-bottom: 15px;
+      color: #fef3c7;
     }
 
-    .button {
-      display: inline-block;
-      background: #4f46e5;
-      color: white;
-      padding: 12px 20px;
-      text-decoration: none;
-      border-radius: 8px;
-      margin-top: 10px;
+    .card p {
+      line-height: 1.8;
+      color: #f8fafc;
+      font-size: 16px;
     }
 
-    .button:hover {
-      background: #3730a3;
+    .tag-list {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
     }
 
-    .footer {
+    .tag {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.25);
+      font-size: 14px;
+    }
+
+    .section-title {
       text-align: center;
-      color: #777;
-      padding: 30px;
+      margin: 60px 0 30px;
+      font-size: 36px;
+      color: #fff7ed;
+      text-shadow: 0 0 20px rgba(255,255,255,0.35);
+    }
+
+    .project {
+      margin-top: 15px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .project h3 {
+      color: #7dd3fc;
+      margin-bottom: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 35px 20px;
+      color: #e0e7ff;
+      background: rgba(0,0,0,0.2);
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 38px;
+      }
+
+      .subtitle {
+        font-size: 18px;
+      }
+
+      header {
+        padding-top: 70px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="header">
+  <div class="stars"></div>
+  <div class="glow glow1"></div>
+  <div class="glow glow2"></div>
+
+  <header>
+    <div class="avatar">✨</div>
     <h1>你好，我是 wuxuewen307-ux</h1>
-    <p>欢迎来到我的个人主页</p>
-  </div>
+    <p class="subtitle">欢迎来到我的梦幻个人主页</p>
 
-  <div class="container">
+    <div class="buttons">
+      <a class="btn" href="#about">关于我</a>
+      <a class="btn" href="#works">我的作品</a>
+      <a class="btn" href="#contact">联系我</a>
+    </div>
+  </header>
 
-    <div class="card">
-      <h2>关于我</h2>
-      <p>
-        你好！这是我的个人网站。我正在学习如何制作网页，
-        这里以后会展示我的个人介绍、学习记录和作品。
-      </p>
+  <main class="container">
+
+    <h2 class="section-title" id="about">关于我</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h2>🌟 我的介绍</h2>
+        <p>
+          你好！这是我的个人网站。我正在学习制作网页，
+          这里会记录我的成长、兴趣、作品和想法。
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>🚀 我的目标</h2>
+        <p>
+          我希望把这个网站做得越来越漂亮，
+          以后可以放学习笔记、个人作品、图片展示和更多有趣内容。
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>🎨 我的兴趣</h2>
+        <p>
+          我喜欢探索新鲜事物，也喜欢漂亮、有创意、有科技感的设计。
+        </p>
+        <div class="tag-list">
+          <span class="tag">网页制作</span>
+          <span class="tag">学习记录</span>
+          <span class="tag">设计</span>
+          <span class="tag">科技感</span>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>我的兴趣</h2>
-      <p>我喜欢学习新知识、制作网站、研究技术和记录自己的成长。</p>
+    <h2 class="section-title" id="works">我的作品</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h2>💎 作品展示</h2>
+
+        <div class="project">
+          <h3>我的第一个网站</h3>
+          <p>这是我使用 GitHub Pages 创建的免费网站。</p>
+        </div>
+
+        <div class="project">
+          <h3>学习笔记</h3>
+          <p>以后这里可以放我的学习记录、文章、图片或项目。</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🔥 未来计划</h2>
+        <p>
+          下一步我可以继续给网站添加图片、音乐、视频、留言按钮、
+          更多页面和更酷的动画效果。
+        </p>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>我的作品</h2>
-      <p>这里以后可以放我的项目、文章、图片、学习笔记等内容。</p>
-      <a class="button" href="https://github.com/wuxuewen307-ux" target="_blank">
-        查看我的 GitHub
-      </a>
+    <h2 class="section-title" id="contact">联系我</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h2>📮 联系方式</h2>
+        <p>邮箱：这里写你的邮箱</p>
+        <p>QQ：这里写你的 QQ</p>
+        <p>GitHub：wuxuewen307-ux</p>
+      </div>
+
+      <div class="card">
+        <h2>🌈 留言</h2>
+        <p>
+          欢迎来到我的网站！这个主页还会继续升级，
+          以后会变得更加丰富和个性化。
+        </p>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>联系我</h2>
-      <p>邮箱：这里可以写你的邮箱</p>
-      <p>QQ：这里可以写你的 QQ</p>
-    </div>
+  </main>
 
-  </div>
-
-  <div class="footer">
-    © 2026 我的个人主页
-  </div>
+  <footer>
+    © 2026 wuxuewen307-ux 的个人主页 · Made with GitHub Pages
+  </footer>
 
 </body>
 </html>
