@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>wuxuewen307-ux 的科幻个人主页</title>
+  <title>小吴大神的科幻个人主页</title>
 
   <style>
     /* =========================================================
@@ -21,7 +21,7 @@
       --green: #34d399;
       --text: #ffffff;
       --soft: #c7d2fe;
-      --glass: rgba(15, 23, 42, 0.65);
+      --glass: rgba(15, 23, 42, 0.68);
       --border: rgba(125, 211, 252, 0.35);
       --shadow: rgba(34, 211, 238, 0.35);
     }
@@ -61,7 +61,7 @@
       inset: 0;
       z-index: -10;
       background:
-        radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.2), transparent 30%),
+        radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.22), transparent 30%),
         radial-gradient(circle at 80% 10%, rgba(236, 72, 153, 0.18), transparent 28%),
         radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.25), transparent 35%),
         linear-gradient(135deg, #020617, #0f172a, #111827);
@@ -236,10 +236,10 @@
     }
 
     .hero h1 {
-      font-size: clamp(42px, 7vw, 82px);
+      font-size: clamp(48px, 8vw, 96px);
       line-height: 1.05;
       margin-bottom: 22px;
-      background: linear-gradient(90deg, #ffffff, #22d3ee, #a78bfa, #f472b6);
+      background: linear-gradient(90deg, #ffffff, #22d3ee, #a78bfa, #f472b6, #facc15);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 35px rgba(34, 211, 238, 0.25);
@@ -290,7 +290,7 @@
 
     .hologram-card {
       position: relative;
-      min-height: 480px;
+      min-height: 500px;
       display: grid;
       place-items: center;
       border-radius: 36px;
@@ -329,8 +329,8 @@
 
     .avatar-ring {
       position: relative;
-      width: 280px;
-      height: 280px;
+      width: 310px;
+      height: 310px;
       border-radius: 50%;
       display: grid;
       place-items: center;
@@ -365,8 +365,8 @@
     }
 
     .avatar {
-      width: 185px;
-      height: 185px;
+      width: 205px;
+      height: 205px;
       border-radius: 50%;
       overflow: hidden;
       background:
@@ -576,7 +576,7 @@
 
     .gallery-item {
       position: relative;
-      min-height: 260px;
+      min-height: 270px;
       border-radius: 26px;
       overflow: hidden;
       border: 1px solid rgba(125, 211, 252, 0.32);
@@ -596,9 +596,9 @@
     .gallery-item img {
       width: 100%;
       height: 100%;
-      min-height: 260px;
+      min-height: 270px;
       object-fit: cover;
-      opacity: 0.86;
+      opacity: 0.9;
       transition: 0.4s;
     }
 
@@ -658,19 +658,6 @@
       background: black;
     }
 
-    .video-placeholder {
-      min-height: 320px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 30px;
-      background:
-        radial-gradient(circle at center, rgba(34, 211, 238, 0.22), transparent 32%),
-        linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.9));
-      color: #dbeafe;
-      line-height: 1.8;
-    }
-
     .timeline {
       display: grid;
       gap: 15px;
@@ -694,7 +681,7 @@
     }
 
     /* =========================================================
-       10. 小游戏：30 秒抓星星
+       10. 小游戏：15 秒抓星星
     ========================================================= */
 
     .game-card {
@@ -742,7 +729,7 @@
     .game-area {
       position: relative;
       z-index: 2;
-      height: 380px;
+      height: 360px;
       border-radius: 25px;
       overflow: hidden;
       cursor: crosshair;
@@ -821,17 +808,17 @@
       }
 
       .hologram-card {
-        min-height: 390px;
+        min-height: 410px;
       }
 
       .avatar-ring {
-        width: 240px;
-        height: 240px;
+        width: 250px;
+        height: 250px;
       }
 
       .avatar {
-        width: 160px;
-        height: 160px;
+        width: 165px;
+        height: 165px;
       }
     }
 
@@ -854,7 +841,7 @@
       }
 
       .game-area {
-        height: 330px;
+        height: 320px;
       }
     }
   </style>
@@ -888,8 +875,6 @@
 
   <!-- =========================================================
        C. 首页头部
-       想改名字，就改 h1 里的文字
-       想换头像，把 myphoto.jpg 上传到仓库
   ========================================================= -->
   <header class="hero" id="home">
     <div class="hero-wrap">
@@ -897,11 +882,11 @@
       <div class="hero-text">
         <div class="badge">🛸 SYSTEM ONLINE · PERSONAL WEBSITE</div>
 
-        <h1>wuxuewen307-ux</h1>
+        <h1>小吴大神</h1>
 
         <p>
-          欢迎进入我的科幻个人主页。这里是我的数字空间站，
-          用来展示我的兴趣、作品、图片、视频、小游戏和未来计划。
+          欢迎进入我的科幻个人主页。这里是属于我的数字空间站，
+          用来展示我的兴趣、图片、视频、小游戏和未来计划。
         </p>
 
         <div class="hero-buttons">
@@ -918,7 +903,7 @@
           <div class="orbit-dot dot3"></div>
 
           <div class="avatar">
-            <img src="myphoto.jpg" alt="我的照片" onerror="this.style.display='none'; this.parentElement.innerHTML='🚀';">
+            <img src="avatar.png" alt="小吴大神的头像" onerror="this.style.display='none'; this.parentElement.innerHTML='🚀';">
           </div>
         </div>
       </div>
@@ -936,15 +921,15 @@
     <section id="about">
       <h2 class="section-title">我的数字档案</h2>
       <p class="section-desc">
-        这里可以写你的个人介绍、兴趣方向、学习记录和作品计划。
-        这个页面的风格偏科幻、霓虹、太空、全息界面。
+        这里是小吴大神的个人主页。页面采用科幻、霓虹、太空、全息界面风格，
+        以后还可以继续加入更多图片、音乐、作品和互动功能。
       </p>
 
       <div class="grid">
         <div class="card">
           <h2>🌌 关于我</h2>
           <p>
-            你好！我是 wuxuewen307-ux。
+            你好！我是小吴大神。
             这是我自己创建的免费网站，我正在一步步把它改造成更漂亮、更丰富、更有科技感的个人主页。
           </p>
 
@@ -966,7 +951,8 @@
         <div class="card">
           <h2>🛰️ 未来目标</h2>
           <p>
-            以后可以继续加入留言功能、音乐播放器、更多小游戏、作品集页面、博客页面，甚至做成一个完整的个人网站。
+            以后可以继续加入留言功能、音乐播放器、更多小游戏、作品集页面、博客页面，
+            让这个网站变成真正属于我的数字名片。
           </p>
         </div>
       </div>
@@ -978,12 +964,12 @@
         </div>
 
         <div class="stat">
-          <strong>04</strong>
+          <strong>06</strong>
           <span>内容板块</span>
         </div>
 
         <div class="stat">
-          <strong>30s</strong>
+          <strong>15s</strong>
           <span>小游戏挑战</span>
         </div>
 
@@ -999,31 +985,32 @@
     <section id="gallery">
       <h2 class="section-title">视觉展示舱</h2>
       <p class="section-desc">
-        这里可以放你的照片、风景图、作品图、设计图。把图片上传到 GitHub 仓库后，文件名对应下面的 space1.jpg、space2.jpg、space3.jpg 即可。
+        这里使用你的头像图做主要视觉展示。以后你也可以上传更多图片，
+        命名为 space1.jpg、space2.jpg、space3.jpg 来替换下面的展示图。
       </p>
 
       <div class="gallery">
         <div class="gallery-item">
+          <img src="avatar.png" alt="小吴大神头像展示">
+          <div class="gallery-label">
+            <h3>头像展示</h3>
+            <p>这是小吴大神的主页头像，也可以作为个人形象展示。</p>
+          </div>
+        </div>
+
+        <div class="gallery-item">
           <img src="space1.jpg" alt="展示图片1" onerror="this.style.display='none';">
           <div class="gallery-label">
-            <h3>图片展示 01</h3>
-            <p>可以放你的个人照片、作品图或者喜欢的风景。</p>
+            <h3>未来图片 01</h3>
+            <p>以后可以放你的作品图、风景图、游戏截图或艺术图片。</p>
           </div>
         </div>
 
         <div class="gallery-item">
           <img src="space2.jpg" alt="展示图片2" onerror="this.style.display='none';">
           <div class="gallery-label">
-            <h3>图片展示 02</h3>
-            <p>这里可以展示学习成果、设计作品或生活记录。</p>
-          </div>
-        </div>
-
-        <div class="gallery-item">
-          <img src="space3.jpg" alt="展示图片3" onerror="this.style.display='none';">
-          <div class="gallery-label">
-            <h3>图片展示 03</h3>
-            <p>你可以继续复制这个模块，添加更多图片。</p>
+            <h3>未来图片 02</h3>
+            <p>上传 space2.jpg 后，这里会自动显示你的第二张展示图片。</p>
           </div>
         </div>
       </div>
@@ -1032,15 +1019,17 @@
 
     <!-- 视频展示区 -->
     <section id="video">
-      <h2 class="section-title">视频播放舱</h2>
+      <h2 class="section-title">创意视频舱</h2>
       <p class="section-desc">
-        这里可以放你自己的视频。把视频文件改名为 myvideo.mp4，上传到 GitHub 仓库后，网页就能直接播放。
+        这里放了一个可直接播放的视频示例。以后你也可以把自己的视频命名为 myvideo.mp4，
+        上传到仓库后，把代码里的视频地址换成 myvideo.mp4。
       </p>
 
       <div class="video-layout">
         <div class="video-box">
-          <video controls poster="space1.jpg">
-            <source src="myvideo.mp4" type="video/mp4" />
+          <video controls autoplay muted loop playsinline poster="avatar.png">
+            <source src="https://mdn.github.io/learning-area/html/multimedia-and-embedding/video-and-audio-content/rabbit320.mp4" type="video/mp4" />
+            <source src="https://mdn.github.io/learning-area/html/multimedia-and-embedding/video-and-audio-content/rabbit320.webm" type="video/webm" />
             你的浏览器暂不支持视频播放。
           </video>
         </div>
@@ -1048,24 +1037,24 @@
         <div class="card">
           <h2>🎬 视频说明</h2>
           <p>
-            你可以在这里放个人介绍视频、旅行视频、作品展示视频、学习记录视频。
-            如果暂时没有视频，可以以后再上传。
+            这个区域可以放创意艺术视频、游戏视频、个人介绍视频或作品展示视频。
+            现在先使用一个可播放的视频示例，让页面看起来更丰富。
           </p>
 
           <div class="timeline">
             <div class="timeline-item">
-              <h3>步骤 1</h3>
-              <p>把视频文件命名为 myvideo.mp4。</p>
+              <h3>当前版本</h3>
+              <p>使用在线视频示例，打开网页后可以直接播放。</p>
             </div>
 
             <div class="timeline-item">
-              <h3>步骤 2</h3>
-              <p>上传到 GitHub 仓库，和 index.html 放在同一级。</p>
+              <h3>以后替换</h3>
+              <p>你可以上传自己的 myvideo.mp4，然后把 source 里的链接换成 myvideo.mp4。</p>
             </div>
 
             <div class="timeline-item">
-              <h3>步骤 3</h3>
-              <p>等待网站刷新后，视频就会出现在这个区域。</p>
+              <h3>推荐内容</h3>
+              <p>可以放游戏高光、个人介绍、动漫剪辑、绘画过程、学习成果展示。</p>
             </div>
           </div>
         </div>
@@ -1084,7 +1073,7 @@
         <div class="card">
           <h2>💎 我的第一个网站</h2>
           <p>
-            这是我使用 GitHub Pages 创建的免费网站。
+            这是小吴大神使用 GitHub Pages 创建的免费网站。
             它现在已经从简单页面升级成了科幻风格个人主页。
           </p>
         </div>
@@ -1110,18 +1099,18 @@
     <section id="game">
       <h2 class="section-title">星际小游戏</h2>
       <p class="section-desc">
-        30 秒内点击尽可能多的星星，挑战你的反应速度。
+        15 秒内点击尽可能多的星星，挑战你的反应速度。
       </p>
 
       <div class="card game-card">
-        <h2>⭐ 30 秒抓星星</h2>
+        <h2>⭐ 15 秒抓星星</h2>
         <p>
-          点击“开始游戏”，星星会随机出现。你需要快速点击它，分数越高越厉害。
+          点击“开始游戏”，星星会随机出现。你需要快速点击它，15 秒内分数越高越厉害。
         </p>
 
         <div class="game-panel">
           <div class="score-box">分数：<span id="score">0</span></div>
-          <div class="score-box">时间：<span id="time">30</span> 秒</div>
+          <div class="score-box">时间：<span id="time">15</span> 秒</div>
           <div class="score-box">最高分：<span id="bestScore">0</span></div>
           <button class="game-btn" id="startBtn">开始游戏</button>
         </div>
@@ -1129,7 +1118,7 @@
         <div class="game-area" id="gameArea">
           <div class="game-tip" id="gameTip">
             点击“开始游戏”后，星星会出现在这里 ✨<br />
-            准备启动反应测试！
+            准备启动 15 秒反应测试！
           </div>
 
           <div class="game-star" id="star">⭐</div>
@@ -1142,21 +1131,21 @@
     <section id="contact">
       <h2 class="section-title">通讯频道</h2>
       <p class="section-desc">
-        这里可以放你的邮箱、QQ、GitHub 或其他联系方式。
+        这里是小吴大神的联系方式。
       </p>
 
       <div class="grid">
         <div class="card">
           <h2>📮 联系我</h2>
-          <p>邮箱：这里写你的邮箱</p>
-          <p>QQ：这里写你的 QQ</p>
-          <p>GitHub：wuxuewen307-ux</p>
+          <p>邮箱：1731145034@qq.com</p>
+          <p>QQ：1731145034</p>
+          <p>主页昵称：小吴大神</p>
         </div>
 
         <div class="card">
           <h2>🌠 留言</h2>
           <p>
-            欢迎来到我的科幻主页。这个网站会继续升级，
+            欢迎来到小吴大神的科幻主页。这个网站会继续升级，
             以后可以加入更多动画、音乐、留言入口和作品内容。
           </p>
         </div>
@@ -1170,7 +1159,7 @@
        E. 页脚
   ========================================================= -->
   <footer>
-    <p>© 2026 wuxuewen307-ux 的科幻个人主页</p>
+    <p>© 2026 小吴大神的科幻个人主页</p>
     <p>Made with GitHub Pages · Sci-Fi Digital Space</p>
   </footer>
 
@@ -1179,8 +1168,8 @@
        F. JavaScript 小游戏代码
   ========================================================= -->
   <script>
-    const gameTotalTime = 30;
-    const starMoveSpeed = 820;
+    const gameTotalTime = 15;
+    const starMoveSpeed = 750;
 
     const scoreText = document.getElementById("score");
     const timeText = document.getElementById("time");
@@ -1196,7 +1185,7 @@
     let countdownTimer = null;
     let moveTimer = null;
 
-    let bestScore = localStorage.getItem("bestScore") || 0;
+    let bestScore = localStorage.getItem("bestScore15") || 0;
     bestScoreText.textContent = bestScore;
 
     function startGame() {
@@ -1270,10 +1259,10 @@
 
       if (score > bestScore) {
         bestScore = score;
-        localStorage.setItem("bestScore", bestScore);
+        localStorage.setItem("bestScore15", bestScore);
         bestScoreText.textContent = bestScore;
 
-        gameTip.innerHTML = "任务完成！你的得分是：" + score + " 分 🎉<br />恭喜你刷新了最高纪录！";
+        gameTip.innerHTML = "任务完成！你的得分是：" + score + " 分 🎉<br />恭喜小吴大神刷新了最高纪录！";
       } else {
         gameTip.innerHTML = "任务完成！你的得分是：" + score + " 分 🎉<br />再次启动，挑战最高分！";
       }
