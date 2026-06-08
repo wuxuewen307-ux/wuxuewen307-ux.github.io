@@ -1,42 +1,80 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  <!-- 基础设置：如果你要改站点标题、描述、主题色、社交卡片信息，请优先修改本区 -->
   <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>小吴大神的科幻个人主页</title>
+  <meta name="description" content="小吴大神的科幻个人主页：长页面、霓虹粒子、全息头像、图片画廊、视频区、15秒抓星星小游戏、外部传送门、彩蛋日志与安全提示。" />
+  <meta name="keywords" content="小吴大神, GitHub Pages, 科幻主页, 霓虹, 全息, Steam, 3ds Max, 游侠, B站, YouTube" />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta property="og:title" content="小吴大神的科幻个人主页" />
+  <meta property="og:description" content="一个长滚动、内容丰富、可玩有趣的 GitHub Pages 单文件主页。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="avatar.png" />
+  <title>小吴大神 | Sci‑Fi Personal Hub</title>
 
   <style>
     /* =========================================================
-       1. 全局设置
+       基础设置：颜色、圆角、排版、阴影
+       想整体换风格，优先改这里的变量
     ========================================================= */
-
     :root {
-      --bg-dark: #020617;
-      --cyan: #22d3ee;
-      --blue: #3b82f6;
-      --purple: #8b5cf6;
-      --pink: #ec4899;
-      --yellow: #facc15;
-      --green: #34d399;
-      --text: #ffffff;
-      --soft: #c7d2fe;
-      --glass: rgba(15, 23, 42, 0.68);
-      --border: rgba(125, 211, 252, 0.35);
-      --shadow: rgba(34, 211, 238, 0.35);
+      --bg: #040811;
+      --bg-soft: #07111f;
+      --panel: rgba(8, 17, 34, 0.68);
+      --panel-strong: rgba(8, 17, 34, 0.84);
+      --line: rgba(117, 205, 255, 0.18);
+      --line-strong: rgba(117, 205, 255, 0.34);
+      --text: #eaf6ff;
+      --muted: #9fb6cd;
+      --muted-strong: #c8d9ea;
+      --cyan: #70eaff;
+      --blue: #6ba1ff;
+      --violet: #9c7dff;
+      --pink: #ff6fd6;
+      --gold: #ffd769;
+      --green: #63efb9;
+      --danger: #ff89a7;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
+      --radius: 24px;
+      --radius-lg: 34px;
+      --max: 1280px;
+      --header-h: 76px;
+      --mono: "Consolas", "SFMono-Regular", "Menlo", monospace;
+      --sans: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    /* Hyper Mode 彩蛋：连续点击左上角 Logo 3 次触发 */
+    body.hyper-mode {
+      --cyan: #ff92f5;
+      --blue: #67f0ff;
+      --violet: #95ff7b;
+      --pink: #ff7b8b;
+      --gold: #ffe06c;
+      --green: #84b9ff;
     }
 
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
+    }
+
+    html {
       scroll-behavior: smooth;
     }
 
     body {
-      font-family: Arial, "Microsoft YaHei", sans-serif;
-      background: var(--bg-dark);
+      margin: 0;
       color: var(--text);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(112, 234, 255, 0.12), transparent 24%),
+        radial-gradient(circle at 80% 10%, rgba(255, 111, 214, 0.12), transparent 22%),
+        radial-gradient(circle at 55% 80%, rgba(156, 125, 255, 0.16), transparent 28%),
+        linear-gradient(180deg, #02050d 0%, #050b14 38%, #07111f 70%, #040811 100%);
+      font-family: var(--sans);
+      line-height: 1.76;
       overflow-x: hidden;
       min-height: 100vh;
     }
@@ -46,1234 +84,2995 @@
       text-decoration: none;
     }
 
-    img,
-    video {
-      max-width: 100%;
+    img, video {
       display: block;
+      max-width: 100%;
     }
 
-    /* =========================================================
-       2. 科幻动态背景
-    ========================================================= */
-
-    .space-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -10;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.22), transparent 30%),
-        radial-gradient(circle at 80% 10%, rgba(236, 72, 153, 0.18), transparent 28%),
-        radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.25), transparent 35%),
-        linear-gradient(135deg, #020617, #0f172a, #111827);
+    button {
+      font: inherit;
     }
 
-    .stars {
-      position: fixed;
-      inset: 0;
-      z-index: -9;
-      background-image:
-        radial-gradient(#ffffff 1px, transparent 1px),
-        radial-gradient(#67e8f9 1px, transparent 1px),
-        radial-gradient(#f0abfc 1px, transparent 1px);
-      background-size: 70px 70px, 120px 120px, 180px 180px;
-      background-position: 0 0, 40px 60px, 90px 120px;
-      opacity: 0.28;
-      animation: starMove 35s linear infinite;
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
     }
 
-    @keyframes starMove {
-      from {
-        transform: translateY(0);
-      }
-
-      to {
-        transform: translateY(-180px);
-      }
-    }
-
-    .grid-floor {
-      position: fixed;
-      left: -10%;
-      right: -10%;
-      bottom: -20%;
-      height: 48%;
-      z-index: -8;
-      background:
-        linear-gradient(rgba(34, 211, 238, 0.35) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.35) 1px, transparent 1px);
-      background-size: 55px 55px;
-      transform: perspective(550px) rotateX(62deg);
-      transform-origin: bottom;
-      box-shadow: 0 -40px 100px rgba(34, 211, 238, 0.22);
-      animation: gridMove 3s linear infinite;
-    }
-
-    @keyframes gridMove {
-      from {
-        background-position: 0 0;
-      }
-
-      to {
-        background-position: 0 55px;
-      }
-    }
-
-    .glow {
-      position: fixed;
-      width: 360px;
-      height: 360px;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.48;
-      z-index: -7;
-      pointer-events: none;
-      animation: glowFloat 9s ease-in-out infinite;
-    }
-
-    .glow-a {
-      top: 9%;
-      left: 6%;
-      background: var(--cyan);
-    }
-
-    .glow-b {
-      right: 8%;
-      top: 18%;
-      background: var(--pink);
-      animation-delay: 2s;
-    }
-
-    .glow-c {
-      left: 40%;
-      bottom: 8%;
-      background: var(--purple);
-      animation-delay: 4s;
-    }
-
-    @keyframes glowFloat {
-      0%, 100% {
-        transform: translate(0, 0);
-      }
-
-      50% {
-        transform: translate(35px, -45px);
-      }
-    }
-
-    /* =========================================================
-       3. 顶部导航栏
-    ========================================================= */
-
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding: 15px 18px;
-      background: rgba(2, 6, 23, 0.72);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(34, 211, 238, 0.25);
-      box-shadow: 0 0 25px rgba(34, 211, 238, 0.12);
-    }
-
-    .nav-link {
-      padding: 10px 17px;
-      border-radius: 999px;
-      border: 1px solid rgba(125, 211, 252, 0.28);
-      background: rgba(15, 23, 42, 0.6);
-      color: #e0f2fe;
-      font-size: 15px;
-      transition: 0.3s;
-    }
-
-    .nav-link:hover {
-      color: white;
-      background: linear-gradient(135deg, rgba(34, 211, 238, 0.35), rgba(139, 92, 246, 0.35));
-      box-shadow: 0 0 22px rgba(34, 211, 238, 0.45);
-      transform: translateY(-3px);
-    }
-
-    /* =========================================================
-       4. 首页英雄区
-    ========================================================= */
-
-    .hero {
-      min-height: 92vh;
-      display: grid;
-      place-items: center;
-      padding: 80px 20px 60px;
+    .section {
       position: relative;
+      padding: 78px 0;
+      scroll-margin-top: 90px;
     }
 
-    .hero-wrap {
-      max-width: 1150px;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .hero-text {
-      padding: 30px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 15px;
-      border-radius: 999px;
-      border: 1px solid rgba(34, 211, 238, 0.45);
-      background: rgba(8, 47, 73, 0.35);
-      color: #a5f3fc;
-      box-shadow: 0 0 20px rgba(34, 211, 238, 0.18);
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-size: clamp(48px, 8vw, 96px);
-      line-height: 1.05;
-      margin-bottom: 22px;
-      background: linear-gradient(90deg, #ffffff, #22d3ee, #a78bfa, #f472b6, #facc15);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 35px rgba(34, 211, 238, 0.25);
-    }
-
-    .hero p {
-      color: #dbeafe;
-      font-size: 18px;
-      line-height: 1.9;
-      max-width: 650px;
+    .section-heading {
       margin-bottom: 28px;
     }
 
-    .hero-buttons {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
+    .section-kicker {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 24px;
+      gap: 10px;
+      padding: 8px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(125, 211, 252, 0.4);
-      background: rgba(15, 23, 42, 0.72);
-      color: white;
-      font-weight: bold;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-
-    .btn.primary {
-      background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
-      box-shadow: 0 0 30px rgba(34, 211, 238, 0.32);
-    }
-
-    .btn:hover {
-      transform: translateY(-5px) scale(1.03);
-      box-shadow: 0 0 32px rgba(34, 211, 238, 0.5);
-    }
-
-    /* =========================================================
-       5. 全息头像区域
-    ========================================================= */
-
-    .hologram-card {
-      position: relative;
-      min-height: 500px;
-      display: grid;
-      place-items: center;
-      border-radius: 36px;
-      background:
-        linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(139, 92, 246, 0.12)),
-        rgba(15, 23, 42, 0.55);
-      border: 1px solid rgba(125, 211, 252, 0.28);
-      box-shadow:
-        0 0 50px rgba(34, 211, 238, 0.18),
-        inset 0 0 35px rgba(255, 255, 255, 0.04);
-      overflow: hidden;
-    }
-
-    .hologram-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent,
-        transparent 8px,
-        rgba(34, 211, 238, 0.08) 9px
-      );
-      animation: scanLine 4s linear infinite;
-    }
-
-    @keyframes scanLine {
-      from {
-        transform: translateY(-40px);
-      }
-
-      to {
-        transform: translateY(40px);
-      }
-    }
-
-    .avatar-ring {
-      position: relative;
-      width: 310px;
-      height: 310px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-    }
-
-    .avatar-ring::before,
-    .avatar-ring::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 2px dashed rgba(34, 211, 238, 0.75);
-      animation: rotateRing 12s linear infinite;
-      box-shadow: 0 0 25px rgba(34, 211, 238, 0.25);
-    }
-
-    .avatar-ring::after {
-      inset: 28px;
-      border-color: rgba(244, 114, 182, 0.75);
-      animation-direction: reverse;
-      animation-duration: 9s;
-    }
-
-    @keyframes rotateRing {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .avatar {
-      width: 205px;
-      height: 205px;
-      border-radius: 50%;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 30% 20%, #ffffff, transparent 18%),
-        linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
-      border: 3px solid rgba(255, 255, 255, 0.75);
-      display: grid;
-      place-items: center;
-      font-size: 72px;
-      box-shadow: 0 0 55px rgba(34, 211, 238, 0.55);
-      z-index: 2;
-    }
-
-    .avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .orbit-dot {
-      position: absolute;
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 20px var(--cyan);
-    }
-
-    .dot1 {
-      top: 35px;
-      left: 55px;
-    }
-
-    .dot2 {
-      right: 45px;
-      bottom: 60px;
-      background: var(--pink);
-      box-shadow: 0 0 20px var(--pink);
-    }
-
-    .dot3 {
-      left: 42px;
-      bottom: 78px;
-      background: var(--yellow);
-      box-shadow: 0 0 20px var(--yellow);
-    }
-
-    /* =========================================================
-       6. 通用内容区
-    ========================================================= */
-
-    .container {
-      max-width: 1180px;
-      margin: auto;
-      padding: 60px 20px 95px;
+      border: 1px solid var(--line-strong);
+      background: rgba(10, 22, 41, 0.5);
+      color: #c7f5ff;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(112, 234, 255, 0.12);
     }
 
     .section-title {
-      text-align: center;
-      font-size: clamp(32px, 5vw, 52px);
-      margin: 50px 0 18px;
-      background: linear-gradient(90deg, #ffffff, #22d3ee, #a78bfa);
+      margin: 16px 0 12px;
+      font-size: clamp(30px, 4.6vw, 54px);
+      line-height: 1.08;
+      letter-spacing: 0.01em;
+      background: linear-gradient(90deg, #ffffff, var(--cyan), var(--violet), var(--pink), var(--gold));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .section-desc {
-      text-align: center;
-      color: #bfdbfe;
-      max-width: 760px;
-      margin: 0 auto 36px;
-      line-height: 1.9;
+      max-width: 880px;
+      color: var(--muted-strong);
       font-size: 17px;
+      margin: 0;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .split {
+      display: grid;
+      gap: 22px;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: start;
+    }
+
+    .mt-lg {
+      margin-top: 22px;
+    }
+
+    .mono {
+      font-family: var(--mono);
+    }
+
+    .tiny {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* =========================================================
+       背景特效：粒子画布、网格地板、扫描线、发光云
+       想降低性能占用，可删掉 starCanvas / noise / grid-floor
+    ========================================================= */
+    #starCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -5;
+      opacity: 0.92;
+      pointer-events: none;
+    }
+
+    .grid-floor {
+      position: fixed;
+      left: -15%;
+      right: -15%;
+      bottom: -16%;
+      height: 44vh;
+      z-index: -4;
+      background:
+        linear-gradient(rgba(112, 234, 255, 0.24) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(112, 234, 255, 0.24) 1px, transparent 1px);
+      background-size: 48px 48px;
+      transform: perspective(900px) rotateX(78deg);
+      transform-origin: bottom center;
+      box-shadow: 0 -40px 120px rgba(112, 234, 255, 0.12);
+      opacity: 0.55;
+      animation: gridMove 4.2s linear infinite;
+      pointer-events: none;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      opacity: 0.08;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 1px, transparent 1px),
+        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.28) 1px, transparent 1px),
+        radial-gradient(circle at 40% 60%, rgba(255,255,255,0.22) 1px, transparent 1px);
+      background-size: 140px 140px, 200px 200px, 260px 260px;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .scanlines::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.02) 0,
+        rgba(255,255,255,0.02) 1px,
+        transparent 2px,
+        transparent 5px
+      );
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    .aurora {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.22;
+      z-index: -1;
+      pointer-events: none;
+      animation: drift 11s ease-in-out infinite;
+    }
+
+    .aurora.a {
+      width: 320px;
+      height: 320px;
+      left: 6%;
+      top: 8%;
+      background: var(--cyan);
+    }
+
+    .aurora.b {
+      width: 360px;
+      height: 360px;
+      right: 8%;
+      top: 22%;
+      background: var(--pink);
+      animation-delay: 2s;
+    }
+
+    .aurora.c {
+      width: 300px;
+      height: 300px;
+      left: 42%;
+      bottom: 6%;
+      background: var(--violet);
+      animation-delay: 4s;
+    }
+
+    @keyframes gridMove {
+      from { background-position: 0 0, 0 0; }
+      to   { background-position: 0 48px, 0 48px; }
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(24px, -32px) scale(1.08); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 18px rgba(112, 234, 255, 0.22); }
+      50%      { box-shadow: 0 0 34px rgba(112, 234, 255, 0.38); }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes blink {
+      0%, 48%, 100% { opacity: 1; }
+      50%, 98% { opacity: 0; }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-38px) scale(1.1);
+      }
+    }
+
+    /* =========================================================
+       顶部导航：修改导航文案、增加/删除入口，请看这里
+    ========================================================= */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(16px);
+      background: rgba(3, 9, 18, 0.72);
+      border-bottom: 1px solid rgba(112, 234, 255, 0.14);
+    }
+
+    .site-header-inner {
+      width: min(var(--max), calc(100% - 24px));
+      min-height: var(--header-h);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 10px 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #06111f;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cyan), var(--blue), var(--violet));
+      box-shadow: 0 0 24px rgba(112, 234, 255, 0.28);
+    }
+
+    .brand-copy strong {
+      display: block;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-copy span {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      color: var(--muted-strong);
+      transition: 0.25s ease;
+      font-size: 14px;
+    }
+
+    .nav a:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      background: rgba(10, 22, 41, 0.68);
+      color: #fff;
+      box-shadow: 0 0 18px rgba(112, 234, 255, 0.12);
+    }
+
+    /* =========================================================
+       通用按钮与标签：修改按钮颜色、圆角、hover 效果
+    ========================================================= */
+    .button,
+    .copy-btn,
+    .portal-button,
+    .game-button,
+    .ghost-button {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      transition: 0.28s ease;
+    }
+
+    .button,
+    .portal-button,
+    .game-button,
+    .ghost-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 14px;
+      font-weight: 700;
+    }
+
+    .button.primary,
+    .portal-button,
+    .game-button {
+      color: #06111f;
+      background: linear-gradient(135deg, var(--cyan), var(--blue), var(--violet), var(--pink));
+      background-size: 240% 240%;
+      animation: pulseGlow 3.4s ease-in-out infinite;
+      box-shadow: 0 10px 28px rgba(104, 174, 255, 0.26);
+    }
+
+    .button.primary:hover,
+    .portal-button:hover,
+    .game-button:hover {
+      transform: translateY(-3px) scale(1.015);
+      background-position: right center;
+      box-shadow: 0 16px 34px rgba(108, 170, 255, 0.28);
+    }
+
+    .button.ghost,
+    .ghost-button {
+      color: var(--text);
+      background: rgba(9, 18, 35, 0.66);
+      border: 1px solid var(--line-strong);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    .button.ghost:hover,
+    .ghost-button:hover {
+      transform: translateY(-3px);
+      background: rgba(14, 26, 49, 0.9);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(9, 18, 35, 0.6);
+      color: #d3e8ff;
+      font-size: 13px;
+    }
+
+    /* =========================================================
+       英雄区：修改昵称、简介、按钮、头像说明，请看本区 HTML
+    ========================================================= */
+    .hero {
+      padding: 38px 0 34px;
+    }
+
+    .hero-grid {
+      display: grid;
       gap: 24px;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
     }
 
-    .card {
+    .hero-copy,
+    .hero-visual {
       position: relative;
-      padding: 28px;
-      border-radius: 28px;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      box-shadow:
-        0 20px 55px rgba(0, 0, 0, 0.35),
-        inset 0 0 24px rgba(255, 255, 255, 0.035);
-      backdrop-filter: blur(18px);
-      overflow: hidden;
-      transition: 0.35s;
     }
 
-    .card::before {
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #bff8ff;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(42px, 8vw, 92px);
+      line-height: 0.96;
+      letter-spacing: 0.01em;
+      background: linear-gradient(90deg, #fff, var(--cyan), var(--violet), var(--pink), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 42px rgba(112, 234, 255, 0.12);
+    }
+
+    .gradient-dot {
+      color: var(--cyan);
+      -webkit-text-fill-color: initial;
+    }
+
+    .lead {
+      margin: 18px 0 0;
+      font-size: 18px;
+      color: var(--muted-strong);
+      max-width: 720px;
+    }
+
+    .type-line {
+      margin: 18px 0 0;
+      min-height: 32px;
+      color: #d8eaff;
+      font-size: 16px;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.05em;
+      vertical-align: -2px;
+      margin-left: 2px;
+      background: linear-gradient(180deg, var(--cyan), var(--violet));
+      border-radius: 2px;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .hero-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .mini-stat {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(8, 17, 34, 0.62);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 26px;
+      line-height: 1;
+      color: var(--cyan);
+      margin-bottom: 8px;
+    }
+
+    .mini-stat span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .holo-card {
+      position: relative;
+      overflow: hidden;
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)),
+        rgba(7, 14, 28, 0.76);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,0.03);
+      min-height: 580px;
+      display: grid;
+      place-items: center;
+    }
+
+    .holo-card::before {
       content: "";
       position: absolute;
-      top: -70%;
-      left: -80%;
-      width: 230%;
-      height: 230%;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 8px,
+        rgba(112, 234, 255, 0.04) 9px
+      );
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .scan-text {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      font-size: 12px;
+      color: #c0f7ff;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-family: var(--mono);
+    }
+
+    .avatar-orbit {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      margin-top: 18px;
+    }
+
+    .avatar-orbit::before,
+    .avatar-orbit::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px dashed rgba(112, 234, 255, 0.5);
+      animation: spin 14s linear infinite;
+      box-shadow: 0 0 26px rgba(112, 234, 255, 0.18);
+    }
+
+    .avatar-orbit::after {
+      inset: 24px;
+      border-color: rgba(255, 111, 214, 0.34);
+      animation-direction: reverse;
+      animation-duration: 9.5s;
+    }
+
+    .avatar-core {
+      position: relative;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid rgba(255,255,255,0.72);
+      box-shadow:
+        0 0 30px rgba(112, 234, 255, 0.34),
+        0 0 64px rgba(156, 125, 255, 0.2);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.95), transparent 18%),
+        linear-gradient(135deg, var(--cyan), var(--blue), var(--violet), var(--pink));
+      display: grid;
+      place-items: center;
+      z-index: 2;
+    }
+
+    .avatar-core img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-fallback {
+      display: none;
+      width: 100%;
+      height: 100%;
+      place-items: center;
+      font-size: 68px;
+      font-weight: 900;
+      color: #05203a;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    .orbit-dot {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px currentColor;
+    }
+
+    .orbit-dot.one { top: 40px; left: 50px; color: var(--cyan); background: currentColor; }
+    .orbit-dot.two { bottom: 54px; right: 54px; color: var(--pink); background: currentColor; }
+    .orbit-dot.three { bottom: 90px; left: 34px; color: var(--gold); background: currentColor; }
+    .orbit-dot.four { top: 72px; right: 28px; color: var(--green); background: currentColor; }
+
+    .holo-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 22px;
+    }
+
+    .holo-tag {
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(10, 18, 34, 0.56);
+      color: #d9eeff;
+      font-size: 13px;
+      backdrop-filter: blur(8px);
+    }
+
+    .system-list {
+      width: 100%;
+      max-width: 520px;
+      margin: 26px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .system-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(9, 18, 35, 0.52);
+      border: 1px solid rgba(117, 205, 255, 0.12);
+      color: #dceeff;
+      font-size: 14px;
+    }
+
+    .system-list em {
+      font-style: normal;
+      color: var(--muted);
+    }
+
+    /* =========================================================
+       面板卡片：页面大多数内容都在 panel 中，想加内容可直接复制 panel
+    ========================================================= */
+    .panel {
+      position: relative;
+      overflow: hidden;
+      padding: 22px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,0.03);
+      backdrop-filter: blur(18px);
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -70%;
+      width: 180%;
+      height: 180%;
       background: linear-gradient(
         120deg,
         transparent,
-        rgba(34, 211, 238, 0.16),
+        rgba(112, 234, 255, 0.08),
         transparent
       );
       transform: rotate(25deg);
       opacity: 0;
-      transition: 0.8s;
+      transition: 0.8s ease;
+      pointer-events: none;
     }
 
-    .card:hover::before {
-      opacity: 1;
-      left: 75%;
-    }
-
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow:
-        0 28px 70px rgba(0, 0, 0, 0.48),
-        0 0 32px rgba(34, 211, 238, 0.22);
-    }
-
-    .card h2 {
-      position: relative;
-      z-index: 2;
-      color: #cffafe;
-      margin-bottom: 14px;
-      font-size: 25px;
-    }
-
-    .card h3 {
-      position: relative;
-      z-index: 2;
-      color: #fef3c7;
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      position: relative;
-      z-index: 2;
-      color: #e5e7eb;
-      line-height: 1.85;
-      font-size: 16px;
-    }
-
-    .tag-list {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
-
-    .tag {
-      padding: 8px 13px;
-      border-radius: 999px;
-      background: rgba(34, 211, 238, 0.12);
-      border: 1px solid rgba(34, 211, 238, 0.3);
-      color: #cffafe;
-      font-size: 14px;
-    }
-
-    /* =========================================================
-       7. 数据面板
-    ========================================================= */
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 18px;
-      margin-top: 25px;
-    }
-
-    .stat {
-      padding: 22px;
-      border-radius: 22px;
-      background: rgba(2, 6, 23, 0.55);
-      border: 1px solid rgba(34, 211, 238, 0.25);
-      text-align: center;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 34px;
-      color: #67e8f9;
-      margin-bottom: 8px;
-      text-shadow: 0 0 16px rgba(34, 211, 238, 0.45);
-    }
-
-    .stat span {
-      color: #c7d2fe;
-    }
-
-    /* =========================================================
-       8. 图片画廊
-    ========================================================= */
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 22px;
-    }
-
-    .gallery-item {
-      position: relative;
-      min-height: 270px;
-      border-radius: 26px;
-      overflow: hidden;
-      border: 1px solid rgba(125, 211, 252, 0.32);
-      background:
-        radial-gradient(circle at 25% 20%, rgba(34, 211, 238, 0.38), transparent 28%),
-        radial-gradient(circle at 70% 80%, rgba(236, 72, 153, 0.3), transparent 30%),
-        rgba(15, 23, 42, 0.75);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
-      transition: 0.35s;
-    }
-
-    .gallery-item:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 0 38px rgba(34, 211, 238, 0.28);
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      min-height: 270px;
-      object-fit: cover;
-      opacity: 0.9;
-      transition: 0.4s;
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.08);
+    .panel:hover::before {
+      left: 58%;
       opacity: 1;
     }
 
-    .gallery-label {
-      position: absolute;
-      left: 16px;
-      right: 16px;
-      bottom: 16px;
-      padding: 14px;
-      border-radius: 18px;
-      background: rgba(2, 6, 23, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(12px);
+    .panel h3 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      color: #d7f7ff;
     }
 
-    .gallery-label h3 {
-      color: #cffafe;
-      margin-bottom: 5px;
+    .panel p {
+      margin: 0 0 12px;
+      color: var(--muted-strong);
     }
 
-    .gallery-label p {
-      color: #dbeafe;
-      font-size: 14px;
-      line-height: 1.6;
+    .panel p:last-child {
+      margin-bottom: 0;
     }
 
-    /* =========================================================
-       9. 视频区
-    ========================================================= */
-
-    .video-layout {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 24px;
-      align-items: stretch;
+    .panel-list {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted-strong);
     }
 
-    .video-box {
-      border-radius: 28px;
-      overflow: hidden;
-      border: 1px solid rgba(125, 211, 252, 0.35);
-      background: rgba(2, 6, 23, 0.65);
-      box-shadow: 0 0 40px rgba(34, 211, 238, 0.16);
-      min-height: 320px;
-    }
-
-    .video-box video {
-      width: 100%;
-      height: 100%;
-      min-height: 320px;
-      object-fit: cover;
-      background: black;
+    .panel-list li + li {
+      margin-top: 8px;
     }
 
     .timeline {
       display: grid;
-      gap: 15px;
+      gap: 12px;
+      margin-top: 8px;
     }
 
     .timeline-item {
-      padding: 18px;
-      border-radius: 20px;
-      background: rgba(2, 6, 23, 0.45);
-      border: 1px solid rgba(34, 211, 238, 0.22);
+      position: relative;
+      padding: 14px 14px 14px 18px;
+      border-radius: 18px;
+      background: rgba(10, 18, 34, 0.56);
+      border: 1px solid rgba(117, 205, 255, 0.1);
     }
 
-    .timeline-item h3 {
-      color: #67e8f9;
-      margin-bottom: 8px;
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 18px;
+      width: 6px;
+      height: calc(100% - 36px);
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--cyan), var(--violet));
+      opacity: 0.95;
     }
 
-    .timeline-item p {
-      color: #dbeafe;
-      line-height: 1.75;
+    .timeline-item strong {
+      display: block;
+      margin-left: 14px;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .timeline-item span {
+      display: block;
+      margin-left: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .meter-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .meter {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(117, 205, 255, 0.1);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .meter span {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: var(--w, 50%);
+      min-height: 42px;
+      padding: 0 14px;
+      color: #04101d;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
     }
 
     /* =========================================================
-       10. 小游戏：15 秒抓星星
+       图片画廊：上传 space1.jpg ~ space4.jpg 即可自动替换占位图
+       未上传时会显示占位文字，不会报错
     ========================================================= */
-
-    .game-card {
-      max-width: 940px;
-      margin: auto;
+    .gallery {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    .game-panel {
+    .gallery-card {
       position: relative;
-      z-index: 2;
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 22px 0;
-      font-weight: bold;
-    }
-
-    .score-box {
-      padding: 10px 17px;
-      border-radius: 999px;
-      background: rgba(2, 6, 23, 0.55);
-      border: 1px solid rgba(34, 211, 238, 0.28);
-      color: #e0f2fe;
-    }
-
-    .game-btn {
-      border: none;
-      padding: 12px 24px;
-      border-radius: 999px;
-      color: white;
-      font-weight: bold;
+      overflow: hidden;
       cursor: pointer;
-      background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899);
-      box-shadow: 0 0 28px rgba(34, 211, 238, 0.45);
-      transition: 0.3s;
+      border-radius: 24px;
+      min-height: 270px;
+      background:
+        radial-gradient(circle at 22% 18%, rgba(112, 234, 255, 0.18), transparent 28%),
+        radial-gradient(circle at 80% 80%, rgba(255, 111, 214, 0.16), transparent 26%),
+        rgba(8, 17, 34, 0.82);
+      border: 1px solid rgba(117, 205, 255, 0.18);
+      box-shadow: var(--shadow);
+      transition: 0.32s ease;
     }
 
-    .game-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 42px rgba(236, 72, 153, 0.75);
+    .gallery-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 26px 72px rgba(0, 0, 0, 0.42);
+    }
+
+    .gallery-card.featured {
+      grid-column: span 2;
+      min-height: 360px;
+    }
+
+    .gallery-image-wrap {
+      position: absolute;
+      inset: 0;
+    }
+
+    .gallery-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.45s ease, opacity 0.3s ease;
+    }
+
+    .gallery-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .gallery-placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      text-align: center;
+      color: #d9edff;
+      background:
+        linear-gradient(135deg, rgba(112,234,255,0.16), rgba(156,125,255,0.12), rgba(255,111,214,0.12)),
+        rgba(8, 17, 34, 0.9);
+      font-size: 15px;
+      letter-spacing: 0.04em;
+    }
+
+    .gallery-caption {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      padding: 14px 14px 12px;
+      border-radius: 18px;
+      background: rgba(5, 12, 23, 0.72);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+    }
+
+    .gallery-caption strong {
+      display: block;
+      color: #fff;
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+
+    .gallery-caption span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================================================
+       视频区：上面是远程示例视频，下面是本地 myvideo.mp4 替换位
+       如果你上传 myvideo.mp4，页面会自动显示本地视频
+    ========================================================= */
+    .video-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .video-shell {
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(117, 205, 255, 0.16);
+      background: rgba(4, 8, 17, 0.72);
+      box-shadow: var(--shadow);
+      min-height: 320px;
+    }
+
+    .video-shell video {
+      width: 100%;
+      min-height: 320px;
+      background: #02060d;
+      object-fit: cover;
+    }
+
+    .video-fallback {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+      color: #d9eaff;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(112,234,255,0.12), transparent 28%),
+        linear-gradient(135deg, rgba(8,17,34,0.88), rgba(10,20,40,0.96));
+    }
+
+    .video-info-list {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted-strong);
+    }
+
+    /* =========================================================
+       小游戏：15 秒抓星星
+       如果你想改时长，在文末脚本里 gameTotalTime 改成别的数字即可
+    ========================================================= */
+    .game-layout {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: start;
+    }
+
+    .game-hud {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+
+    .hud-box {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(10, 18, 34, 0.62);
+      border: 1px solid rgba(117, 205, 255, 0.12);
+      text-align: center;
+    }
+
+    .hud-box strong {
+      display: block;
+      font-size: 24px;
+      line-height: 1;
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+
+    .hud-box span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .game-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
     }
 
     .game-area {
       position: relative;
-      z-index: 2;
-      height: 360px;
-      border-radius: 25px;
       overflow: hidden;
-      cursor: crosshair;
-      border: 1px solid rgba(125, 211, 252, 0.35);
+      min-height: 390px;
+      margin-top: 18px;
+      border-radius: 26px;
+      border: 1px solid rgba(117, 205, 255, 0.18);
       background:
-        linear-gradient(rgba(34, 211, 238, 0.12) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.12) 1px, transparent 1px),
-        radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.25), transparent 30%),
-        rgba(2, 6, 23, 0.65);
-      background-size: 32px 32px, 32px 32px, auto, auto;
-      box-shadow: inset 0 0 40px rgba(34, 211, 238, 0.12);
+        linear-gradient(rgba(112, 234, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(112, 234, 255, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at 24% 22%, rgba(112,234,255,0.12), transparent 22%),
+        rgba(4, 8, 17, 0.76);
+      background-size: 34px 34px, 34px 34px, auto, auto;
+      box-shadow: inset 0 0 40px rgba(112, 234, 255, 0.08);
+      cursor: crosshair;
+      user-select: none;
     }
 
-    .game-tip {
+    .game-center-tip {
       position: absolute;
-      width: 100%;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
       text-align: center;
-      top: 42%;
-      padding: 0 20px;
-      color: rgba(219, 234, 254, 0.85);
+      color: #d9eeff;
       font-size: 18px;
       line-height: 1.8;
+      z-index: 1;
     }
 
-    .game-star {
+    .game-target {
       position: absolute;
+      z-index: 2;
       display: none;
-      width: 58px;
-      height: 58px;
+      place-items: center;
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
-      align-items: center;
-      justify-content: center;
-      font-size: 31px;
-      background: radial-gradient(circle, #ffffff, #facc15, #fb7185);
-      box-shadow: 0 0 35px #facc15;
-      user-select: none;
-      animation: starFlash 0.75s infinite alternate;
-      z-index: 5;
+      border: none;
+      background:
+        radial-gradient(circle at 35% 32%, #ffffff, transparent 18%),
+        radial-gradient(circle at 50% 50%, #fff0b2, #ffd85f 46%, #ff8b66 82%);
+      box-shadow: 0 0 32px rgba(255, 215, 105, 0.7);
+      font-size: 30px;
+      color: #06111f;
+      font-weight: 900;
+      animation: pulseGlow 1s ease-in-out infinite;
     }
 
-    @keyframes starFlash {
-      from {
-        transform: scale(1);
-      }
+    .score-pop {
+      position: absolute;
+      z-index: 4;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 0 12px rgba(112, 234, 255, 0.9);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: rise 0.8s ease forwards;
+    }
 
-      to {
-        transform: scale(1.2) rotate(16deg);
-      }
+    .ranking-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .ranking-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(9, 18, 35, 0.56);
+      border: 1px solid rgba(117, 205, 255, 0.12);
+      color: #dcefff;
+      font-size: 14px;
     }
 
     /* =========================================================
-       11. 页脚
+       外部跳转：默认放更稳妥的官方/门户入口
+       如需单独改按钮 href，请直接在 a 标签中替换链接
     ========================================================= */
+    .notice {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255, 216, 105, 0.08);
+      border: 1px solid rgba(255, 216, 105, 0.2);
+      color: #ffeeb4;
+      margin-bottom: 16px;
+    }
+
+    .portal-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .portal-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 260px;
+    }
+
+    .portal-topline {
+      color: #c7f5ff;
+      letter-spacing: 0.14em;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .portal-card h3 {
+      margin-bottom: 2px;
+    }
+
+    .portal-meta {
+      margin-top: auto;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .portal-pill {
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid rgba(117, 205, 255, 0.14);
+      color: #d8ecff;
+    }
+
+    /* =========================================================
+       彩蛋与终端：随机趣味文本、宇宙日志、终端噪声
+       想加更多随机句子，请在脚本数组里继续追加
+    ========================================================= */
+    .lore-output {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .lore-output p {
+      margin: 0;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(9, 18, 35, 0.56);
+      border: 1px solid rgba(117, 205, 255, 0.12);
+    }
+
+    .terminal {
+      min-height: 320px;
+      max-height: 420px;
+      overflow: auto;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(2, 6, 12, 0.82);
+      border: 1px solid rgba(117, 205, 255, 0.16);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      color: #c9ffde;
+    }
+
+    .terminal-line {
+      white-space: pre-wrap;
+    }
+
+    .terminal-prefix {
+      color: var(--cyan);
+      margin-right: 6px;
+    }
+
+    .secret-tip {
+      margin-top: 14px;
+      color: #ffe9a8;
+      font-size: 14px;
+    }
+
+    .quest-list {
+      margin: 12px 0 0;
+      padding-left: 18px;
+    }
+
+    .quest-list li + li {
+      margin-top: 8px;
+    }
+
+    /* =========================================================
+       安全提示与联系方式：这里放免责声明、邮箱、QQ、复制按钮
+    ========================================================= */
+    .warning-panel {
+      border: 1px solid rgba(255, 153, 170, 0.28);
+      background:
+        radial-gradient(circle at top right, rgba(255, 121, 160, 0.08), transparent 24%),
+        rgba(17, 9, 17, 0.74);
+    }
+
+    .warning-panel strong {
+      color: #ffd0de;
+    }
+
+    .contact-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(9, 18, 35, 0.56);
+      border: 1px solid rgba(117, 205, 255, 0.12);
+      flex-wrap: wrap;
+    }
+
+    .contact-label {
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .contact-value {
+      color: #fff;
+      font-weight: 700;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 12px;
+      color: #09111c;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--gold));
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-2px);
+    }
 
     footer {
-      text-align: center;
-      padding: 40px 20px;
-      color: #bfdbfe;
-      background: rgba(2, 6, 23, 0.78);
-      border-top: 1px solid rgba(34, 211, 238, 0.2);
-      line-height: 1.8;
+      padding: 34px 0 56px;
+      color: var(--muted);
+    }
+
+    .footer-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 18px 22px;
+      border-radius: 22px;
+      background: rgba(8, 17, 34, 0.68);
+      border: 1px solid rgba(117, 205, 255, 0.1);
     }
 
     /* =========================================================
-       12. 手机适配
+       Lightbox 图片放大层：点击画廊图片即可查看大图
     ========================================================= */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 30px;
+      background: rgba(1, 4, 9, 0.88);
+      z-index: 99;
+      backdrop-filter: blur(10px);
+    }
 
-    @media (max-width: 850px) {
-      .hero-wrap,
-      .video-layout {
+    .lightbox.show {
+      display: grid;
+    }
+
+    .lightbox-card {
+      width: min(1100px, 100%);
+      max-height: 90vh;
+      border-radius: 26px;
+      overflow: hidden;
+      background: rgba(6, 12, 23, 0.92);
+      border: 1px solid rgba(117, 205, 255, 0.2);
+      box-shadow: 0 30px 90px rgba(0,0,0,0.46);
+    }
+
+    .lightbox-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(117, 205, 255, 0.12);
+    }
+
+    .lightbox-top strong {
+      color: #fff;
+    }
+
+    .lightbox-close {
+      min-width: 40px;
+      min-height: 40px;
+      border-radius: 12px;
+      border: 1px solid rgba(117, 205, 255, 0.14);
+      background: rgba(9, 18, 35, 0.72);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .lightbox-image-wrap {
+      max-height: calc(90vh - 70px);
+      overflow: auto;
+      padding: 16px;
+    }
+
+    .lightbox-image-wrap img {
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+    }
+
+    /* =========================================================
+       浮动按钮与提示 Toast
+    ========================================================= */
+    .back-to-top,
+    .toast {
+      position: fixed;
+      z-index: 90;
+    }
+
+    .back-to-top {
+      right: 18px;
+      bottom: 20px;
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: #06111f;
+      font-weight: 900;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      box-shadow: 0 14px 28px rgba(0,0,0,0.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s ease;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .toast {
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(20px);
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: rgba(6, 12, 23, 0.88);
+      border: 1px solid rgba(117, 205, 255, 0.2);
+      color: #fff;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.28s ease;
+      max-width: calc(100% - 32px);
+      text-align: center;
+      box-shadow: 0 18px 38px rgba(0,0,0,0.36);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* =========================================================
+       移动端适配：如果你想让手机更紧凑，可继续压缩这里的尺寸
+    ========================================================= */
+    @media (max-width: 1140px) {
+      .hero-grid,
+      .split,
+      .video-grid,
+      .game-layout,
+      .portal-grid,
+      .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .cols-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .holo-card {
+        min-height: 520px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .split,
+      .video-grid,
+      .game-layout,
+      .gallery,
+      .portal-grid,
+      .cols-3,
+      .cols-2 {
         grid-template-columns: 1fr;
       }
 
-      .hero {
-        min-height: auto;
+      .gallery-card.featured {
+        grid-column: span 1;
+        min-height: 300px;
       }
 
-      .hologram-card {
-        min-height: 410px;
+      .hero-mini-grid,
+      .game-hud {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .avatar-ring {
-        width: 250px;
-        height: 250px;
+      .avatar-orbit {
+        width: 270px;
+        height: 270px;
       }
 
-      .avatar {
-        width: 165px;
-        height: 165px;
+      .avatar-core {
+        width: 180px;
+        height: 180px;
       }
     }
 
-    @media (max-width: 560px) {
-      .navbar {
-        gap: 8px;
+    @media (max-width: 620px) {
+      .site-header-inner {
+        justify-content: center;
       }
 
-      .nav-link {
-        padding: 8px 12px;
-        font-size: 14px;
+      .nav {
+        justify-content: center;
       }
 
-      .hero-text {
-        padding: 15px;
+      .section {
+        padding: 62px 0;
       }
 
-      .hero p {
+      .section-title {
+        font-size: clamp(28px, 9vw, 42px);
+      }
+
+      .lead,
+      .section-desc {
         font-size: 16px;
       }
 
+      .hero-mini-grid,
+      .game-hud,
+      .cols-4 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .panel,
+      .holo-card {
+        padding: 18px;
+      }
+
       .game-area {
-        height: 320px;
+        min-height: 320px;
+      }
+
+      .lightbox {
+        padding: 16px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .hero-mini-grid,
+      .game-hud,
+      .cols-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .button,
+      .portal-button,
+      .game-button,
+      .ghost-button {
+        width: 100%;
+      }
+
+      .hero-actions,
+      .game-actions {
+        display: grid;
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 
-<body>
+<body class="scanlines">
+  <!-- 背景层：如果设备性能较弱，可删除这些元素，只保留 body 背景 -->
+  <canvas id="starCanvas" aria-hidden="true"></canvas>
+  <div class="grid-floor" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="aurora a" aria-hidden="true"></div>
+  <div class="aurora b" aria-hidden="true"></div>
+  <div class="aurora c" aria-hidden="true"></div>
 
-  <!-- =========================================================
-       A. 背景层
-  ========================================================= -->
-  <div class="space-bg"></div>
-  <div class="stars"></div>
-  <div class="grid-floor"></div>
-  <div class="glow glow-a"></div>
-  <div class="glow glow-b"></div>
-  <div class="glow glow-c"></div>
-
-
-  <!-- =========================================================
-       B. 导航栏
-  ========================================================= -->
-  <nav class="navbar">
-    <a class="nav-link" href="#home">首页</a>
-    <a class="nav-link" href="#about">关于我</a>
-    <a class="nav-link" href="#gallery">图片</a>
-    <a class="nav-link" href="#video">视频</a>
-    <a class="nav-link" href="#game">小游戏</a>
-    <a class="nav-link" href="#contact">联系我</a>
-  </nav>
-
-
-  <!-- =========================================================
-       C. 首页头部
-  ========================================================= -->
-  <header class="hero" id="home">
-    <div class="hero-wrap">
-
-      <div class="hero-text">
-        <div class="badge">🛸 SYSTEM ONLINE · PERSONAL WEBSITE</div>
-
-        <h1>小吴大神</h1>
-
-        <p>
-          欢迎进入我的科幻个人主页。这里是属于我的数字空间站，
-          用来展示我的兴趣、图片、视频、小游戏和未来计划。
-        </p>
-
-        <div class="hero-buttons">
-          <a class="btn primary" href="#gallery">进入视觉空间</a>
-          <a class="btn" href="#video">观看视频</a>
-          <a class="btn" href="#game">启动小游戏</a>
+  <!-- 顶部导航：修改菜单入口就在这里 -->
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand" id="brandButton" title="连续点击 3 次试试">
+        <div class="brand-badge">XW</div>
+        <div class="brand-copy">
+          <strong>小吴大神</strong>
+          <span>SCI‑FI PERSONAL HUB</span>
         </div>
       </div>
 
-      <div class="hologram-card">
-        <div class="avatar-ring">
-          <div class="orbit-dot dot1"></div>
-          <div class="orbit-dot dot2"></div>
-          <div class="orbit-dot dot3"></div>
-
-          <div class="avatar">
-            <img src="avatar.png" alt="小吴大神的头像" onerror="this.style.display='none'; this.parentElement.innerHTML='🚀';">
-          </div>
-        </div>
-      </div>
-
+      <nav class="nav" aria-label="站点导航">
+        <a href="#home">首页</a>
+        <a href="#about">档案</a>
+        <a href="#gallery">画廊</a>
+        <a href="#video">视频</a>
+        <a href="#game">小游戏</a>
+        <a href="#links">传送门</a>
+        <a href="#easter">彩蛋</a>
+        <a href="#safety">安全</a>
+        <a href="#contact">联系</a>
+      </nav>
     </div>
   </header>
 
+  <main>
+    <!-- 头部英雄区：修改昵称、简介、按钮、头像文件名，看这里 -->
+    <section class="section hero" id="home">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">PERSONAL WEBSITE · LONG FORM · FUN MODE ENABLED</p>
+            <h1>小吴大神<span class="gradient-dot">.</span></h1>
 
-  <!-- =========================================================
-       D. 主体内容
-  ========================================================= -->
-  <main class="container">
+            <p class="lead">
+              欢迎来到我的科幻个人主页。这不是一个只有几行字的空白页，而是一座被霓虹、粒子、日志、按钮、彩蛋和小游戏填满的数字空间站。
+              在这里，你可以看图、看视频、乱逛外部传送门、点亮 15 秒抓星星小游戏，也可以把它继续改造成更夸张、更花哨、更属于你自己的赛博名片。
+            </p>
 
-    <!-- 关于我 -->
-    <section id="about">
-      <h2 class="section-title">我的数字档案</h2>
-      <p class="section-desc">
-        这里是小吴大神的个人主页。页面采用科幻、霓虹、太空、全息界面风格，
-        以后还可以继续加入更多图片、音乐、作品和互动功能。
-      </p>
+            <p class="type-line">
+              当前状态：<span id="typeTarget">正在启动数字空间站…</span><span class="cursor"></span>
+            </p>
 
-      <div class="grid">
-        <div class="card">
-          <h2>🌌 关于我</h2>
-          <p>
-            你好！我是小吴大神。
-            这是我自己创建的免费网站，我正在一步步把它改造成更漂亮、更丰富、更有科技感的个人主页。
-          </p>
-
-          <div class="tag-list">
-            <span class="tag">网页制作</span>
-            <span class="tag">个人主页</span>
-            <span class="tag">科幻风格</span>
-            <span class="tag">创意空间</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <h2>🧬 我的兴趣</h2>
-          <p>
-            我喜欢酷炫的设计、动态效果、未来科技感，也希望这个网站以后能放更多照片、视频、作品和互动内容。
-          </p>
-        </div>
-
-        <div class="card">
-          <h2>🛰️ 未来目标</h2>
-          <p>
-            以后可以继续加入留言功能、音乐播放器、更多小游戏、作品集页面、博客页面，
-            让这个网站变成真正属于我的数字名片。
-          </p>
-        </div>
-      </div>
-
-      <div class="stats">
-        <div class="stat">
-          <strong>01</strong>
-          <span>个人主页</span>
-        </div>
-
-        <div class="stat">
-          <strong>06</strong>
-          <span>内容板块</span>
-        </div>
-
-        <div class="stat">
-          <strong>15s</strong>
-          <span>小游戏挑战</span>
-        </div>
-
-        <div class="stat">
-          <strong>∞</strong>
-          <span>持续升级</span>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- 图片展示区 -->
-    <section id="gallery">
-      <h2 class="section-title">视觉展示舱</h2>
-      <p class="section-desc">
-        这里使用你的头像图做主要视觉展示。以后你也可以上传更多图片，
-        命名为 space1.jpg、space2.jpg、space3.jpg 来替换下面的展示图。
-      </p>
-
-      <div class="gallery">
-        <div class="gallery-item">
-          <img src="avatar.png" alt="小吴大神头像展示">
-          <div class="gallery-label">
-            <h3>头像展示</h3>
-            <p>这是小吴大神的主页头像，也可以作为个人形象展示。</p>
-          </div>
-        </div>
-
-        <div class="gallery-item">
-          <img src="space1.jpg" alt="展示图片1" onerror="this.style.display='none';">
-          <div class="gallery-label">
-            <h3>未来图片 01</h3>
-            <p>以后可以放你的作品图、风景图、游戏截图或艺术图片。</p>
-          </div>
-        </div>
-
-        <div class="gallery-item">
-          <img src="space2.jpg" alt="展示图片2" onerror="this.style.display='none';">
-          <div class="gallery-label">
-            <h3>未来图片 02</h3>
-            <p>上传 space2.jpg 后，这里会自动显示你的第二张展示图片。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- 视频展示区 -->
-    <section id="video">
-      <h2 class="section-title">创意视频舱</h2>
-      <p class="section-desc">
-        这里放了一个可直接播放的视频示例。以后你也可以把自己的视频命名为 myvideo.mp4，
-        上传到仓库后，把代码里的视频地址换成 myvideo.mp4。
-      </p>
-
-      <div class="video-layout">
-        <div class="video-box">
-          <video controls autoplay muted loop playsinline poster="avatar.png">
-            <source src="https://mdn.github.io/learning-area/html/multimedia-and-embedding/video-and-audio-content/rabbit320.mp4" type="video/mp4" />
-            <source src="https://mdn.github.io/learning-area/html/multimedia-and-embedding/video-and-audio-content/rabbit320.webm" type="video/webm" />
-            你的浏览器暂不支持视频播放。
-          </video>
-        </div>
-
-        <div class="card">
-          <h2>🎬 视频说明</h2>
-          <p>
-            这个区域可以放创意艺术视频、游戏视频、个人介绍视频或作品展示视频。
-            现在先使用一个可播放的视频示例，让页面看起来更丰富。
-          </p>
-
-          <div class="timeline">
-            <div class="timeline-item">
-              <h3>当前版本</h3>
-              <p>使用在线视频示例，打开网页后可以直接播放。</p>
+            <div class="hero-actions">
+              <a class="button primary" href="#links">开启外部传送门</a>
+              <a class="button ghost" href="#game">直接开玩 15 秒抓星星</a>
+              <button class="button ghost" id="shareBtn" type="button">分享本页</button>
             </div>
 
-            <div class="timeline-item">
-              <h3>以后替换</h3>
-              <p>你可以上传自己的 myvideo.mp4，然后把 source 里的链接换成 myvideo.mp4。</p>
+            <div class="chip-row">
+              <span class="chip">姓名：小吴大神</span>
+              <span class="chip">邮箱：1731145034@qq.com</span>
+              <span class="chip">QQ：1731145034</span>
+              <span class="chip">头像文件：avatar.png</span>
+              <span class="chip">小游戏时长：15 秒</span>
             </div>
 
-            <div class="timeline-item">
-              <h3>推荐内容</h3>
-              <p>可以放游戏高光、个人介绍、动漫剪辑、绘画过程、学习成果展示。</p>
+            <div class="hero-mini-grid">
+              <div class="mini-stat">
+                <strong id="visitCount">1</strong>
+                <span>本机访问次数（仅本浏览器）</span>
+              </div>
+              <div class="mini-stat">
+                <strong id="clock">--:--:--</strong>
+                <span>本地时间 / 动态刷新</span>
+              </div>
+              <div class="mini-stat">
+                <strong id="siteState">ONLINE</strong>
+                <span>站点状态 / 可点击 Logo 触发彩蛋</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="holo-card">
+              <div class="scan-text">HOLOGRAM LOCKED · AVATAR SOURCE = avatar.png</div>
+
+              <div class="avatar-orbit">
+                <div class="orbit-dot one"></div>
+                <div class="orbit-dot two"></div>
+                <div class="orbit-dot three"></div>
+                <div class="orbit-dot four"></div>
+
+                <div class="avatar-core">
+                  <img
+                    src="avatar.png"
+                    alt="小吴大神头像"
+                    loading="eager"
+                    onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='grid';"
+                  />
+                  <div class="avatar-fallback" id="avatarFallback">XW</div>
+                </div>
+              </div>
+
+              <div class="holo-tags">
+                <span class="holo-tag">GitHub Pages</span>
+                <span class="holo-tag">Steam 愿望观察者</span>
+                <span class="holo-tag">3ds Max 入口</span>
+                <span class="holo-tag">B站 / YouTube 外链</span>
+                <span class="holo-tag">15s 抓星星</span>
+              </div>
+
+              <ul class="system-list">
+                <li><span>昵称 / 识别代号</span><em>小吴大神</em></li>
+                <li><span>显示头像</span><em>avatar.png</em></li>
+                <li><span>页面模型</span><em>单文件 HTML / CSS / JS</em></li>
+                <li><span>部署方式</span><em>GitHub Pages 静态托管</em></li>
+                <li><span>交互状态</span><em>彩蛋、Lightbox、小游戏、复制按钮</em></li>
+                <li><span>安全策略</span><em>仅跳转，不自动下载</em></li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-
-    <!-- 我的作品 -->
-    <section id="works">
-      <h2 class="section-title">任务日志</h2>
-      <p class="section-desc">
-        这里可以写你的作品、学习记录、计划、项目进度。
-      </p>
-
-      <div class="grid">
-        <div class="card">
-          <h2>💎 我的第一个网站</h2>
-          <p>
-            这是小吴大神使用 GitHub Pages 创建的免费网站。
-            它现在已经从简单页面升级成了科幻风格个人主页。
+    <!-- 关于我与站点结构：继续新增内容时，优先复制 panel -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Digital Archive</span>
+          <h2 class="section-title">我的数字档案与站点结构</h2>
+          <p class="section-desc">
+            这一段不是“模板占位词”式的空话，而是把你的主页真正做长、做满、做有层次：上面是头部登陆区，下面有档案、图廊、视频、小游戏、外链、彩蛋、免责声明和联系方式。
+            后续你继续往下加内容，也完全可以按现在的卡片结构继续复制扩展。
           </p>
         </div>
 
-        <div class="card">
-          <h2>⚙️ 下一步升级</h2>
-          <p>
-            以后可以加入更多页面，比如：作品集页面、个人博客页面、图片墙页面、音乐页面、留言页面。
-          </p>
+        <div class="grid cols-4">
+          <article class="panel">
+            <h3>👤 我是谁</h3>
+            <p>
+              我是小吴大神。这一页作为我的个人展示站，风格偏向
+              科幻、霓虹、未来终端与数字空间站。它不是企业官网，也不是简历模板，
+              而是更自由、更好玩的个人名片。
+            </p>
+          </article>
+
+          <article class="panel">
+            <h3>🎯 这页想达到什么效果</h3>
+            <p>
+              长、丰富、好玩、有视觉冲击力，打开以后既能“看”，又能“点”，还能“玩”。
+              同时又必须是 GitHub Pages 友好的单文件结构，方便你自己今后继续改。
+            </p>
+          </article>
+
+          <article class="panel">
+            <h3>🧩 已完成替换字段</h3>
+            <p>姓名：小吴大神</p>
+            <p>邮箱：1731145034@qq.com</p>
+            <p>QQ：1731145034</p>
+            <p>头像：avatar.png</p>
+            <p>小游戏：15 秒抓星星</p>
+          </article>
+
+          <article class="panel">
+            <h3>🛡️ 安全与版权原则</h3>
+            <p>
+              只做展示、跳转、文本和多媒体播放；不做自动下载、不做可执行文件分发、
+              不托管未授权影视或盗版资源，不鼓励任何侵权传播。
+            </p>
+          </article>
         </div>
 
-        <div class="card">
-          <h2>🚀 网站愿景</h2>
-          <p>
-            把这个网站变成属于自己的数字名片，让别人打开后能看到你的个性、作品、兴趣和成长过程。
-          </p>
+        <div class="split mt-lg">
+          <article class="panel">
+            <h3>🚀 站点升级日志</h3>
+            <div class="timeline">
+              <div class="timeline-item">
+                <strong>版本 A：从纯白空白页升级为科幻单页</strong>
+                <span>加入渐变背景、头像、导航、玻璃面板、动态文字</span>
+              </div>
+              <div class="timeline-item">
+                <strong>版本 B：继续加长内容区</strong>
+                <span>加入图片画廊、视频区、外链传送门、联系方式、安全提示</span>
+              </div>
+              <div class="timeline-item">
+                <strong>版本 C：加入互动</strong>
+                <span>增加 15 秒抓星星小游戏、图片放大层、复制按钮、分享按钮</span>
+              </div>
+              <div class="timeline-item">
+                <strong>版本 D：加入彩蛋噪声</strong>
+                <span>加入宇宙日志生成器、终端流、Logo 彩蛋与本机访问记录</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <h3>📈 站点评估仪表</h3>
+            <p>
+              下面这些数值是“风格化”的页面仪表，不是后端统计；
+              你以后想换成真实数据，也可以接入第三方服务或自己继续写脚本。
+            </p>
+
+            <div class="meter-list">
+              <div class="meter"><span style="--w: 94%;">科幻度 <b>94%</b></span></div>
+              <div class="meter"><span style="--w: 88%;">内容密度 <b>88%</b></span></div>
+              <div class="meter"><span style="--w: 82%;">可玩性 <b>82%</b></span></div>
+              <div class="meter"><span style="--w: 91%;">可扩展性 <b>91%</b></span></div>
+            </div>
+
+            <ul class="panel-list">
+              <li>当前版本已经适合继续追加作品展示、学习笔记、博客文章。</li>
+              <li>如果你以后上传更多图片，这一页会自然变成“长滚动画廊”。</li>
+              <li>如果你以后上传自己的视频，本地视频槽位会直接顶上。</li>
+            </ul>
+          </article>
         </div>
       </div>
     </section>
 
-
-    <!-- 小游戏 -->
-    <section id="game">
-      <h2 class="section-title">星际小游戏</h2>
-      <p class="section-desc">
-        15 秒内点击尽可能多的星星，挑战你的反应速度。
-      </p>
-
-      <div class="card game-card">
-        <h2>⭐ 15 秒抓星星</h2>
-        <p>
-          点击“开始游戏”，星星会随机出现。你需要快速点击它，15 秒内分数越高越厉害。
-        </p>
-
-        <div class="game-panel">
-          <div class="score-box">分数：<span id="score">0</span></div>
-          <div class="score-box">时间：<span id="time">15</span> 秒</div>
-          <div class="score-box">最高分：<span id="bestScore">0</span></div>
-          <button class="game-btn" id="startBtn">开始游戏</button>
-        </div>
-
-        <div class="game-area" id="gameArea">
-          <div class="game-tip" id="gameTip">
-            点击“开始游戏”后，星星会出现在这里 ✨<br />
-            准备启动 15 秒反应测试！
-          </div>
-
-          <div class="game-star" id="star">⭐</div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- 联系方式 -->
-    <section id="contact">
-      <h2 class="section-title">通讯频道</h2>
-      <p class="section-desc">
-        这里是小吴大神的联系方式。
-      </p>
-
-      <div class="grid">
-        <div class="card">
-          <h2>📮 联系我</h2>
-          <p>邮箱：1731145034@qq.com</p>
-          <p>QQ：1731145034</p>
-          <p>主页昵称：小吴大神</p>
-        </div>
-
-        <div class="card">
-          <h2>🌠 留言</h2>
-          <p>
-            欢迎来到小吴大神的科幻主页。这个网站会继续升级，
-            以后可以加入更多动画、音乐、留言入口和作品内容。
+    <!-- 图片画廊：上传 avatar.png / space1.jpg / space2.jpg / space3.jpg / space4.jpg 即可 -->
+    <section class="section" id="gallery">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Visual Gallery</span>
+          <h2 class="section-title">视觉展示舱</h2>
+          <p class="section-desc">
+            这一段是专为“页面更长、更丰富”而设计的画廊区域。
+            你只需要把图片上传到仓库同级目录，命名成下面这些文件名，刷新后就能展示。
+            点击图片可以放大查看；如果图片还没上传，则显示占位面板。
           </p>
         </div>
+
+        <div class="gallery">
+          <figure class="gallery-card featured" data-caption="头像展示">
+            <div class="gallery-image-wrap">
+              <div class="gallery-placeholder">头像主图<br />avatar.png</div>
+              <img
+                src="avatar.png"
+                alt="小吴大神头像展示"
+                loading="lazy"
+                onload="this.previousElementSibling.style.display='none';"
+                onerror="this.style.display='none';"
+              />
+            </div>
+            <figcaption class="gallery-caption">
+              <strong>头像主图</strong>
+              <span>avatar.png：顶部全息头像与画廊首图</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-card" data-caption="画廊图片 1">
+            <div class="gallery-image-wrap">
+              <div class="gallery-placeholder">等待上传<br />space1.jpg</div>
+              <img
+                src="space1.jpg"
+                alt="画廊图片 1"
+                loading="lazy"
+                onload="this.previousElementSibling.style.display='none';"
+                onerror="this.style.display='none';"
+              />
+            </div>
+            <figcaption class="gallery-caption">
+              <strong>未来图片 01</strong>
+              <span>可放风景图 / 作品图 / 游戏截图 / 艺术图</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-card" data-caption="画廊图片 2">
+            <div class="gallery-image-wrap">
+              <div class="gallery-placeholder">等待上传<br />space2.jpg</div>
+              <img
+                src="space2.jpg"
+                alt="画廊图片 2"
+                loading="lazy"
+                onload="this.previousElementSibling.style.display='none';"
+                onerror="this.style.display='none';"
+              />
+            </div>
+            <figcaption class="gallery-caption">
+              <strong>未来图片 02</strong>
+              <span>可放学习成果 / 设计稿 / 纪念图 / 摆拍图</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-card" data-caption="画廊图片 3">
+            <div class="gallery-image-wrap">
+              <div class="gallery-placeholder">等待上传<br />space3.jpg</div>
+              <img
+                src="space3.jpg"
+                alt="画廊图片 3"
+                loading="lazy"
+                onload="this.previousElementSibling.style.display='none';"
+                onerror="this.style.display='none';"
+              />
+            </div>
+            <figcaption class="gallery-caption">
+              <strong>未来图片 03</strong>
+              <span>继续把页面往下做长时，这里会非常好用</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-card" data-caption="画廊图片 4">
+            <div class="gallery-image-wrap">
+              <div class="gallery-placeholder">等待上传<br />space4.jpg</div>
+              <img
+                src="space4.jpg"
+                alt="画廊图片 4"
+                loading="lazy"
+                onload="this.previousElementSibling.style.display='none';"
+                onerror="this.style.display='none';"
+              />
+            </div>
+            <figcaption class="gallery-caption">
+              <strong>未来图片 04</strong>
+              <span>可选扩展图位，用来拉长页面视觉纵深</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery-card" data-caption="概念图占位卡">
+            <div class="gallery-image-wrap">
+              <div class="gallery-placeholder">
+                如果你暂时没有更多图片<br />
+                也可以先保留这个占位卡<br />
+                后面再继续慢慢补齐
+              </div>
+            </div>
+            <figcaption class="gallery-caption">
+              <strong>扩展占位卡</strong>
+              <span>占位也有风格，不会让页面显得空</span>
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
+    <!-- 视频区：上方远程示例 + 下方本地视频替换位 -->
+    <section class="section" id="video">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Media Deck</span>
+          <h2 class="section-title">视频播放舱</h2>
+          <p class="section-desc">
+            这里给你预先放了一个可以直接展示的远程示例视频，同时保留本地 `myvideo.mp4` 的替换槽位。
+            这样即使你还没上传自己视频，页面也不会显得空；等你哪天想放个人剪辑、游戏混剪、旅行片段或作品展示，直接换成本地文件就行。
+          </p>
+        </div>
+
+        <div class="video-grid">
+          <article class="panel">
+            <h3>🎬 远程示例视频</h3>
+            <p>
+              这是一个轻量的远程示例，用来让页面上线后就有“可播放的视频感”。
+              你可以保留它，也可以以后删掉。
+            </p>
+
+            <div class="video-shell">
+              <video
+                controls
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                loading="lazy"
+                poster="avatar.png"
+              >
+                <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+                <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm" />
+                你的浏览器暂不支持视频播放。
+              </video>
+            </div>
+
+            <ul class="video-info-list">
+              <li>默认静音循环，更适合首页展示，不会突然外放声音。</li>
+              <li>如果你不喜欢循环效果，可以删掉 `autoplay muted loop`。</li>
+              <li>将来换成你自己的视频时，建议控制文件大小，页面会更轻快。</li>
+            </ul>
+          </article>
+
+          <article class="panel">
+            <h3>📦 本地视频槽位</h3>
+            <p>
+              想直接放你自己的视频时，把文件命名为 <span class="mono">myvideo.mp4</span>，
+              上传到和 <span class="mono">index.html</span> 同一级目录即可。
+            </p>
+
+            <div class="video-shell">
+              <video
+                id="localVideo"
+                controls
+                preload="metadata"
+                loading="lazy"
+                poster="avatar.png"
+              >
+                <source src="myvideo.mp4" type="video/mp4" />
+                你的浏览器暂不支持视频播放。
+              </video>
+
+              <div class="video-fallback" id="localVideoFallback">
+                <div>
+                  <strong>未检测到 myvideo.mp4</strong>
+                  <p style="margin-top:10px;">
+                    现在这里只是预留槽位。<br />
+                    上传本地视频后，它会自动取代这里的占位提示。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <ul class="video-info-list">
+              <li>推荐格式：MP4（H.264），兼容性通常更稳。</li>
+              <li>推荐分辨率：720p 或 1080p，别太大，GitHub Pages 更适合轻量展示。</li>
+              <li>请不要上传未授权影视、侵权混剪或可疑可执行文件伪装的视频资源。</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 小游戏：15 秒抓星星 -->
+    <section class="section" id="game">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Mini Game</span>
+          <h2 class="section-title">15 秒抓星星小游戏</h2>
+          <p class="section-desc">
+            这一段不是装饰，它是真的能玩。点击开始后，目标会在区域内随机出现，你需要在 15 秒内尽快点它。
+            分数和本机最高分会记录在浏览器本地，便于你自己反复挑战。
+          </p>
+        </div>
+
+        <div class="game-layout">
+          <article class="panel">
+            <h3>⭐ 抓星星启动台</h3>
+            <p>
+              基本规则：15 秒内尽量多点发光目标。不同图标分值略有不同，连续命中越多，就越容易把分数拉高。
+            </p>
+
+            <div class="game-hud">
+              <div class="hud-box">
+                <strong id="scoreText">0</strong>
+                <span>当前分数</span>
+              </div>
+              <div class="hud-box">
+                <strong id="timeText">15</strong>
+                <span>剩余时间</span>
+              </div>
+              <div class="hud-box">
+                <strong id="bestText">0</strong>
+                <span>本机最高</span>
+              </div>
+              <div class="hud-box">
+                <strong id="comboText">0</strong>
+                <span>连击数</span>
+              </div>
+            </div>
+
+            <div class="game-actions">
+              <button class="game-button" id="startGameBtn" type="button">开始游戏</button>
+              <button class="ghost-button" id="resetBestBtn" type="button">清空本机最高分</button>
+            </div>
+
+            <div class="game-area" id="gameArea" aria-label="15 秒抓星星游戏区域">
+              <div class="game-center-tip" id="gameMessage" aria-live="polite">
+                点击“开始游戏”后进入 15 秒挑战。<br />
+                命中得分目标，试试看你能打到多少分。
+              </div>
+
+              <button class="game-target" id="gameTarget" type="button" aria-label="得分目标">⭐</button>
+            </div>
+          </article>
+
+          <article class="panel">
+            <h3>🕹️ 玩法说明与本机记录</h3>
+            <p>
+              这个小游戏是纯前端的，不需要服务器，也不会上传任何成绩到外部。
+              最高分只保存在你自己当前浏览器里。
+            </p>
+
+            <ol class="panel-list">
+              <li>点击“开始游戏”后立即进入倒计时。</li>
+              <li>目标会随机换位置、换大小、换图标。</li>
+              <li>空点游戏区域会打断连击，但不会扣分。</li>
+              <li>如果你想把它改成 30 秒或更难，只要改脚本里的数字即可。</li>
+            </ol>
+
+            <h3 style="margin-top:20px;">🏆 最近成绩</h3>
+            <ul class="ranking-list" id="historyList">
+              <li><span>暂无记录</span><small>开始玩一局吧</small></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 外部跳转：默认使用官方 / 权威入口；不自动下载 -->
+    <section class="section" id="links">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Portals</span>
+          <h2 class="section-title">外部传送门</h2>
+          <p class="section-desc">
+            这里的按钮全部只是“打开新标签页”，不会自动下载文件，更不会自动执行程序。
+            默认优先放官方或更稳妥的门户入口。你以后如果想改成别的链接，只要改每个按钮的 <span class="mono">href</span> 即可。
+          </p>
+        </div>
+
+        <div class="notice">
+          <strong>安全提示：</strong>
+          本页外链只做跳转，不做自动下载；请优先通过正版商店、官方产品页、平台规则允许的方式获取内容。
+          如果你把某个按钮改成第三方下载站，请自行承担版权与安全风险。
+        </div>
+
+        <div class="portal-grid">
+          <article class="panel portal-card">
+            <div class="portal-topline">AUTODESK / DESIGN</div>
+            <h3>3ds Max 官方</h3>
+            <p>
+              面向建模、动画、渲染与可视化的官方入口。适合把这个主页变成你未来作品展示站的“设计工具入口”。
+            </p>
+            <div class="portal-meta">
+              <span class="portal-pill">官方页</span>
+              <span class="portal-pill">海外站点</span>
+            </div>
+            <a
+              class="portal-button"
+              href="https://www.autodesk.com/products/3ds-max/overview"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >前往 3ds Max 官方</a>
+          </article>
+
+          <article class="panel portal-card">
+            <div class="portal-topline">STEAM / STORE</div>
+            <h3>Steam 商店</h3>
+            <p>
+              正版游戏商店入口。比起任何不明下载源，这里更适合作为你页面里的“正版购买与愿望单”外链。
+            </p>
+            <div class="portal-meta">
+              <span class="portal-pill">官方商店</span>
+              <span class="portal-pill">正版优先</span>
+            </div>
+            <a
+              class="portal-button"
+              href="https://store.steampowered.com/"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >打开 Steam 商店</a>
+          </article>
+
+          <article class="panel portal-card">
+            <div class="portal-topline">ALI213 / PORTAL</div>
+            <h3>游侠网主页</h3>
+            <p>
+              出于合规与安全考虑，这里默认给的是游侠主门户而不是论坛页。
+              如果你只想做资讯与社区导航，这个入口更稳妥。
+            </p>
+            <div class="portal-meta">
+              <span class="portal-pill">门户入口</span>
+              <span class="portal-pill">请勿未授权下载</span>
+            </div>
+            <a
+              class="portal-button"
+              href="https://www.ali213.net/"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >打开游侠网主页</a>
+          </article>
+
+          <article class="panel portal-card">
+            <div class="portal-topline">BILIBILI / VIDEO</div>
+            <h3>哔哩哔哩 B站</h3>
+            <p>
+              如果你未来想把主页做成“个人作品入口 + 视频主页”，B站按钮会非常实用，
+              也适合放到你的动画、剪辑、二创、记录类内容边上。
+            </p>
+            <div class="portal-meta">
+              <span class="portal-pill">官方域名</span>
+              <span class="portal-pill">中文平台</span>
+            </div>
+            <a
+              class="portal-button"
+              href="https://www.bilibili.com/"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >打开 B站</a>
+          </article>
+
+          <article class="panel portal-card">
+            <div class="portal-topline">YOUTUBE / VIDEO</div>
+            <h3>YouTube</h3>
+            <p>
+              海外视频平台入口。适合未来放英文内容、海外教程、国际作品展示。
+              部分地区或网络环境下可能无法直接访问。
+            </p>
+            <div class="portal-meta">
+              <span class="portal-pill">官方页</span>
+              <span class="portal-pill">可能受限</span>
+            </div>
+            <a
+              class="portal-button"
+              href="https://www.youtube.com/"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >打开 YouTube</a>
+          </article>
+
+          <article class="panel portal-card">
+            <div class="portal-topline">GITHUB / DOCS</div>
+            <h3>GitHub Pages 文档</h3>
+            <p>
+              如果你要继续把这个主页做复杂、做多页、做自定义域名、开 HTTPS，
+              官方文档是最稳的参考入口。
+            </p>
+            <div class="portal-meta">
+              <span class="portal-pill">官方文档</span>
+              <span class="portal-pill">静态站点</span>
+            </div>
+            <a
+              class="portal-button"
+              href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >阅读 GitHub Pages 文档</a>
+          </article>
+
+          <article class="panel portal-card">
+            <div class="portal-topline">MDN / HTML</div>
+            <h3>MDN 视频元素文档</h3>
+            <p>
+              以后你如果继续修改视频区、播放按钮、自动播放策略、兼容性处理，
+              这里是很可靠的前端参考入口。
+            </p>
+            <div class="portal-meta">
+              <span class="portal-pill">权威文档</span>
+              <span class="portal-pill">前端开发</span>
+            </div>
+            <a
+              class="portal-button"
+              href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >打开 MDN 视频文档</a>
+          </article>
+
+          <article class="panel portal-card">
+            <div class="portal-topline">CONTACT / PERSONAL</div>
+            <h3>快速联系我</h3>
+            <p>
+              如果外链里逛够了，或者你只是单纯想联系站长，这里就是回到站内的“返航入口”。
+            </p>
+            <div class="portal-meta">
+              <span class="portal-pill">站内跳转</span>
+              <span class="portal-pill">复制邮箱 / QQ</span>
+            </div>
+            <a class="portal-button" href="#contact">回到联系方式</a>
+          </article>
+        </div>
+
+        <div class="notice" style="margin-top:18px;">
+          <strong>如你坚持要改成“游侠论坛首页”：</strong>
+          可把上面“游侠网主页”按钮的链接改成 <span class="mono">https://game.ali213.net/</span>。
+          但为了避免把主页默认引向可能含有下载/补丁入口的页面，这份交付物出厂默认仍采用门户页。
+        </div>
+      </div>
+    </section>
+
+    <!-- 彩蛋区：长文本、随机日志、终端噪声，专门让页面更长、更有内容 -->
+    <section class="section" id="easter">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Easter Eggs</span>
+          <h2 class="section-title">随机彩蛋与终端噪声</h2>
+          <p class="section-desc">
+            这一段的目的很直接：让页面不只是“信息块”，而更像一个有氛围、有故事感、有可探索感的空间。
+            你可以把这里理解成赛博日志墙、幻想台词板、深夜终端噪声发生器。
+          </p>
+        </div>
+
+        <div class="split">
+          <article class="panel">
+            <h3>🪐 随机宇宙日志生成器</h3>
+            <p>
+              点击下面的按钮，会随机生成一组风格化日志文本。
+              它们没有“功能性意义”，但非常适合让主页显得更像一个真正活着的数字空间。
+            </p>
+
+            <div class="hero-actions" style="margin-top:14px;">
+              <button class="button primary" id="regenLore" type="button">生成新的宇宙日志</button>
+              <button class="button ghost" id="regenState" type="button">刷新站点状态语</button>
+            </div>
+
+            <div class="lore-output" id="loreOutput"></div>
+          </article>
+
+          <article class="panel">
+            <h3>💻 终端噪声流</h3>
+            <p>
+              这是一个自动滚动的小终端。它会不断输出风格化提示语，用来强化“系统在线”“站点正在运行”的感觉。
+            </p>
+
+            <div class="terminal" id="terminalFeed" aria-live="polite"></div>
+            <div class="secret-tip">
+              彩蛋提示：连续点击左上角 Logo 3 次，可以切换 Hyper Mode；
+              页面配色会被重写，整个站看起来会更像另一套皮肤。
+            </div>
+          </article>
+        </div>
+
+        <div class="grid cols-3 mt-lg">
+          <article class="panel">
+            <h3>📡 星港公告</h3>
+            <p>
+              如果有一天你突然想把主页做成“半作品集、半幻想设定集”的混合风格，
+              那么这个区块就是最好的试验场。你可以在这里写任何没有明确业务目的、
+              但能让页面更有个性的文字：灵感、梦境、废话、口号、世界观、片段式心情。
+            </p>
+            <p>
+              主页的魅力，往往恰恰来自这些“不一定有必要，但很好玩”的内容。
+              因为别人打开后，会感觉这不是一个模板，而是一个人。
+            </p>
+          </article>
+
+          <article class="panel">
+            <h3>🛠️ 深夜维护备忘</h3>
+            <p>
+              今夜维护项包括：霓虹网格校准、星图粒子轨迹修正、头像全息舱抛光、外部传送门安全提示加粗、
+              图片放大层增稳、游戏排行榜刷写、本地复制逻辑兜底。
+            </p>
+            <p>
+              如果你后面想继续“长代码化”，可以往页面里继续加：作品目录、导航侧栏、角色设定板、
+              音乐播放器、图像叙事区、博客文章卡片、留言墙、时间胶囊等。
+            </p>
+          </article>
+
+          <article class="panel">
+            <h3>🧪 虚构任务列表</h3>
+            <ul class="quest-list">
+              <li>把主页从“个人卡片”升级成“个人空间感页面”。</li>
+              <li>给画廊补齐真正属于自己的图片，而不是一直空着。</li>
+              <li>上传一个自己的短视频，让本地视频槽位真正启用。</li>
+              <li>把抓星星小游戏改造成第二个版本，比如 30 秒模式或多目标模式。</li>
+              <li>考虑是否加背景音乐，但一定要用“点击开启”的方式。</li>
+              <li>未来如果要做成长期主页，可以再接评论或文章系统。</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 免责声明与安全提示：请保留这一段，它对合规和自我保护都很重要 -->
+    <section class="section" id="safety">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Safety / Compliance</span>
+          <h2 class="section-title">免责声明与安全提示</h2>
+          <p class="section-desc">
+            这个区块建议你保留，而且建议保留得显眼。它能明确告诉访问者：这是一个展示页，不是下载站，不是资源分发页，也不是任何灰色内容入口。
+          </p>
+        </div>
+
+        <div class="panel warning-panel">
+          <h3>⚠️ 请务必保留的说明</h3>
+          <p>
+            <strong>本页所有外部链接仅为跳转入口，不会自动下载任何文件，也不会自动执行任何程序。</strong>
+            任何外部网站的内容、可用性、地区限制、账号规则与版权政策，均由对应平台自行负责。
+          </p>
+
+          <ul class="panel-list">
+            <li>不要上传未授权影视、盗版游戏、破解补丁、可疑 EXE、批处理脚本、来路不明压缩包或恶意代码。</li>
+            <li>如果你自行替换视频或图片，请确认你有权展示和传播这些内容。</li>
+            <li>如果你未来接入评论系统，也不要允许访客上传可执行文件或下载链接。</li>
+            <li>如果你要保留游戏社区类跳转，建议主页优先链接到门户/资讯区，而不是具体下载页。</li>
+            <li>如果某些外链在你所在网络环境下无法访问，那属于外部平台或地区网络因素，并非本站代码异常。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 联系方式：邮箱、QQ、复制按钮、分享入口 -->
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Contact</span>
+          <h2 class="section-title">通讯频道与收尾区域</h2>
+          <p class="section-desc">
+            到了这里，这个页面已经足够长，也足够丰富。你可以把它当成一个完整的着陆页来使用：
+            上面负责震住人，中间负责让人逛，下面负责让人联系你。
+          </p>
+        </div>
+
+        <div class="split">
+          <article class="panel">
+            <h3>📮 联系我</h3>
+
+            <div class="contact-grid">
+              <div class="contact-item">
+                <div>
+                  <div class="contact-label">Email</div>
+                  <div class="contact-value">1731145034@qq.com</div>
+                </div>
+                <button
+                  class="copy-btn"
+                  type="button"
+                  data-copy="1731145034@qq.com"
+                  data-label="邮箱"
+                >复制邮箱</button>
+              </div>
+
+              <div class="contact-item">
+                <div>
+                  <div class="contact-label">QQ</div>
+                  <div class="contact-value">1731145034</div>
+                </div>
+                <button
+                  class="copy-btn"
+                  type="button"
+                  data-copy="1731145034"
+                  data-label="QQ"
+                >复制 QQ</button>
+              </div>
+
+              <div class="contact-item">
+                <div>
+                  <div class="contact-label">站点名称</div>
+                  <div class="contact-value">小吴大神的科幻个人主页</div>
+                </div>
+                <button class="copy-btn" type="button" id="copyLinkBtn">复制当前链接</button>
+              </div>
+            </div>
+
+            <p style="margin-top:14px;">
+              如果你以后想把联系方式换成微信、GitHub、B站主页、Steam 个人资料、
+              ArtStation、Sketchfab 或 GitHub 仓库链接，也都可以继续往这里加。
+            </p>
+          </article>
+
+          <article class="panel">
+            <h3>🧭 页尾说明</h3>
+            <p>
+              这份页面是单文件写法，目的是让你后续维护时不用在很多文件之间来回跳。
+              你只要记住三个位置：
+            </p>
+
+            <ol class="panel-list">
+              <li><strong>视觉和颜色</strong>：改 <span class="mono">&lt;style&gt;</span> 里的变量和各区块 CSS。</li>
+              <li><strong>文案和区块</strong>：改对应 section 里的 HTML 内容。</li>
+              <li><strong>游戏和彩蛋逻辑</strong>：改文末 <span class="mono">&lt;script&gt;</span> 的脚本分区。</li>
+            </ol>
+
+            <p>
+              这意味着你可以继续往下追加更多内容，而不会被复杂工程化结构绊住脚。
+              对个人主页来说，这恰恰是最实用的方案。
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
   </main>
 
-
-  <!-- =========================================================
-       E. 页脚
-  ========================================================= -->
+  <!-- 页脚：可继续加备案、版权、更新时间、版本号 -->
   <footer>
-    <p>© 2026 小吴大神的科幻个人主页</p>
-    <p>Made with GitHub Pages · Sci-Fi Digital Space</p>
+    <div class="container">
+      <div class="footer-box">
+        <div>
+          <strong>© <span id="year"></span> 小吴大神的科幻个人主页</strong>
+          <div class="tiny">Made with GitHub Pages · Single File HTML · Sci‑Fi Long Page</div>
+        </div>
+        <div class="tiny">
+          当前模式：<span id="footerMode">Normal Mode</span> ·
+          页面已包含：全息头像 / 画廊 / 视频 / 小游戏 / 彩蛋 / 安全提示
+        </div>
+      </div>
+    </div>
   </footer>
 
+  <!-- 图片 Lightbox：不喜欢这个功能可以整块删除 -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-card">
+      <div class="lightbox-top">
+        <strong id="lightboxCaption">图片预览</strong>
+        <button class="lightbox-close" id="lightboxClose" type="button" aria-label="关闭图片预览">✕</button>
+      </div>
+      <div class="lightbox-image-wrap">
+        <img id="lightboxImage" src="" alt="预览图片" />
+      </div>
+    </div>
+  </div>
 
-  <!-- =========================================================
-       F. JavaScript 小游戏代码
-  ========================================================= -->
+  <!-- 返回顶部与 Toast -->
+  <button class="back-to-top" id="backToTop" type="button" aria-label="返回顶部">↑</button>
+  <div class="toast" id="toast" aria-live="polite"></div>
+
   <script>
+    /* =========================================================
+       脚本区总说明：
+       本区按功能拆成多个小段，方便你以后单独改：
+       1. 通用工具
+       2. 头部动态字 / 时间 / 访问数
+       3. 头像/视频检测
+       4. 画廊 Lightbox
+       5. 星空粒子背景
+       6. 小游戏
+       7. 彩蛋日志与终端
+       8. 复制与分享
+    ========================================================= */
+
+    /* =========================
+       通用工具
+    ========================= */
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+    function pick(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function toast(message) {
+      const el = $("#toast");
+      el.textContent = message;
+      el.classList.add("show");
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        el.classList.remove("show");
+      }, 2200);
+    }
+
+    async function copyText(value, label = "内容") {
+      try {
+        await navigator.clipboard.writeText(value);
+        toast(label + "已复制");
+      } catch (err) {
+        const textarea = document.createElement("textarea");
+        textarea.value = value;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+        toast(label + "已复制");
+      }
+    }
+
+    /* =========================
+       头部动态字 / 时间 / 本机访问次数 / 状态切换
+    ========================= */
+    const typeTarget = $("#typeTarget");
+    const siteState = $("#siteState");
+    const footerMode = $("#footerMode");
+
+    const typePhrases = [
+      "GitHub Pages 空间站正在稳定运行",
+      "头像模块：avatar.png 已装载",
+      "蒸汽商店 / 3ds Max / B站 / YouTube 传送门待命",
+      "15 秒抓星星小游戏已部署",
+      "深夜维护模式：继续把页面做长做满"
+    ];
+
+    const statePhrases = [
+      "ONLINE",
+      "SYNCING",
+      "PORTALS READY",
+      "NEON STABLE",
+      "HYPER CLEAN"
+    ];
+
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function typeLoop() {
+      const current = typePhrases[phraseIndex];
+      typeTarget.textContent = current.slice(0, charIndex);
+
+      if (!deleting) {
+        charIndex++;
+        if (charIndex > current.length) {
+          deleting = true;
+          setTimeout(typeLoop, 1050);
+          return;
+        }
+      } else {
+        charIndex--;
+        if (charIndex < 0) {
+          deleting = false;
+          phraseIndex = (phraseIndex + 1) % typePhrases.length;
+          charIndex = 0;
+        }
+      }
+
+      setTimeout(typeLoop, deleting ? 34 : 72);
+    }
+    typeLoop();
+
+    function updateClock() {
+      const now = new Date();
+      $("#clock").textContent = now.toLocaleString("zh-CN", { hour12: false });
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    const visitKey = "xw_local_visit_count";
+    const localVisits = Number(localStorage.getItem(visitKey) || "0") + 1;
+    localStorage.setItem(visitKey, String(localVisits));
+    $("#visitCount").textContent = localVisits;
+
+    setInterval(() => {
+      const next = pick(statePhrases);
+      siteState.textContent = next;
+    }, 3600);
+
+    $("#year").textContent = new Date().getFullYear();
+
+    /* =========================
+       Logo 三击彩蛋：切换 Hyper Mode
+    ========================= */
+    const brandButton = $("#brandButton");
+    let brandTapCount = 0;
+    let brandTapTimer = null;
+
+    brandButton.addEventListener("click", () => {
+      brandTapCount += 1;
+      clearTimeout(brandTapTimer);
+      brandTapTimer = setTimeout(() => {
+        brandTapCount = 0;
+      }, 700);
+
+      if (brandTapCount >= 3) {
+        document.body.classList.toggle("hyper-mode");
+        const isHyper = document.body.classList.contains("hyper-mode");
+        footerMode.textContent = isHyper ? "Hyper Mode" : "Normal Mode";
+        siteState.textContent = isHyper ? "HYPER MODE" : "ONLINE";
+        toast(isHyper ? "Hyper Mode 已开启" : "Hyper Mode 已关闭");
+        brandTapCount = 0;
+      }
+    });
+
+    /* =========================
+       外链分享与复制当前链接
+    ========================= */
+    $("#copyLinkBtn").addEventListener("click", () => {
+      copyText(location.href, "当前链接");
+    });
+
+    $("#shareBtn").addEventListener("click", async () => {
+      const shareData = {
+        title: document.title,
+        text: "来看小吴大神的科幻个人主页",
+        url: location.href
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          toast("已打开系统分享面板");
+        } catch (err) {
+          // 用户取消时不必弹错
+        }
+      } else {
+        copyText(location.href, "当前链接");
+      }
+    });
+
+    $$("[data-copy]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        copyText(btn.dataset.copy || "", btn.dataset.label || "内容");
+      });
+    });
+
+    /* =========================
+       本地视频占位检测
+    ========================= */
+    const localVideo = $("#localVideo");
+    const localVideoFallback = $("#localVideoFallback");
+    let localVideoReady = false;
+
+    localVideo.addEventListener("loadeddata", () => {
+      localVideoReady = true;
+      localVideoFallback.style.display = "none";
+    });
+
+    localVideo.addEventListener("error", () => {
+      localVideoFallback.style.display = "grid";
+    });
+
+    setTimeout(() => {
+      if (!localVideoReady && localVideo.readyState < 2) {
+        localVideoFallback.style.display = "grid";
+      }
+    }, 1600);
+
+    /* =========================
+       画廊 Lightbox
+    ========================= */
+    const lightbox = $("#lightbox");
+    const lightboxImage = $("#lightboxImage");
+    const lightboxCaption = $("#lightboxCaption");
+
+    function closeLightbox() {
+      lightbox.classList.remove("show");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.src = "";
+      document.body.style.overflow = "";
+    }
+
+    $("#lightboxClose").addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeLightbox();
+    });
+
+    $$(".gallery-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const img = $("img", card);
+        if (!img || !img.currentSrc || img.naturalWidth === 0) {
+          toast("这张图片还没有上传到仓库");
+          return;
+        }
+
+        lightboxImage.src = img.currentSrc;
+        lightboxCaption.textContent = card.dataset.caption || img.alt || "图片预览";
+        lightbox.classList.add("show");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    /* =========================
+       返回顶部按钮
+    ========================= */
+    const backToTop = $("#backToTop");
+    window.addEventListener("scroll", () => {
+      backToTop.classList.toggle("show", window.scrollY > 560);
+    });
+
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    /* =========================
+       星空粒子背景：为页面增加动感
+    ========================= */
+    const starCanvas = $("#starCanvas");
+    const ctx = starCanvas.getContext("2d");
+    let width = 0;
+    let height = 0;
+    let stars = [];
+
+    function resizeStars() {
+      width = starCanvas.width = window.innerWidth;
+      height = starCanvas.height = window.innerHeight;
+      initStars();
+    }
+
+    function initStars() {
+      const count = Math.min(140, Math.max(60, Math.floor(window.innerWidth / 10)));
+      stars = Array.from({ length: count }).map(() => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: 0.12 + Math.random() * 0.44,
+        r: 0.7 + Math.random() * 1.9,
+        a: 0.25 + Math.random() * 0.75,
+        tw: Math.random() * Math.PI * 2
+      }));
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.tw += 0.02;
+        const alpha = s.a * (0.65 + Math.sin(s.tw) * 0.35);
+
+        if (s.y > height + 10) {
+          s.y = -8;
+          s.x = Math.random() * width;
+        }
+        if (s.x < -10) s.x = width + 10;
+        if (s.x > width + 10) s.x = -10;
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,255,255," + alpha.toFixed(3) + ")";
+        ctx.fill();
+      }
+
+      for (let i = 0; i < stars.length; i++) {
+        const a = stars[i];
+        for (let j = i + 1; j < Math.min(stars.length, i + 5); j++) {
+          const b = stars[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 110) {
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = "rgba(112,234,255," + (0.08 * (1 - dist / 110)).toFixed(3) + ")";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(drawStars);
+    }
+
+    resizeStars();
+    drawStars();
+    window.addEventListener("resize", resizeStars);
+
+    /* =========================
+       15 秒抓星星小游戏
+    ========================= */
     const gameTotalTime = 15;
-    const starMoveSpeed = 750;
+    const scoreText = $("#scoreText");
+    const timeText = $("#timeText");
+    const bestText = $("#bestText");
+    const comboText = $("#comboText");
+    const startGameBtn = $("#startGameBtn");
+    const resetBestBtn = $("#resetBestBtn");
+    const gameArea = $("#gameArea");
+    const gameTarget = $("#gameTarget");
+    const gameMessage = $("#gameMessage");
+    const historyList = $("#historyList");
 
-    const scoreText = document.getElementById("score");
-    const timeText = document.getElementById("time");
-    const bestScoreText = document.getElementById("bestScore");
-    const startBtn = document.getElementById("startBtn");
-    const star = document.getElementById("star");
-    const gameArea = document.getElementById("gameArea");
-    const gameTip = document.getElementById("gameTip");
+    const bestKey = "xw_best_score_15s";
+    const historyKey = "xw_score_history_15s";
 
-    let score = 0;
-    let timeLeft = gameTotalTime;
-    let gameRunning = false;
-    let countdownTimer = null;
-    let moveTimer = null;
+    const gameState = {
+      running: false,
+      timeLeft: gameTotalTime,
+      score: 0,
+      combo: 0,
+      moveTimer: null,
+      countdownTimer: null,
+      best: Number(localStorage.getItem(bestKey) || "0"),
+      history: JSON.parse(localStorage.getItem(historyKey) || "[]")
+    };
 
-    let bestScore = localStorage.getItem("bestScore15") || 0;
-    bestScoreText.textContent = bestScore;
+    bestText.textContent = gameState.best;
+
+    function renderHistory() {
+      const history = gameState.history.slice(0, 6);
+      if (!history.length) {
+        historyList.innerHTML = '<li><span>暂无记录</span><small>开始玩一局吧</small></li>';
+        return;
+      }
+      historyList.innerHTML = history
+        .map(item => `<li><span>${item.score} 分</span><small>${item.time}</small></li>`)
+        .join("");
+    }
+    renderHistory();
+
+    function updateHUD() {
+      scoreText.textContent = gameState.score;
+      timeText.textContent = gameState.timeLeft;
+      bestText.textContent = gameState.best;
+      comboText.textContent = gameState.combo;
+    }
+
+    function randomTarget() {
+      if (!gameState.running) return;
+
+      const icons = ["⭐", "🌟", "✨", "☄️", "🪐"];
+      const scores = [1, 1, 2, 2, 3];
+      const index = Math.floor(Math.random() * icons.length);
+      const points = scores[index];
+
+      const size = 52 + Math.floor(Math.random() * 22);
+      const maxX = Math.max(10, gameArea.clientWidth - size - 10);
+      const maxY = Math.max(10, gameArea.clientHeight - size - 10);
+
+      const x = 5 + Math.random() * maxX;
+      const y = 5 + Math.random() * maxY;
+
+      gameTarget.dataset.points = String(points);
+      gameTarget.textContent = icons[index];
+      gameTarget.style.width = size + "px";
+      gameTarget.style.height = size + "px";
+      gameTarget.style.left = x + "px";
+      gameTarget.style.top = y + "px";
+      gameTarget.style.display = "grid";
+    }
+
+    function addScorePop(text, x, y) {
+      const pop = document.createElement("div");
+      pop.className = "score-pop";
+      pop.textContent = text;
+      pop.style.left = x + "px";
+      pop.style.top = y + "px";
+      gameArea.appendChild(pop);
+      setTimeout(() => pop.remove(), 800);
+    }
+
+    function endGame() {
+      gameState.running = false;
+      clearInterval(gameState.countdownTimer);
+      clearInterval(gameState.moveTimer);
+      gameTarget.style.display = "none";
+
+      if (gameState.score > gameState.best) {
+        gameState.best = gameState.score;
+        localStorage.setItem(bestKey, String(gameState.best));
+      }
+
+      gameState.history.unshift({
+        score: gameState.score,
+        time: new Date().toLocaleString("zh-CN", { hour12: false })
+      });
+      gameState.history = gameState.history.slice(0, 10);
+      localStorage.setItem(historyKey, JSON.stringify(gameState.history));
+
+      gameMessage.innerHTML =
+        "任务结束！你的成绩是 <strong>" + gameState.score + " 分</strong><br />" +
+        (gameState.score >= gameState.best ? "你刷新了本机最高分。" : "再来一次，继续挑战更高分。");
+      gameMessage.style.display = "grid";
+
+      startGameBtn.textContent = "重新开始";
+      updateHUD();
+      renderHistory();
+    }
 
     function startGame() {
-      score = 0;
-      timeLeft = gameTotalTime;
-      gameRunning = true;
+      gameState.running = true;
+      gameState.timeLeft = gameTotalTime;
+      gameState.score = 0;
+      gameState.combo = 0;
+      updateHUD();
 
-      scoreText.textContent = score;
-      timeText.textContent = timeLeft;
+      gameMessage.innerHTML = "挑战进行中…";
+      gameMessage.style.display = "none";
+      startGameBtn.textContent = "游戏进行中";
 
-      gameTip.style.display = "none";
-      star.style.display = "flex";
+      randomTarget();
 
-      startBtn.textContent = "游戏进行中";
-      startBtn.disabled = true;
+      clearInterval(gameState.countdownTimer);
+      clearInterval(gameState.moveTimer);
 
-      clearInterval(countdownTimer);
-      clearInterval(moveTimer);
+      gameState.countdownTimer = setInterval(() => {
+        gameState.timeLeft -= 1;
+        updateHUD();
 
-      moveStar();
-
-      countdownTimer = setInterval(function () {
-        timeLeft--;
-        timeText.textContent = timeLeft;
-
-        if (timeLeft <= 0) {
+        if (gameState.timeLeft <= 0) {
           endGame();
         }
       }, 1000);
 
-      moveTimer = setInterval(function () {
-        moveStar();
-      }, starMoveSpeed);
+      gameState.moveTimer = setInterval(() => {
+        randomTarget();
+      }, 760);
     }
 
-    function moveStar() {
-      if (!gameRunning) return;
+    startGameBtn.addEventListener("click", () => {
+      if (gameState.running) return;
+      startGame();
+    });
 
-      const areaWidth = gameArea.clientWidth;
-      const areaHeight = gameArea.clientHeight;
-      const starSize = 60;
+    resetBestBtn.addEventListener("click", () => {
+      localStorage.removeItem(bestKey);
+      localStorage.removeItem(historyKey);
+      gameState.best = 0;
+      gameState.history = [];
+      updateHUD();
+      renderHistory();
+      toast("本机最高分与记录已清空");
+    });
 
-      const maxX = areaWidth - starSize;
-      const maxY = areaHeight - starSize;
+    gameArea.addEventListener("click", (event) => {
+      if (!gameState.running) return;
+      if (event.target === gameTarget) return;
+      gameState.combo = 0;
+      comboText.textContent = "0";
+    });
 
-      const randomX = Math.floor(Math.random() * maxX);
-      const randomY = Math.floor(Math.random() * maxY);
-
-      star.style.left = randomX + "px";
-      star.style.top = randomY + "px";
-    }
-
-    function hitStar(event) {
+    gameTarget.addEventListener("pointerdown", (event) => {
       event.stopPropagation();
+      if (!gameState.running) return;
 
-      if (!gameRunning) return;
+      const points = Number(gameTarget.dataset.points || "1");
+      gameState.score += points;
+      gameState.combo += 1;
 
-      score++;
-      scoreText.textContent = score;
-      moveStar();
-    }
-
-    function endGame() {
-      gameRunning = false;
-
-      clearInterval(countdownTimer);
-      clearInterval(moveTimer);
-
-      star.style.display = "none";
-      gameTip.style.display = "block";
-
-      if (score > bestScore) {
-        bestScore = score;
-        localStorage.setItem("bestScore15", bestScore);
-        bestScoreText.textContent = bestScore;
-
-        gameTip.innerHTML = "任务完成！你的得分是：" + score + " 分 🎉<br />恭喜小吴大神刷新了最高纪录！";
+      if (gameState.combo > 0 && gameState.combo % 5 === 0) {
+        gameState.score += 1;
+        addScorePop("连击+1", event.offsetX + gameTarget.offsetLeft, event.offsetY + gameTarget.offsetTop);
       } else {
-        gameTip.innerHTML = "任务完成！你的得分是：" + score + " 分 🎉<br />再次启动，挑战最高分！";
+        const rect = gameArea.getBoundingClientRect();
+        addScorePop(
+          "+" + points,
+          event.clientX - rect.left,
+          event.clientY - rect.top
+        );
       }
 
-      startBtn.textContent = "重新开始";
-      startBtn.disabled = false;
+      updateHUD();
+      randomTarget();
+    });
+
+    /* =========================
+       彩蛋日志生成器
+    ========================= */
+    const subjects = [
+      "静音星舰",
+      "夜光维护员",
+      "像素旅客",
+      "迟到的流星收集器",
+      "半透明机械猫",
+      "漂浮的记忆货箱",
+      "被遗忘的 UI 模块"
+    ];
+
+    const places = [
+      "零号轨道",
+      "伪月面码头",
+      "深蓝星港侧廊",
+      "雾化数据湖",
+      "偏振观测塔",
+      "回声走廊",
+      "低温备份舱"
+    ];
+
+    const actions = [
+      "拦截了一段失真的广播",
+      "拾取了一枚掉线的星图碎片",
+      "重新点亮了失眠终端",
+      "回收了正在漂移的登录凭证",
+      "检修了发光网格的边缘节点",
+      "扫描到一串未知的访客足迹",
+      "在墙角发现了一段旧版本旁白"
+    ];
+
+    const objects = [
+      "一张未署名的愿望单",
+      "带有花粉纹理的视频缓存",
+      "一枚写着“继续做长页面”的金属铭牌",
+      "一段只会在凌晨两点出现的注释",
+      "一块会自己发光的头像备份片",
+      "一张写着“不要自动下载”的告示牌"
+    ];
+
+    const endings = [
+      "建议继续追加画廊内容",
+      "建议开启 Hyper Mode 观察颜色变化",
+      "判定该页面仍有扩容空间",
+      "建议优先上传本地视频文件",
+      "建议保留免责声明区块",
+      "检测到创作欲望仍在上升"
+    ];
+
+    function generateLore() {
+      const output = $("#loreOutput");
+      const blocks = [];
+
+      for (let i = 0; i < 5; i++) {
+        const line =
+          `<p><span class="mono">LOG-${100 + i}</span> ` +
+          `${pick(subjects)} 在 <strong>${pick(places)}</strong> ` +
+          `${pick(actions)}，并带回了 ${pick(objects)}；` +
+          `系统评估：${pick(endings)}。</p>`;
+        blocks.push(line);
+      }
+
+      output.innerHTML = blocks.join("");
     }
 
-    startBtn.addEventListener("click", startGame);
-    star.addEventListener("click", hitStar);
-  </script>
+    generateLore();
 
+    $("#regenLore").addEventListener("click", () => {
+      generateLore();
+      toast("新的宇宙日志已生成");
+    });
+
+    $("#regenState").addEventListener("click", () => {
+      siteState.textContent = pick(statePhrases);
+      toast("状态语已更新");
+    });
+
+    /* =========================
+       终端噪声流
+    ========================= */
+    const terminalFeed = $("#terminalFeed");
+    const terminalSeeds = [
+      "BOOT > 初始化霓虹边框与粒子场",
+      "AUTH > avatar.png 识别完成，权限等级 = public",
+      "SCAN > 正在检查外部传送门的 noopener / noreferrer",
+      "WARN > 请勿上传未授权视频或可疑可执行文件",
+      "SYNC > GitHub Pages 静态部署模型已锁定",
+      "GAME > 15 秒抓星星小游戏准备就绪",
+      "CACHE > 本机访问次数已递增（仅 localStorage）",
+      "AUDIO > 默认未启用背景音乐，避免打扰访客",
+      "PORTAL > Steam / Autodesk / B站 / YouTube 跳转门待命",
+      "NOTE > 页面很长，这是刻意设计，不是忘了收尾",
+      "SAFE > 所有外链只跳转，不自动下载",
+      "VISUAL > 全息头像舱运作正常"
+    ];
+
+    function pushTerminalLine(text) {
+      const line = document.createElement("div");
+      line.className = "terminal-line";
+      line.innerHTML = `<span class="terminal-prefix">&gt;</span>${text}`;
+      terminalFeed.appendChild(line);
+      terminalFeed.scrollTop = terminalFeed.scrollHeight;
+
+      while (terminalFeed.children.length > 18) {
+        terminalFeed.removeChild(terminalFeed.firstChild);
+      }
+    }
+
+    terminalSeeds.slice(0, 7).forEach((text, index) => {
+      setTimeout(() => pushTerminalLine(text), index * 180);
+    });
+
+    setInterval(() => {
+      const suffix = " #" + Math.floor(Math.random() * 900 + 100);
+      pushTerminalLine(pick(terminalSeeds) + suffix);
+    }, 3400);
+  </script>
 </body>
 </html>
