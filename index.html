@@ -1,3078 +1,2717 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <!-- 基础设置：如果你要改站点标题、描述、主题色、社交卡片信息，请优先修改本区 -->
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="小吴大神的科幻个人主页：长页面、霓虹粒子、全息头像、图片画廊、视频区、15秒抓星星小游戏、外部传送门、彩蛋日志与安全提示。" />
-  <meta name="keywords" content="小吴大神, GitHub Pages, 科幻主页, 霓虹, 全息, Steam, 3ds Max, 游侠, B站, YouTube" />
-  <meta name="theme-color" content="#07111f" />
-  <meta name="color-scheme" content="dark" />
-  <meta name="robots" content="index,follow,max-image-preview:large" />
-  <meta property="og:title" content="小吴大神的科幻个人主页" />
-  <meta property="og:description" content="一个长滚动、内容丰富、可玩有趣的 GitHub Pages 单文件主页。" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="avatar.png" />
-  <title>小吴大神 | Sci‑Fi Personal Hub</title>
-
+  <!-- viewport-fit=cover + safe-area-inset-* 让移动端刘海/圆角屏有安全边距 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Web Phone Launcher</title>
   <style>
     /* =========================================================
-       基础设置：颜色、圆角、排版、阴影
-       想整体换风格，优先改这里的变量
-    ========================================================= */
+       基础变量
+       说明：
+       - 修改主题颜色：优先改下面的 CSS 变量
+       - 修改壁纸：优先改 JS 中的 WALLPAPERS 数组
+       ========================================================= */
     :root {
-      --bg: #040811;
-      --bg-soft: #07111f;
-      --panel: rgba(8, 17, 34, 0.68);
-      --panel-strong: rgba(8, 17, 34, 0.84);
-      --line: rgba(117, 205, 255, 0.18);
-      --line-strong: rgba(117, 205, 255, 0.34);
-      --text: #eaf6ff;
-      --muted: #9fb6cd;
-      --muted-strong: #c8d9ea;
-      --cyan: #70eaff;
-      --blue: #6ba1ff;
-      --violet: #9c7dff;
-      --pink: #ff6fd6;
-      --gold: #ffd769;
-      --green: #63efb9;
-      --danger: #ff89a7;
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.38);
-      --radius: 24px;
-      --radius-lg: 34px;
-      --max: 1280px;
-      --header-h: 76px;
-      --mono: "Consolas", "SFMono-Regular", "Menlo", monospace;
-      --sans: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --ease-out: cubic-bezier(.22, 1, .36, 1);
+      --ease-spring: cubic-bezier(.175, .885, .32, 1.275);
+      --phone-width: min(92vw, 420px);
+      --phone-height: min(92vh, 860px);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --wallpaper: radial-gradient(circle at 20% 20%, rgba(255,255,255,.14), transparent 26%),
+                   radial-gradient(circle at 78% 28%, rgba(255,255,255,.10), transparent 20%),
+                   radial-gradient(circle at 52% 78%, rgba(255,255,255,.08), transparent 26%),
+                   linear-gradient(145deg, #1f2758, #522796 42%, #0ba8c7 85%);
+      --wallpaper-overlay: rgba(10, 12, 26, .12);
+      --desktop-card: rgba(255, 255, 255, .16);
+      --desktop-stroke: rgba(255, 255, 255, .24);
+      --desktop-text: rgba(255, 255, 255, .95);
+      --desktop-text-soft: rgba(255, 255, 255, .72);
+      --body-bg: radial-gradient(circle at top, #12304f, #081221 55%, #03060c 100%);
+      --body-grid: rgba(255, 255, 255, .04);
+      --shadow-ambient: 0 30px 80px rgba(0, 0, 0, .55);
+      --shadow-soft: 0 18px 36px rgba(0, 0, 0, .18);
+      --shadow-lift: 0 18px 44px rgba(0, 0, 0, .26);
+      --blur-strong: blur(26px) saturate(145%);
+      --blur-soft: blur(18px) saturate(120%);
+      --screen-radius: 34px;
+      --frame-radius: 44px;
+      --app-bg: rgba(246, 248, 252, .86);
+      --app-stroke: rgba(22, 26, 38, .08);
+      --app-text: #101827;
+      --app-text-soft: #546074;
+      --app-card: rgba(255,255,255,.72);
+      --accent: #6b6cff;
+      --accent-2: #ff5cc8;
+      --success: #34c759;
+      --danger: #ff4d6d;
+      --warning: #ffb020;
+      --shadow-inner: inset 0 1px 0 rgba(255,255,255,.45);
+      --icon-size: 64px;
+      --status-top-gap: calc(10px + var(--safe-top));
+      --dock-bottom-gap: calc(14px + var(--safe-bottom));
     }
 
-    /* Hyper Mode 彩蛋：连续点击左上角 Logo 3 次触发 */
-    body.hyper-mode {
-      --cyan: #ff92f5;
-      --blue: #67f0ff;
-      --violet: #95ff7b;
-      --pink: #ff7b8b;
-      --gold: #ffe06c;
-      --green: #84b9ff;
+    body[data-theme="dark"] {
+      --app-bg: rgba(13, 18, 29, .82);
+      --app-stroke: rgba(255,255,255,.09);
+      --app-text: #f4f7ff;
+      --app-text-soft: #a8b3c8;
+      --app-card: rgba(255,255,255,.08);
+      --desktop-card: rgba(255, 255, 255, .12);
+      --desktop-stroke: rgba(255, 255, 255, .18);
+      --desktop-text: rgba(255, 255, 255, .96);
+      --desktop-text-soft: rgba(255, 255, 255, .74);
+      --body-bg: radial-gradient(circle at top, #12304f, #09111f 55%, #02050a 100%);
+      --body-grid: rgba(255,255,255,.04);
     }
 
-    * {
-      box-sizing: border-box;
+    body[data-theme="light"] {
+      --body-bg: radial-gradient(circle at top, #d8ecff, #eff5ff 45%, #dbe5ff 100%);
+      --body-grid: rgba(10,18,30,.05);
+      --desktop-card: rgba(255,255,255,.28);
+      --desktop-stroke: rgba(255,255,255,.52);
+      --desktop-text: rgba(255,255,255,.96);
+      --desktop-text-soft: rgba(255,255,255,.82);
+      --wallpaper-overlay: rgba(255,255,255,.12);
+      --app-bg: rgba(251, 252, 255, .82);
+      --app-card: rgba(255,255,255,.9);
+      --app-stroke: rgba(14, 19, 33, .08);
+      --app-text: #111827;
+      --app-text-soft: #566375;
+      --shadow-ambient: 0 30px 80px rgba(22, 35, 58, .24);
+      --shadow-soft: 0 18px 36px rgba(27, 52, 92, .12);
+      --shadow-lift: 0 18px 44px rgba(27, 52, 92, .16);
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
 
     body {
       margin: 0;
-      color: var(--text);
+      font-family: var(--font-ui);
+      color: var(--app-text);
+      background: var(--body-bg);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      transition: background .45s var(--ease-out), color .25s ease;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    body::before {
       background:
-        radial-gradient(circle at 20% 20%, rgba(112, 234, 255, 0.12), transparent 24%),
-        radial-gradient(circle at 80% 10%, rgba(255, 111, 214, 0.12), transparent 22%),
-        radial-gradient(circle at 55% 80%, rgba(156, 125, 255, 0.16), transparent 28%),
-        linear-gradient(180deg, #02050d 0%, #050b14 38%, #07111f 70%, #040811 100%);
-      font-family: var(--sans);
-      line-height: 1.76;
-      overflow-x: hidden;
-      min-height: 100vh;
+        radial-gradient(circle at 20% 20%, rgba(120, 186, 255, .28), transparent 22%),
+        radial-gradient(circle at 82% 24%, rgba(255, 126, 208, .22), transparent 18%),
+        radial-gradient(circle at 46% 82%, rgba(0, 225, 255, .18), transparent 24%);
+      filter: blur(36px);
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    body::after {
+      background-image:
+        linear-gradient(var(--body-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--body-grid) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(to bottom, rgba(255,255,255,.45), rgba(255,255,255,.12));
+      z-index: -1;
     }
 
-    img, video {
-      display: block;
-      max-width: 100%;
-    }
-
-    button {
+    button, input {
       font: inherit;
     }
 
-    .container {
-      width: min(var(--max), calc(100% - 32px));
-      margin: 0 auto;
+    button {
+      border: 0;
+      background: none;
+      cursor: pointer;
+      color: inherit;
     }
 
-    .section {
+    input {
+      outline: none;
+      border: 0;
+      background: none;
+      color: inherit;
+    }
+
+    .stage {
+      width: min(100%, 1280px);
+      padding: 18px;
+      display: grid;
+      place-items: center;
+    }
+
+    .phone-shell {
       position: relative;
-      padding: 78px 0;
-      scroll-margin-top: 90px;
+      width: var(--phone-width);
+      height: var(--phone-height);
+      max-height: 860px;
+      min-height: 690px;
+      filter: drop-shadow(0 34px 60px rgba(0,0,0,.35));
     }
 
-    .section-heading {
-      margin-bottom: 28px;
+    .phone-frame {
+      position: absolute;
+      inset: 0;
+      padding: 12px;
+      border-radius: var(--frame-radius);
+      background:
+        linear-gradient(160deg, rgba(40,40,46,.94), rgba(10,10,14,.98) 30%, rgba(26,26,30,.98) 70%, rgba(7,7,11,1)),
+        linear-gradient(180deg, rgba(255,255,255,.08), transparent 14%);
+      box-shadow:
+        var(--shadow-ambient),
+        inset 0 1px 0 rgba(255,255,255,.12),
+        inset 0 -2px 10px rgba(0,0,0,.45);
+      overflow: hidden;
     }
 
-    .section-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 14px;
+    .side-button {
+      position: absolute;
+      right: -3px;
+      width: 6px;
       border-radius: 999px;
-      border: 1px solid var(--line-strong);
-      background: rgba(10, 22, 41, 0.5);
-      color: #c7f5ff;
-      font-size: 13px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      box-shadow: 0 0 20px rgba(112, 234, 255, 0.12);
+      background: linear-gradient(180deg, #4d4d55, #1d1d23);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 2px 4px rgba(0,0,0,.45);
+      z-index: 2;
     }
 
-    .section-title {
-      margin: 16px 0 12px;
-      font-size: clamp(30px, 4.6vw, 54px);
-      line-height: 1.08;
-      letter-spacing: 0.01em;
-      background: linear-gradient(90deg, #ffffff, var(--cyan), var(--violet), var(--pink), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    .side-button.power { top: 180px; height: 92px; }
+    .side-button.volume-up { left: -3px; top: 145px; height: 88px; }
+    .side-button.volume-down { left: -3px; top: 248px; height: 88px; }
 
-    .section-desc {
-      max-width: 880px;
-      color: var(--muted-strong);
-      font-size: 17px;
-      margin: 0;
-    }
-
-    .grid {
-      display: grid;
-      gap: 18px;
-    }
-
-    .cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .cols-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .cols-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .split {
-      display: grid;
-      gap: 22px;
-      grid-template-columns: 1.1fr 0.9fr;
-      align-items: start;
-    }
-
-    .mt-lg {
-      margin-top: 22px;
-    }
-
-    .mono {
-      font-family: var(--mono);
-    }
-
-    .tiny {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* =========================================================
-       背景特效：粒子画布、网格地板、扫描线、发光云
-       想降低性能占用，可删掉 starCanvas / noise / grid-floor
-    ========================================================= */
-    #starCanvas {
-      position: fixed;
+    .phone-screen {
+      position: relative;
       inset: 0;
       width: 100%;
       height: 100%;
-      z-index: -5;
-      opacity: 0.92;
-      pointer-events: none;
+      overflow: hidden;
+      border-radius: var(--screen-radius);
+      background: #05060b;
+      transform: translateZ(0);
+      isolation: isolate;
     }
 
-    .grid-floor {
-      position: fixed;
-      left: -15%;
-      right: -15%;
-      bottom: -16%;
-      height: 44vh;
-      z-index: -4;
-      background:
-        linear-gradient(rgba(112, 234, 255, 0.24) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(112, 234, 255, 0.24) 1px, transparent 1px);
-      background-size: 48px 48px;
-      transform: perspective(900px) rotateX(78deg);
-      transform-origin: bottom center;
-      box-shadow: 0 -40px 120px rgba(112, 234, 255, 0.12);
-      opacity: 0.55;
-      animation: gridMove 4.2s linear infinite;
-      pointer-events: none;
-    }
-
-    .noise {
-      position: fixed;
+    #wallpaperLayer {
+      position: absolute;
       inset: 0;
-      z-index: -3;
-      opacity: 0.08;
-      background-image:
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 1px, transparent 1px),
-        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.28) 1px, transparent 1px),
-        radial-gradient(circle at 40% 60%, rgba(255,255,255,0.22) 1px, transparent 1px);
-      background-size: 140px 140px, 200px 200px, 260px 260px;
-      mix-blend-mode: screen;
-      pointer-events: none;
+      background: var(--wallpaper);
+      transition: background .55s var(--ease-out);
     }
 
-    .scanlines::before {
+    #wallpaperLayer::before,
+    #wallpaperLayer::after {
       content: "";
-      position: fixed;
+      position: absolute;
       inset: 0;
-      z-index: -2;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.02) 0,
-        rgba(255,255,255,0.02) 1px,
-        transparent 2px,
-        transparent 5px
-      );
-      opacity: 0.1;
       pointer-events: none;
     }
 
-    .aurora {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(70px);
-      opacity: 0.22;
-      z-index: -1;
+    #wallpaperLayer::before {
+      background:
+        radial-gradient(circle at 14% 16%, rgba(255,255,255,.18), transparent 18%),
+        radial-gradient(circle at 78% 22%, rgba(255,255,255,.10), transparent 16%),
+        radial-gradient(circle at 60% 72%, rgba(255,255,255,.08), transparent 22%);
+      opacity: .92;
+      filter: blur(2px);
+    }
+
+    #wallpaperLayer::after {
+      background: linear-gradient(180deg, rgba(0,0,0,.12), var(--wallpaper-overlay));
+    }
+
+    .phone-screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
       pointer-events: none;
-      animation: drift 11s ease-in-out infinite;
+      z-index: 5;
     }
 
-    .aurora.a {
-      width: 320px;
-      height: 320px;
-      left: 6%;
-      top: 8%;
-      background: var(--cyan);
+    .dynamic-island {
+      position: absolute;
+      top: calc(10px + var(--safe-top));
+      left: 50%;
+      transform: translateX(-50%);
+      width: 118px;
+      height: 34px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(10,10,12,.98), rgba(0,0,0,1));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 3px 10px rgba(0,0,0,.35);
+      z-index: 30;
     }
 
-    .aurora.b {
-      width: 360px;
-      height: 360px;
-      right: 8%;
-      top: 22%;
-      background: var(--pink);
-      animation-delay: 2s;
+    .os-root {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
     }
 
-    .aurora.c {
-      width: 300px;
-      height: 300px;
-      left: 42%;
-      bottom: 6%;
-      background: var(--violet);
-      animation-delay: 4s;
+    .desktop-view {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      transition: transform .45s var(--ease-out), opacity .3s ease, filter .35s ease;
     }
 
-    @keyframes gridMove {
-      from { background-position: 0 0, 0 0; }
-      to   { background-position: 0 48px, 0 48px; }
+    .os-root.has-app .desktop-view {
+      transform: scale(.965);
+      opacity: .42;
+      filter: blur(10px) saturate(.95);
+      pointer-events: none;
     }
 
-    @keyframes drift {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50%      { transform: translate(24px, -32px) scale(1.08); }
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 18px rgba(112, 234, 255, 0.22); }
-      50%      { box-shadow: 0 0 34px rgba(112, 234, 255, 0.38); }
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    @keyframes blink {
-      0%, 48%, 100% { opacity: 1; }
-      50%, 98% { opacity: 0; }
-    }
-
-    @keyframes rise {
-      from {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-      to {
-        opacity: 0;
-        transform: translateY(-38px) scale(1.1);
-      }
-    }
-
-    /* =========================================================
-       顶部导航：修改导航文案、增加/删除入口，请看这里
-    ========================================================= */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      backdrop-filter: blur(16px);
-      background: rgba(3, 9, 18, 0.72);
-      border-bottom: 1px solid rgba(112, 234, 255, 0.14);
-    }
-
-    .site-header-inner {
-      width: min(var(--max), calc(100% - 24px));
-      min-height: var(--header-h);
-      margin: 0 auto;
+    .status-bar {
+      position: relative;
+      z-index: 3;
+      height: 48px;
+      margin-top: var(--status-top-gap);
+      padding: 0 18px 0 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      padding: 10px 0;
+      color: var(--desktop-text);
+      text-shadow: 0 1px 10px rgba(0,0,0,.18);
     }
 
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .brand-badge {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      color: #06111f;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--cyan), var(--blue), var(--violet));
-      box-shadow: 0 0 24px rgba(112, 234, 255, 0.28);
-    }
-
-    .brand-copy strong {
-      display: block;
+    .status-time {
       font-size: 15px;
-      letter-spacing: 0.08em;
+      font-weight: 700;
+      letter-spacing: .02em;
+      min-width: 58px;
     }
 
-    .brand-copy span {
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      color: var(--desktop-text);
     }
 
-    .nav {
+    .status-icons svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .desktop-scroll {
+      position: relative;
+      flex: 1;
+      overflow: auto;
+      padding: 4px 16px calc(120px + var(--safe-bottom));
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .desktop-scroll::-webkit-scrollbar { display: none; }
+
+    .hero-row {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .glass-card,
+    .search-bar,
+    .dock,
+    .app-header,
+    .app-nav,
+    .app-card,
+    .embed-shell,
+    .browser-toolbar,
+    .chip {
+      background: var(--desktop-card);
+      border: 1px solid var(--desktop-stroke);
+      box-shadow: var(--shadow-soft), var(--shadow-inner);
+      backdrop-filter: var(--blur-soft);
+      -webkit-backdrop-filter: var(--blur-soft);
+    }
+
+    .glass-card {
+      border-radius: 24px;
+      padding: 18px;
+      color: var(--desktop-text);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .glass-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.16), transparent 36%);
+      pointer-events: none;
+      opacity: .9;
+    }
+
+    .widget-top {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .widget-big-time {
+      font-size: clamp(32px, 6vw, 44px);
+      font-weight: 800;
+      line-height: .95;
+      letter-spacing: -.03em;
+    }
+
+    .widget-date {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--desktop-text-soft);
+    }
+
+    .widget-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.24);
+      background: rgba(255,255,255,.10);
+      color: var(--desktop-text);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .search-bar {
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
+      border-radius: 18px;
+      padding: 13px 16px;
+      font-size: 14px;
+      color: var(--desktop-text-soft);
+      margin: 14px 0 4px;
+    }
+
+    .search-bar svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px 10px;
+      padding: 14px 2px 0;
+    }
+
+    .app-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app-icon .icon-badge {
+      position: relative;
+      width: var(--icon-size);
+      height: var(--icon-size);
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 28px;
+      box-shadow: 0 14px 28px rgba(0,0,0,.26), inset 0 1px 1px rgba(255,255,255,.18);
+      transition: transform .22s var(--ease-out), box-shadow .22s ease, filter .22s ease;
+      overflow: hidden;
+      isolation: isolate;
+      background: linear-gradient(135deg, #64748b, #334155);
+    }
+
+    .app-icon .icon-badge::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.18), transparent 32%);
+      z-index: -1;
+    }
+
+    .app-icon .icon-label {
+      max-width: 84px;
+      text-align: center;
+      color: var(--desktop-text);
+      font-size: 12px;
+      font-weight: 600;
+      text-shadow: 0 2px 10px rgba(0,0,0,.22);
+      line-height: 1.2;
+    }
+
+    @media (hover:hover) {
+      .app-icon:hover .icon-badge {
+        transform: translateY(-4px) scale(1.04);
+        box-shadow: 0 18px 36px rgba(0,0,0,.28), inset 0 1px 1px rgba(255,255,255,.22);
+        filter: saturate(1.08);
+      }
+    }
+
+    .app-icon:active .icon-badge {
+      transform: scale(.94);
+    }
+
+    .dock {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: var(--dock-bottom-gap);
+      z-index: 3;
+      border-radius: 28px;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .dock .app-icon .icon-label {
+      display: none;
+    }
+
+    .dock .app-icon .icon-badge {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      font-size: 26px;
+    }
+
+    .app-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 40;
+      pointer-events: none;
+    }
+
+    .app-screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      border-radius: inherit;
+      background: var(--app-bg);
+      backdrop-filter: var(--blur-strong);
+      -webkit-backdrop-filter: var(--blur-strong);
+      border: 1px solid var(--app-stroke);
+      color: var(--app-text);
+      opacity: 0;
+      transform: translateY(18px) scale(.985);
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .app-screen.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+      transition: opacity .24s ease, transform .42s var(--ease-out);
+    }
+
+    .app-bg-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .9;
+    }
+
+    .app-bg-layer::before,
+    .app-bg-layer::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(40px);
+      opacity: .4;
+    }
+
+    .app-bg-layer::before {
+      width: 180px;
+      height: 180px;
+      top: -30px;
+      right: -20px;
+      background: rgba(98, 106, 255, .26);
+    }
+
+    .app-bg-layer::after {
+      width: 220px;
+      height: 220px;
+      bottom: -60px;
+      left: -30px;
+      background: rgba(255, 92, 200, .22);
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: calc(18px + var(--safe-top)) 16px 14px;
+      background: rgba(255,255,255,.12);
+      border: 0;
+      border-bottom: 1px solid var(--app-stroke);
+      box-shadow: none;
+      backdrop-filter: var(--blur-soft);
+      -webkit-backdrop-filter: var(--blur-soft);
+    }
+
+    .app-header-left,
+    .app-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 92px;
+    }
+
+    .app-header-right {
       justify-content: flex-end;
     }
 
-    .nav a {
-      padding: 10px 14px;
+    .header-btn {
+      width: 38px;
+      height: 38px;
       border-radius: 999px;
-      border: 1px solid transparent;
-      color: var(--muted-strong);
-      transition: 0.25s ease;
-      font-size: 14px;
-    }
-
-    .nav a:hover {
-      transform: translateY(-2px);
-      border-color: var(--line-strong);
-      background: rgba(10, 22, 41, 0.68);
-      color: #fff;
-      box-shadow: 0 0 18px rgba(112, 234, 255, 0.12);
-    }
-
-    /* =========================================================
-       通用按钮与标签：修改按钮颜色、圆角、hover 效果
-    ========================================================= */
-    .button,
-    .copy-btn,
-    .portal-button,
-    .game-button,
-    .ghost-button {
-      appearance: none;
-      border: none;
-      cursor: pointer;
-      transition: 0.28s ease;
-    }
-
-    .button,
-    .portal-button,
-    .game-button,
-    .ghost-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      min-height: 46px;
-      padding: 0 18px;
-      border-radius: 14px;
-      font-weight: 700;
-    }
-
-    .button.primary,
-    .portal-button,
-    .game-button {
-      color: #06111f;
-      background: linear-gradient(135deg, var(--cyan), var(--blue), var(--violet), var(--pink));
-      background-size: 240% 240%;
-      animation: pulseGlow 3.4s ease-in-out infinite;
-      box-shadow: 0 10px 28px rgba(104, 174, 255, 0.26);
-    }
-
-    .button.primary:hover,
-    .portal-button:hover,
-    .game-button:hover {
-      transform: translateY(-3px) scale(1.015);
-      background-position: right center;
-      box-shadow: 0 16px 34px rgba(108, 170, 255, 0.28);
-    }
-
-    .button.ghost,
-    .ghost-button {
-      color: var(--text);
-      background: rgba(9, 18, 35, 0.66);
-      border: 1px solid var(--line-strong);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
-    }
-
-    .button.ghost:hover,
-    .ghost-button:hover {
-      transform: translateY(-3px);
-      background: rgba(14, 26, 49, 0.9);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .chip {
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(9, 18, 35, 0.6);
-      color: #d3e8ff;
-      font-size: 13px;
-    }
-
-    /* =========================================================
-       英雄区：修改昵称、简介、按钮、头像说明，请看本区 HTML
-    ========================================================= */
-    .hero {
-      padding: 38px 0 34px;
-    }
-
-    .hero-grid {
       display: grid;
-      gap: 24px;
-      grid-template-columns: 1.1fr 0.9fr;
-      align-items: center;
+      place-items: center;
+      background: rgba(255,255,255,.58);
+      color: var(--app-text);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.72), 0 6px 14px rgba(0,0,0,.08);
+      transition: transform .2s ease, background .2s ease;
     }
 
-    .hero-copy,
-    .hero-visual {
-      position: relative;
+    body[data-theme="dark"] .header-btn {
+      background: rgba(255,255,255,.10);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 6px 14px rgba(0,0,0,.18);
     }
 
-    .eyebrow {
-      margin: 0 0 10px;
-      color: #bff8ff;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-size: 13px;
+    .header-btn:hover { transform: translateY(-1px); }
+    .header-btn:active { transform: scale(.94); }
+
+    .app-title-wrap {
+      text-align: center;
+      flex: 1;
+      min-width: 0;
     }
 
-    .hero h1 {
+    .app-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -.01em;
       margin: 0;
-      font-size: clamp(42px, 8vw, 92px);
-      line-height: 0.96;
-      letter-spacing: 0.01em;
-      background: linear-gradient(90deg, #fff, var(--cyan), var(--violet), var(--pink), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 42px rgba(112, 234, 255, 0.12);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .gradient-dot {
-      color: var(--cyan);
-      -webkit-text-fill-color: initial;
+    .app-subtitle {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--app-text-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .lead {
-      margin: 18px 0 0;
+    .app-body {
+      position: relative;
+      z-index: 3;
+      flex: 1;
+      overflow: auto;
+      padding: 18px 16px calc(92px + var(--safe-bottom));
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .app-body::-webkit-scrollbar { display: none; }
+
+    .app-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero-app-card,
+    .app-card {
+      position: relative;
+      border-radius: 24px;
+      padding: 18px;
+      background: var(--app-card);
+      border: 1px solid var(--app-stroke);
+      box-shadow: var(--shadow-soft), var(--shadow-inner);
+      overflow: hidden;
+    }
+
+    .hero-app-card h3,
+    .app-card h3 {
+      margin: 0 0 10px;
       font-size: 18px;
-      color: var(--muted-strong);
-      max-width: 720px;
+      font-weight: 800;
+      letter-spacing: -.01em;
     }
 
-    .type-line {
-      margin: 18px 0 0;
-      min-height: 32px;
-      color: #d8eaff;
-      font-size: 16px;
+    .hero-app-card p,
+    .app-card p,
+    .muted,
+    .tiny-note {
+      margin: 0;
+      color: var(--app-text-soft);
+      line-height: 1.65;
     }
 
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      height: 1.05em;
-      vertical-align: -2px;
-      margin-left: 2px;
-      background: linear-gradient(180deg, var(--cyan), var(--violet));
-      border-radius: 2px;
-      animation: blink 1s steps(1) infinite;
+    .tiny-note { font-size: 12px; }
+
+    .hero-app-card .gradient-line {
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      margin-top: 14px;
     }
 
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 24px;
-    }
-
-    .hero-mini-grid {
+    .stats-row {
+      margin-top: 14px;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 24px;
-    }
-
-    .mini-stat {
-      padding: 18px;
-      border-radius: 18px;
-      background: rgba(8, 17, 34, 0.62);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-    }
-
-    .mini-stat strong {
-      display: block;
-      font-size: 26px;
-      line-height: 1;
-      color: var(--cyan);
-      margin-bottom: 8px;
-    }
-
-    .mini-stat span {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .holo-card {
-      position: relative;
-      overflow: hidden;
-      padding: 28px;
-      border-radius: var(--radius-lg);
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)),
-        rgba(7, 14, 28, 0.76);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,0.03);
-      min-height: 580px;
-      display: grid;
-      place-items: center;
-    }
-
-    .holo-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 8px,
-        rgba(112, 234, 255, 0.04) 9px
-      );
-      pointer-events: none;
-      opacity: 0.7;
-    }
-
-    .scan-text {
-      position: absolute;
-      top: 14px;
-      left: 16px;
-      right: 16px;
-      font-size: 12px;
-      color: #c0f7ff;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-family: var(--mono);
-    }
-
-    .avatar-orbit {
-      position: relative;
-      width: 320px;
-      height: 320px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      margin-top: 18px;
-    }
-
-    .avatar-orbit::before,
-    .avatar-orbit::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 2px dashed rgba(112, 234, 255, 0.5);
-      animation: spin 14s linear infinite;
-      box-shadow: 0 0 26px rgba(112, 234, 255, 0.18);
-    }
-
-    .avatar-orbit::after {
-      inset: 24px;
-      border-color: rgba(255, 111, 214, 0.34);
-      animation-direction: reverse;
-      animation-duration: 9.5s;
-    }
-
-    .avatar-core {
-      position: relative;
-      width: 210px;
-      height: 210px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 3px solid rgba(255,255,255,0.72);
-      box-shadow:
-        0 0 30px rgba(112, 234, 255, 0.34),
-        0 0 64px rgba(156, 125, 255, 0.2);
-      background:
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.95), transparent 18%),
-        linear-gradient(135deg, var(--cyan), var(--blue), var(--violet), var(--pink));
-      display: grid;
-      place-items: center;
-      z-index: 2;
-    }
-
-    .avatar-core img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .avatar-fallback {
-      display: none;
-      width: 100%;
-      height: 100%;
-      place-items: center;
-      font-size: 68px;
-      font-weight: 900;
-      color: #05203a;
-      text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-    }
-
-    .orbit-dot {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      box-shadow: 0 0 20px currentColor;
-    }
-
-    .orbit-dot.one { top: 40px; left: 50px; color: var(--cyan); background: currentColor; }
-    .orbit-dot.two { bottom: 54px; right: 54px; color: var(--pink); background: currentColor; }
-    .orbit-dot.three { bottom: 90px; left: 34px; color: var(--gold); background: currentColor; }
-    .orbit-dot.four { top: 72px; right: 28px; color: var(--green); background: currentColor; }
-
-    .holo-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 22px;
-    }
-
-    .holo-tag {
-      padding: 9px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(10, 18, 34, 0.56);
-      color: #d9eeff;
-      font-size: 13px;
-      backdrop-filter: blur(8px);
-    }
-
-    .system-list {
-      width: 100%;
-      max-width: 520px;
-      margin: 26px 0 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
       gap: 10px;
     }
 
-    .system-list li {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(9, 18, 35, 0.52);
-      border: 1px solid rgba(117, 205, 255, 0.12);
-      color: #dceeff;
-      font-size: 14px;
-    }
-
-    .system-list em {
-      font-style: normal;
-      color: var(--muted);
-    }
-
-    /* =========================================================
-       面板卡片：页面大多数内容都在 panel 中，想加内容可直接复制 panel
-    ========================================================= */
-    .panel {
-      position: relative;
-      overflow: hidden;
-      padding: 22px;
-      border-radius: var(--radius);
-      background: var(--panel);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,0.03);
-      backdrop-filter: blur(18px);
-    }
-
-    .panel::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -70%;
-      width: 180%;
-      height: 180%;
-      background: linear-gradient(
-        120deg,
-        transparent,
-        rgba(112, 234, 255, 0.08),
-        transparent
-      );
-      transform: rotate(25deg);
-      opacity: 0;
-      transition: 0.8s ease;
-      pointer-events: none;
-    }
-
-    .panel:hover::before {
-      left: 58%;
-      opacity: 1;
-    }
-
-    .panel h3 {
-      margin: 0 0 12px;
-      font-size: 24px;
-      color: #d7f7ff;
-    }
-
-    .panel p {
-      margin: 0 0 12px;
-      color: var(--muted-strong);
-    }
-
-    .panel p:last-child {
-      margin-bottom: 0;
-    }
-
-    .panel-list {
-      margin: 12px 0 0;
-      padding-left: 18px;
-      color: var(--muted-strong);
-    }
-
-    .panel-list li + li {
-      margin-top: 8px;
-    }
-
-    .timeline {
-      display: grid;
-      gap: 12px;
-      margin-top: 8px;
-    }
-
-    .timeline-item {
-      position: relative;
-      padding: 14px 14px 14px 18px;
-      border-radius: 18px;
-      background: rgba(10, 18, 34, 0.56);
-      border: 1px solid rgba(117, 205, 255, 0.1);
-    }
-
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: 11px;
-      top: 18px;
-      width: 6px;
-      height: calc(100% - 36px);
-      border-radius: 999px;
-      background: linear-gradient(180deg, var(--cyan), var(--violet));
-      opacity: 0.95;
-    }
-
-    .timeline-item strong {
-      display: block;
-      margin-left: 14px;
-      color: #fff;
-      font-size: 15px;
-    }
-
-    .timeline-item span {
-      display: block;
-      margin-left: 14px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .meter-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .meter {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(117, 205, 255, 0.1);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-
-    .meter span {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: var(--w, 50%);
-      min-height: 42px;
-      padding: 0 14px;
-      color: #04101d;
-      font-weight: 800;
-      background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
-    }
-
-    /* =========================================================
-       图片画廊：上传 space1.jpg ~ space4.jpg 即可自动替换占位图
-       未上传时会显示占位文字，不会报错
-    ========================================================= */
-    .gallery {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .gallery-card {
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      border-radius: 24px;
-      min-height: 270px;
-      background:
-        radial-gradient(circle at 22% 18%, rgba(112, 234, 255, 0.18), transparent 28%),
-        radial-gradient(circle at 80% 80%, rgba(255, 111, 214, 0.16), transparent 26%),
-        rgba(8, 17, 34, 0.82);
-      border: 1px solid rgba(117, 205, 255, 0.18);
-      box-shadow: var(--shadow);
-      transition: 0.32s ease;
-    }
-
-    .gallery-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 26px 72px rgba(0, 0, 0, 0.42);
-    }
-
-    .gallery-card.featured {
-      grid-column: span 2;
-      min-height: 360px;
-    }
-
-    .gallery-image-wrap {
-      position: absolute;
-      inset: 0;
-    }
-
-    .gallery-image-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.45s ease, opacity 0.3s ease;
-    }
-
-    .gallery-card:hover img {
-      transform: scale(1.05);
-    }
-
-    .gallery-placeholder {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      padding: 20px;
-      text-align: center;
-      color: #d9edff;
-      background:
-        linear-gradient(135deg, rgba(112,234,255,0.16), rgba(156,125,255,0.12), rgba(255,111,214,0.12)),
-        rgba(8, 17, 34, 0.9);
-      font-size: 15px;
-      letter-spacing: 0.04em;
-    }
-
-    .gallery-caption {
-      position: absolute;
-      left: 16px;
-      right: 16px;
-      bottom: 16px;
-      padding: 14px 14px 12px;
-      border-radius: 18px;
-      background: rgba(5, 12, 23, 0.72);
-      border: 1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(10px);
-    }
-
-    .gallery-caption strong {
-      display: block;
-      color: #fff;
-      margin-bottom: 5px;
-      font-size: 16px;
-    }
-
-    .gallery-caption span {
-      display: block;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    /* =========================================================
-       视频区：上面是远程示例视频，下面是本地 myvideo.mp4 替换位
-       如果你上传 myvideo.mp4，页面会自动显示本地视频
-    ========================================================= */
-    .video-grid {
-      display: grid;
-      gap: 20px;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .video-shell {
-      position: relative;
-      overflow: hidden;
-      border-radius: 22px;
-      border: 1px solid rgba(117, 205, 255, 0.16);
-      background: rgba(4, 8, 17, 0.72);
-      box-shadow: var(--shadow);
-      min-height: 320px;
-    }
-
-    .video-shell video {
-      width: 100%;
-      min-height: 320px;
-      background: #02060d;
-      object-fit: cover;
-    }
-
-    .video-fallback {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 24px;
-      color: #d9eaff;
-      background:
-        radial-gradient(circle at 50% 40%, rgba(112,234,255,0.12), transparent 28%),
-        linear-gradient(135deg, rgba(8,17,34,0.88), rgba(10,20,40,0.96));
-    }
-
-    .video-info-list {
-      margin: 12px 0 0;
-      padding-left: 18px;
-      color: var(--muted-strong);
-    }
-
-    /* =========================================================
-       小游戏：15 秒抓星星
-       如果你想改时长，在文末脚本里 gameTotalTime 改成别的数字即可
-    ========================================================= */
-    .game-layout {
-      display: grid;
-      gap: 20px;
-      grid-template-columns: 1.2fr 0.8fr;
-      align-items: start;
-    }
-
-    .game-hud {
-      display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      margin-top: 16px;
-    }
-
-    .hud-box {
+    .stat-box {
       padding: 14px;
       border-radius: 18px;
-      background: rgba(10, 18, 34, 0.62);
-      border: 1px solid rgba(117, 205, 255, 0.12);
+      background: rgba(255,255,255,.10);
+      border: 1px solid var(--app-stroke);
       text-align: center;
     }
 
-    .hud-box strong {
-      display: block;
-      font-size: 24px;
-      line-height: 1;
-      color: var(--cyan);
-      margin-bottom: 6px;
+    .stat-value {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 4px;
     }
 
-    .hud-box span {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .game-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-
-    .game-area {
+    .embed-shell {
       position: relative;
-      overflow: hidden;
-      min-height: 390px;
-      margin-top: 18px;
       border-radius: 26px;
-      border: 1px solid rgba(117, 205, 255, 0.18);
-      background:
-        linear-gradient(rgba(112, 234, 255, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(112, 234, 255, 0.08) 1px, transparent 1px),
-        radial-gradient(circle at 24% 22%, rgba(112,234,255,0.12), transparent 22%),
-        rgba(4, 8, 17, 0.76);
-      background-size: 34px 34px, 34px 34px, auto, auto;
-      box-shadow: inset 0 0 40px rgba(112, 234, 255, 0.08);
-      cursor: crosshair;
-      user-select: none;
+      overflow: hidden;
+      min-height: 240px;
+      background: rgba(8,12,24,.92);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 16px 40px rgba(0,0,0,.26);
     }
 
-    .game-center-tip {
+    .embed-shell.tall {
+      min-height: 520px;
+      aspect-ratio: 9 / 16;
+    }
+
+    .embed-shell iframe {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      display: block;
+      border: 0;
+      background: #020204;
+    }
+
+    .embed-skeleton {
       position: absolute;
       inset: 0;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      text-align: center;
-      color: #d9eeff;
-      font-size: 18px;
-      line-height: 1.8;
-      z-index: 1;
-    }
-
-    .game-target {
-      position: absolute;
-      z-index: 2;
       display: none;
-      place-items: center;
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      border: none;
       background:
-        radial-gradient(circle at 35% 32%, #ffffff, transparent 18%),
-        radial-gradient(circle at 50% 50%, #fff0b2, #ffd85f 46%, #ff8b66 82%);
-      box-shadow: 0 0 32px rgba(255, 215, 105, 0.7);
-      font-size: 30px;
-      color: #06111f;
-      font-weight: 900;
-      animation: pulseGlow 1s ease-in-out infinite;
-    }
-
-    .score-pop {
-      position: absolute;
-      z-index: 4;
-      font-weight: 900;
-      color: #fff;
-      text-shadow: 0 0 12px rgba(112, 234, 255, 0.9);
+        linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.16), rgba(255,255,255,.06)) 0 0 / 220% 100%,
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      animation: skeletonMove 1.35s linear infinite;
       pointer-events: none;
-      transform: translate(-50%, -50%);
-      animation: rise 0.8s ease forwards;
+      z-index: 2;
     }
 
-    .ranking-list {
-      margin: 14px 0 0;
-      padding: 0;
-      list-style: none;
+    .embed-shell.is-loading .embed-skeleton {
+      display: block;
+    }
+
+    @keyframes skeletonMove {
+      from { background-position: 100% 0, 0 0; }
+      to { background-position: -100% 0, 0 0; }
+    }
+
+    .embed-fallback {
+      position: absolute;
+      inset: auto 14px 14px 14px;
+      z-index: 3;
+      display: none;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(6, 9, 18, .82);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 12px 24px rgba(0,0,0,.28);
+    }
+
+    .embed-shell.show-fallback .embed-fallback {
       display: grid;
       gap: 8px;
     }
 
-    .ranking-list li {
+    .cta-row {
       display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: rgba(9, 18, 35, 0.56);
-      border: 1px solid rgba(117, 205, 255, 0.12);
-      color: #dcefff;
-      font-size: 14px;
-    }
-
-    /* =========================================================
-       外部跳转：默认放更稳妥的官方/门户入口
-       如需单独改按钮 href，请直接在 a 标签中替换链接
-    ========================================================= */
-    .notice {
-      padding: 14px 16px;
-      border-radius: 18px;
-      background: rgba(255, 216, 105, 0.08);
-      border: 1px solid rgba(255, 216, 105, 0.2);
-      color: #ffeeb4;
-      margin-bottom: 16px;
-    }
-
-    .portal-grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .portal-card {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-height: 260px;
-    }
-
-    .portal-topline {
-      color: #c7f5ff;
-      letter-spacing: 0.14em;
-      font-size: 12px;
-      text-transform: uppercase;
-    }
-
-    .portal-card h3 {
-      margin-bottom: 2px;
-    }
-
-    .portal-meta {
-      margin-top: auto;
-      display: flex;
-      gap: 10px;
       flex-wrap: wrap;
-    }
-
-    .portal-pill {
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      border: 1px solid rgba(117, 205, 255, 0.14);
-      color: #d8ecff;
-    }
-
-    /* =========================================================
-       彩蛋与终端：随机趣味文本、宇宙日志、终端噪声
-       想加更多随机句子，请在脚本数组里继续追加
-    ========================================================= */
-    .lore-output {
-      display: grid;
       gap: 10px;
-      margin-top: 14px;
+      margin-top: 12px;
     }
 
-    .lore-output p {
-      margin: 0;
-      padding: 12px 14px;
+    .cta,
+    .ghost-btn,
+    .chip,
+    .segmented button,
+    .setting-swatch,
+    .track-item,
+    .video-item,
+    .bookmark-item,
+    .reply-chip {
       border-radius: 16px;
-      background: rgba(9, 18, 35, 0.56);
-      border: 1px solid rgba(117, 205, 255, 0.12);
+      transition: transform .2s ease, opacity .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
     }
 
-    .terminal {
-      min-height: 320px;
-      max-height: 420px;
-      overflow: auto;
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(2, 6, 12, 0.82);
-      border: 1px solid rgba(117, 205, 255, 0.16);
-      font-family: var(--mono);
-      font-size: 13px;
-      line-height: 1.6;
-      color: #c9ffde;
-    }
-
-    .terminal-line {
-      white-space: pre-wrap;
-    }
-
-    .terminal-prefix {
-      color: var(--cyan);
-      margin-right: 6px;
-    }
-
-    .secret-tip {
-      margin-top: 14px;
-      color: #ffe9a8;
-      font-size: 14px;
-    }
-
-    .quest-list {
-      margin: 12px 0 0;
-      padding-left: 18px;
-    }
-
-    .quest-list li + li {
-      margin-top: 8px;
-    }
-
-    /* =========================================================
-       安全提示与联系方式：这里放免责声明、邮箱、QQ、复制按钮
-    ========================================================= */
-    .warning-panel {
-      border: 1px solid rgba(255, 153, 170, 0.28);
-      background:
-        radial-gradient(circle at top right, rgba(255, 121, 160, 0.08), transparent 24%),
-        rgba(17, 9, 17, 0.74);
-    }
-
-    .warning-panel strong {
-      color: #ffd0de;
-    }
-
-    .contact-grid {
-      display: grid;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .contact-item {
-      display: flex;
+    .cta,
+    .ghost-btn {
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(9, 18, 35, 0.56);
-      border: 1px solid rgba(117, 205, 255, 0.12);
-      flex-wrap: wrap;
-    }
-
-    .contact-label {
-      color: var(--muted);
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .contact-value {
-      color: #fff;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 14px;
       font-weight: 700;
-      word-break: break-all;
     }
 
-    .copy-btn {
-      min-height: 38px;
-      padding: 0 14px;
-      border-radius: 12px;
-      color: #09111c;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--cyan), var(--gold));
+    .cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      box-shadow: 0 12px 24px rgba(71, 76, 232, .28);
     }
 
-    .copy-btn:hover {
-      transform: translateY(-2px);
+    .ghost-btn {
+      background: rgba(255,255,255,.10);
+      color: inherit;
+      border: 1px solid var(--app-stroke);
     }
 
-    footer {
-      padding: 34px 0 56px;
-      color: var(--muted);
+    .segmented {
+      display: inline-flex;
+      padding: 4px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid var(--app-stroke);
+      gap: 4px;
+      flex-wrap: wrap;
     }
 
-    .footer-box {
+    .segmented button {
+      padding: 10px 14px;
+      font-weight: 700;
+      color: var(--app-text-soft);
+      background: transparent;
+    }
+
+    .segmented button.is-active {
+      background: rgba(255,255,255,.64);
+      color: var(--app-text);
+      box-shadow: 0 6px 16px rgba(0,0,0,.08);
+    }
+
+    body[data-theme="dark"] .segmented button.is-active {
+      background: rgba(255,255,255,.14);
+      box-shadow: 0 6px 16px rgba(0,0,0,.18);
+    }
+
+    .app-nav {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: calc(14px + var(--safe-bottom));
+      z-index: 8;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      padding: 10px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid var(--app-stroke);
+      backdrop-filter: var(--blur-soft);
+      -webkit-backdrop-filter: var(--blur-soft);
+    }
+
+    .app-nav button {
+      min-height: 50px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      background: rgba(255,255,255,.48);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.62), 0 8px 16px rgba(0,0,0,.08);
+    }
+
+    body[data-theme="dark"] .app-nav button {
+      background: rgba(255,255,255,.10);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 8px 16px rgba(0,0,0,.18);
+    }
+
+    .app-nav small {
+      display: block;
+      font-size: 11px;
+      line-height: 1.1;
+      color: var(--app-text-soft);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .douyin-stage {
+      display: grid;
+      gap: 16px;
+    }
+
+    .video-overlay-ui {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 18px;
+      z-index: 2;
+      display: grid;
+      gap: 10px;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,.68));
+      color: #fff;
+      pointer-events: none;
+    }
+
+    .video-meta {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
-      padding: 18px 22px;
-      border-radius: 22px;
-      background: rgba(8, 17, 34, 0.68);
-      border: 1px solid rgba(117, 205, 255, 0.1);
+      font-size: 13px;
+      color: rgba(255,255,255,.85);
     }
 
-    /* =========================================================
-       Lightbox 图片放大层：点击画廊图片即可查看大图
-    ========================================================= */
-    .lightbox {
+    .video-feed-card {
+      min-height: 180px;
+      border-radius: 24px;
+      padding: 16px;
+      color: white;
+      display: flex;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 18px 34px rgba(0,0,0,.22);
+    }
+
+    .video-feed-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.15));
+    }
+
+    .video-feed-card > * { position: relative; z-index: 1; }
+
+    .yt-layout {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 14px;
+    }
+
+    .yt-player-card {
+      display: grid;
+      gap: 12px;
+    }
+
+    .video-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .video-item {
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--app-stroke);
+      width: 100%;
+      text-align: left;
+    }
+
+    .video-item.is-active {
+      border-color: rgba(107,108,255,.48);
+      background: rgba(107,108,255,.12);
+      box-shadow: 0 10px 24px rgba(107,108,255,.12);
+    }
+
+    .video-thumb {
+      border-radius: 16px;
+      aspect-ratio: 16 / 9;
+      background:
+        linear-gradient(140deg, rgba(255,255,255,.22), transparent 38%),
+        linear-gradient(145deg, #ff4b5c, #ff8a00);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 28px;
+      overflow: hidden;
+    }
+
+    .video-item h4,
+    .track-item h4,
+    .chat-info h4,
+    .gallery-caption h4,
+    .bookmark-item h4 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .video-item p,
+    .track-item p,
+    .chat-info p,
+    .gallery-caption p,
+    .bookmark-item p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--app-text-soft);
+      line-height: 1.5;
+    }
+
+    .browser-layout,
+    .settings-layout,
+    .about-layout,
+    .gallery-layout,
+    .music-layout,
+    .chat-layout {
+      display: grid;
+      gap: 14px;
+    }
+
+    .browser-toolbar {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid var(--app-stroke);
+    }
+
+    .browser-bar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .browser-input {
+      min-height: 48px;
+      border-radius: 16px;
+      padding: 0 14px;
+      background: rgba(255,255,255,.58);
+      border: 1px solid var(--app-stroke);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+    }
+
+    body[data-theme="dark"] .browser-input {
+      background: rgba(255,255,255,.10);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+    }
+
+    .bookmark-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .bookmark-item {
+      padding: 12px;
+      text-align: left;
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--app-stroke);
+    }
+
+    .browser-frame {
+      min-height: 420px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-tile {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--app-stroke);
+      box-shadow: 0 14px 28px rgba(0,0,0,.16);
+      color: white;
+      display: flex;
+      align-items: end;
+      padding: 14px;
+    }
+
+    .gallery-tile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.22));
+    }
+
+    .gallery-caption { position: relative; z-index: 1; }
+
+    .gallery-viewer {
       position: fixed;
       inset: 0;
       display: none;
       place-items: center;
-      padding: 30px;
-      background: rgba(1, 4, 9, 0.88);
-      z-index: 99;
-      backdrop-filter: blur(10px);
+      background: rgba(6,10,18,.62);
+      backdrop-filter: blur(14px);
+      z-index: 200;
+      padding: 20px;
     }
 
-    .lightbox.show {
-      display: grid;
-    }
+    .gallery-viewer.is-open { display: grid; }
 
-    .lightbox-card {
-      width: min(1100px, 100%);
-      max-height: 90vh;
-      border-radius: 26px;
+    .viewer-card {
+      width: min(92vw, 420px);
+      border-radius: 28px;
+      padding: 18px;
+      background: var(--app-bg);
+      border: 1px solid var(--app-stroke);
+      box-shadow: var(--shadow-ambient);
       overflow: hidden;
-      background: rgba(6, 12, 23, 0.92);
-      border: 1px solid rgba(117, 205, 255, 0.2);
-      box-shadow: 0 30px 90px rgba(0,0,0,0.46);
     }
 
-    .lightbox-top {
+    .viewer-stage {
+      aspect-ratio: 4 / 5;
+      border-radius: 22px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(117, 205, 255, 0.12);
-    }
-
-    .lightbox-top strong {
-      color: #fff;
-    }
-
-    .lightbox-close {
-      min-width: 40px;
-      min-height: 40px;
-      border-radius: 12px;
-      border: 1px solid rgba(117, 205, 255, 0.14);
-      background: rgba(9, 18, 35, 0.72);
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .lightbox-image-wrap {
-      max-height: calc(90vh - 70px);
-      overflow: auto;
+      align-items: end;
       padding: 16px;
+      color: white;
     }
 
-    .lightbox-image-wrap img {
-      width: 100%;
-      height: auto;
-      border-radius: 18px;
+    .viewer-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.24));
     }
 
-    /* =========================================================
-       浮动按钮与提示 Toast
-    ========================================================= */
-    .back-to-top,
-    .toast {
-      position: fixed;
-      z-index: 90;
+    .viewer-stage > * { position: relative; z-index: 1; }
+
+    .music-hero {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 14px;
+      align-items: center;
     }
 
-    .back-to-top {
-      right: 18px;
-      bottom: 20px;
-      width: 48px;
-      height: 48px;
-      border-radius: 16px;
+    .album-cover {
+      aspect-ratio: 1;
+      border-radius: 26px;
+      box-shadow: 0 18px 36px rgba(0,0,0,.16);
+      position: relative;
+      overflow: hidden;
       display: grid;
       place-items: center;
-      color: #06111f;
-      font-weight: 900;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      box-shadow: 0 14px 28px rgba(0,0,0,0.28);
-      opacity: 0;
+      font-size: 42px;
+      color: white;
+    }
+
+    .album-cover::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.14), transparent 38%);
+    }
+
+    .progress-shell {
+      margin-top: 12px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      overflow: hidden;
+      border: 1px solid var(--app-stroke);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 46%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    .track-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .track-item {
+      width: 100%;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 64px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--app-stroke);
+      background: rgba(255,255,255,.08);
+    }
+
+    .track-item.is-active {
+      background: rgba(107,108,255,.12);
+      border-color: rgba(107,108,255,.42);
+    }
+
+    .track-mini-cover {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 24px;
+    }
+
+    .chat-thread {
+      display: grid;
+      gap: 12px;
+    }
+
+    .chat-bubble {
+      max-width: 86%;
+      padding: 13px 14px;
+      border-radius: 20px;
+      line-height: 1.6;
+      box-shadow: 0 12px 20px rgba(0,0,0,.08);
+    }
+
+    .chat-bubble.left {
+      justify-self: start;
+      border-bottom-left-radius: 8px;
+      background: rgba(255,255,255,.65);
+      border: 1px solid var(--app-stroke);
+    }
+
+    .chat-bubble.right {
+      justify-self: end;
+      border-bottom-right-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+    }
+
+    body[data-theme="dark"] .chat-bubble.left {
+      background: rgba(255,255,255,.10);
+    }
+
+    .reply-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .reply-chip,
+    .chip {
+      padding: 10px 12px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid var(--app-stroke);
+      color: inherit;
+    }
+
+    .settings-panel {
+      display: grid;
+      gap: 14px;
+    }
+
+    .setting-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--app-stroke);
+    }
+
+    .setting-row h4 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .toggle {
+      width: 54px;
+      height: 32px;
+      border-radius: 999px;
+      padding: 4px;
+      background: rgba(120,130,150,.36);
+      position: relative;
+      border: 1px solid rgba(255,255,255,.12);
+      transition: background .25s ease;
+    }
+
+    .toggle::after {
+      content: "";
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      background: white;
+      box-shadow: 0 6px 12px rgba(0,0,0,.18);
+      transition: transform .25s var(--ease-out);
+    }
+
+    .toggle.is-on {
+      background: linear-gradient(135deg, var(--success), #66dd8a);
+    }
+
+    .toggle.is-on::after {
+      transform: translateX(22px);
+    }
+
+    .swatch-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .setting-swatch {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      border: 2px solid transparent;
+      box-shadow: 0 12px 24px rgba(0,0,0,.12);
+    }
+
+    .setting-swatch.is-active {
+      border-color: white;
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .tech-tags span {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid var(--app-stroke);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .launch-ghost {
+      position: fixed;
+      z-index: 999;
+      border-radius: 24px;
       pointer-events: none;
-      transition: 0.3s ease;
+      box-shadow: 0 24px 48px rgba(0,0,0,.28);
+      overflow: hidden;
+      isolation: isolate;
     }
 
-    .back-to-top.show {
-      opacity: 1;
-      pointer-events: auto;
+    .launch-ghost::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.18), transparent 34%);
     }
 
-    .toast {
-      left: 50%;
-      bottom: 22px;
-      transform: translateX(-50%) translateY(20px);
-      padding: 12px 16px;
-      border-radius: 14px;
-      background: rgba(6, 12, 23, 0.88);
-      border: 1px solid rgba(117, 205, 255, 0.2);
-      color: #fff;
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.28s ease;
-      max-width: calc(100% - 32px);
-      text-align: center;
-      box-shadow: 0 18px 38px rgba(0,0,0,0.36);
+    .launch-ghost .ghost-inner {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 42px;
+      font-weight: 700;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    .app-screen.app-youtube .app-bg-layer::before { background: rgba(255, 60, 95, .20); }
+    .app-screen.app-youtube .app-bg-layer::after { background: rgba(255, 149, 0, .16); }
+    .app-screen.app-douyin { background: rgba(5, 8, 15, .90); color: rgba(255,255,255,.96); }
+    .app-screen.app-douyin .app-header,
+    .app-screen.app-douyin .app-nav,
+    .app-screen.app-douyin .hero-app-card,
+    .app-screen.app-douyin .app-card {
+      color: rgba(255,255,255,.96);
+      --app-text-soft: rgba(255,255,255,.72);
+      --app-stroke: rgba(255,255,255,.10);
+      background-color: rgba(255,255,255,.07);
     }
-
-    /* =========================================================
-       移动端适配：如果你想让手机更紧凑，可继续压缩这里的尺寸
-    ========================================================= */
-    @media (max-width: 1140px) {
-      .hero-grid,
-      .split,
-      .video-grid,
-      .game-layout,
-      .portal-grid,
-      .gallery {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .cols-4 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .holo-card {
-        min-height: 520px;
-      }
+    .app-screen.app-douyin .header-btn,
+    .app-screen.app-douyin .app-nav button,
+    .app-screen.app-douyin .ghost-btn,
+    .app-screen.app-douyin .reply-chip,
+    .app-screen.app-douyin .chip {
+      background: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.96);
+      border-color: rgba(255,255,255,.12);
     }
+    .app-screen.app-browser .app-bg-layer::before { background: rgba(74, 222, 128, .14); }
+    .app-screen.app-browser .app-bg-layer::after { background: rgba(59, 130, 246, .18); }
+    .app-screen.app-gallery .app-bg-layer::before { background: rgba(255, 180, 0, .16); }
+    .app-screen.app-gallery .app-bg-layer::after { background: rgba(236, 72, 153, .16); }
+    .app-screen.app-music .app-bg-layer::before { background: rgba(99, 102, 241, .18); }
+    .app-screen.app-music .app-bg-layer::after { background: rgba(16, 185, 129, .16); }
+    .app-screen.app-chat .app-bg-layer::before { background: rgba(52, 199, 89, .18); }
+    .app-screen.app-chat .app-bg-layer::after { background: rgba(59, 130, 246, .16); }
+    .app-screen.app-settings .app-bg-layer::before { background: rgba(107, 114, 128, .14); }
+    .app-screen.app-settings .app-bg-layer::after { background: rgba(217, 70, 239, .10); }
+    .app-screen.app-about .app-bg-layer::before { background: rgba(14, 165, 233, .16); }
+    .app-screen.app-about .app-bg-layer::after { background: rgba(244, 114, 182, .14); }
 
     @media (max-width: 900px) {
-      .hero-grid,
-      .split,
-      .video-grid,
-      .game-layout,
-      .gallery,
-      .portal-grid,
-      .cols-3,
-      .cols-2 {
-        grid-template-columns: 1fr;
-      }
-
-      .gallery-card.featured {
-        grid-column: span 1;
-        min-height: 300px;
-      }
-
-      .hero-mini-grid,
-      .game-hud {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .avatar-orbit {
-        width: 270px;
-        height: 270px;
-      }
-
-      .avatar-core {
-        width: 180px;
-        height: 180px;
-      }
+      .yt-layout { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; }
+      .bookmark-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
-    @media (max-width: 620px) {
-      .site-header-inner {
-        justify-content: center;
-      }
-
-      .nav {
-        justify-content: center;
-      }
-
-      .section {
-        padding: 62px 0;
-      }
-
-      .section-title {
-        font-size: clamp(28px, 9vw, 42px);
-      }
-
-      .lead,
-      .section-desc {
-        font-size: 16px;
-      }
-
-      .hero-mini-grid,
-      .game-hud,
-      .cols-4 {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .panel,
-      .holo-card {
-        padding: 18px;
-      }
-
-      .game-area {
-        min-height: 320px;
-      }
-
-      .lightbox {
-        padding: 16px;
-      }
-    }
-
-    @media (max-width: 430px) {
-      .hero-mini-grid,
-      .game-hud,
-      .cols-4 {
-        grid-template-columns: 1fr;
-      }
-
-      .button,
-      .portal-button,
-      .game-button,
-      .ghost-button {
+    @media (max-width: 860px) {
+      .stage {
         width: 100%;
+        height: 100%;
+        padding: 0;
       }
 
-      .hero-actions,
-      .game-actions {
-        display: grid;
-        grid-template-columns: 1fr;
+      .phone-shell {
+        width: 100vw;
+        height: 100dvh;
+        min-height: 0;
+        max-height: none;
       }
+
+      .phone-frame {
+        padding: 0;
+        border-radius: 0;
+        background: #000;
+        box-shadow: none;
+      }
+
+      .phone-screen,
+      .app-screen {
+        border-radius: 0;
+      }
+
+      .dynamic-island {
+        top: calc(8px + var(--safe-top));
+      }
+
+      .side-button { display: none; }
+    }
+
+    @media (max-width: 520px) {
+      .bookmark-grid { grid-template-columns: 1fr; }
+      .music-hero { grid-template-columns: 88px 1fr; }
+      .app-grid { gap: 16px 8px; }
+      .app-icon .icon-badge { width: 60px; height: 60px; }
+      .gallery-grid { gap: 10px; }
     }
   </style>
 </head>
-
-<body class="scanlines">
-  <!-- 背景层：如果设备性能较弱，可删除这些元素，只保留 body 背景 -->
-  <canvas id="starCanvas" aria-hidden="true"></canvas>
-  <div class="grid-floor" aria-hidden="true"></div>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="aurora a" aria-hidden="true"></div>
-  <div class="aurora b" aria-hidden="true"></div>
-  <div class="aurora c" aria-hidden="true"></div>
-
-  <!-- 顶部导航：修改菜单入口就在这里 -->
-  <header class="site-header">
-    <div class="site-header-inner">
-      <div class="brand" id="brandButton" title="连续点击 3 次试试">
-        <div class="brand-badge">XW</div>
-        <div class="brand-copy">
-          <strong>小吴大神</strong>
-          <span>SCI‑FI PERSONAL HUB</span>
-        </div>
-      </div>
-
-      <nav class="nav" aria-label="站点导航">
-        <a href="#home">首页</a>
-        <a href="#about">档案</a>
-        <a href="#gallery">画廊</a>
-        <a href="#video">视频</a>
-        <a href="#game">小游戏</a>
-        <a href="#links">传送门</a>
-        <a href="#easter">彩蛋</a>
-        <a href="#safety">安全</a>
-        <a href="#contact">联系</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <!-- 头部英雄区：修改昵称、简介、按钮、头像文件名，看这里 -->
-    <section class="section hero" id="home">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow">PERSONAL WEBSITE · LONG FORM · FUN MODE ENABLED</p>
-            <h1>小吴大神<span class="gradient-dot">.</span></h1>
-
-            <p class="lead">
-              欢迎来到我的科幻个人主页。这不是一个只有几行字的空白页，而是一座被霓虹、粒子、日志、按钮、彩蛋和小游戏填满的数字空间站。
-              在这里，你可以看图、看视频、乱逛外部传送门、点亮 15 秒抓星星小游戏，也可以把它继续改造成更夸张、更花哨、更属于你自己的赛博名片。
-            </p>
-
-            <p class="type-line">
-              当前状态：<span id="typeTarget">正在启动数字空间站…</span><span class="cursor"></span>
-            </p>
-
-            <div class="hero-actions">
-              <a class="button primary" href="#links">开启外部传送门</a>
-              <a class="button ghost" href="#game">直接开玩 15 秒抓星星</a>
-              <button class="button ghost" id="shareBtn" type="button">分享本页</button>
-            </div>
-
-            <div class="chip-row">
-              <span class="chip">姓名：小吴大神</span>
-              <span class="chip">邮箱：1731145034@qq.com</span>
-              <span class="chip">QQ：1731145034</span>
-              <span class="chip">头像文件：avatar.png</span>
-              <span class="chip">小游戏时长：15 秒</span>
-            </div>
-
-            <div class="hero-mini-grid">
-              <div class="mini-stat">
-                <strong id="visitCount">1</strong>
-                <span>本机访问次数（仅本浏览器）</span>
-              </div>
-              <div class="mini-stat">
-                <strong id="clock">--:--:--</strong>
-                <span>本地时间 / 动态刷新</span>
-              </div>
-              <div class="mini-stat">
-                <strong id="siteState">ONLINE</strong>
-                <span>站点状态 / 可点击 Logo 触发彩蛋</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="hero-visual">
-            <div class="holo-card">
-              <div class="scan-text">HOLOGRAM LOCKED · AVATAR SOURCE = avatar.png</div>
-
-              <div class="avatar-orbit">
-                <div class="orbit-dot one"></div>
-                <div class="orbit-dot two"></div>
-                <div class="orbit-dot three"></div>
-                <div class="orbit-dot four"></div>
-
-                <div class="avatar-core">
-                  <img
-                    src="avatar.png"
-                    alt="小吴大神头像"
-                    loading="eager"
-                    onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='grid';"
-                  />
-                  <div class="avatar-fallback" id="avatarFallback">XW</div>
+<body>
+  <div class="stage">
+    <div class="phone-shell">
+      <div class="side-button power"></div>
+      <div class="side-button volume-up"></div>
+      <div class="side-button volume-down"></div>
+      <div class="phone-frame">
+        <div class="phone-screen" id="phoneScreen">
+          <div id="wallpaperLayer"></div>
+          <div class="dynamic-island"></div>
+          <div class="os-root" id="osRoot">
+            <section class="desktop-view" id="desktopView">
+              <div class="status-bar">
+                <div class="status-time" id="statusTime">09:41</div>
+                <div class="status-icons">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 18h2" />
+                    <path d="M8 15h2" />
+                    <path d="M12 12h2" />
+                    <path d="M16 9h2" />
+                  </svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 9c5.5-5.5 12.5-5.5 18 0" />
+                    <path d="M6 12c3.8-3.8 8.2-3.8 12 0" />
+                    <path d="M9.5 15.4c1.8-1.8 3.2-1.8 5 0" />
+                    <path d="M12 18h.01" />
+                  </svg>
+                  <svg viewBox="0 0 28 16" aria-hidden="true">
+                    <rect x="1" y="1" width="22" height="14" rx="4" />
+                    <path d="M25 5v6" />
+                    <rect x="3.5" y="3.5" width="15.5" height="9" rx="2.5" fill="currentColor" stroke="none" />
+                  </svg>
                 </div>
               </div>
+              <div class="desktop-scroll">
+                <div class="hero-row">
+                  <div class="glass-card">
+                    <div class="widget-top">
+                      <div>
+                        <div class="widget-big-time" id="desktopBigTime">09:41</div>
+                        <div class="widget-date" id="desktopDate">星期一 · 6 月 8 日</div>
+                      </div>
+                      <div class="widget-pill">Web Phone Launcher</div>
+                    </div>
+                    <div class="gradient-line"></div>
+                  </div>
 
-              <div class="holo-tags">
-                <span class="holo-tag">GitHub Pages</span>
-                <span class="holo-tag">Steam 愿望观察者</span>
-                <span class="holo-tag">3ds Max 入口</span>
-                <span class="holo-tag">B站 / YouTube 外链</span>
-                <span class="holo-tag">15s 抓星星</span>
+                  <div class="search-bar" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="11" cy="11" r="6.8"></circle>
+                      <path d="M20 20l-4-4"></path>
+                    </svg>
+                    搜索 App、页面或链接
+                  </div>
+                </div>
+
+                <div class="app-grid" id="appGrid"></div>
               </div>
 
-              <ul class="system-list">
-                <li><span>昵称 / 识别代号</span><em>小吴大神</em></li>
-                <li><span>显示头像</span><em>avatar.png</em></li>
-                <li><span>页面模型</span><em>单文件 HTML / CSS / JS</em></li>
-                <li><span>部署方式</span><em>GitHub Pages 静态托管</em></li>
-                <li><span>交互状态</span><em>彩蛋、Lightbox、小游戏、复制按钮</em></li>
-                <li><span>安全策略</span><em>仅跳转，不自动下载</em></li>
-              </ul>
-            </div>
+              <nav class="dock" id="dock"></nav>
+            </section>
+
+            <div class="app-layer" id="appLayer"></div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- 关于我与站点结构：继续新增内容时，优先复制 panel -->
-    <section class="section" id="about">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">Digital Archive</span>
-          <h2 class="section-title">我的数字档案与站点结构</h2>
-          <p class="section-desc">
-            这一段不是“模板占位词”式的空话，而是把你的主页真正做长、做满、做有层次：上面是头部登陆区，下面有档案、图廊、视频、小游戏、外链、彩蛋、免责声明和联系方式。
-            后续你继续往下加内容，也完全可以按现在的卡片结构继续复制扩展。
-          </p>
-        </div>
-
-        <div class="grid cols-4">
-          <article class="panel">
-            <h3>👤 我是谁</h3>
-            <p>
-              我是小吴大神。这一页作为我的个人展示站，风格偏向
-              科幻、霓虹、未来终端与数字空间站。它不是企业官网，也不是简历模板，
-              而是更自由、更好玩的个人名片。
-            </p>
-          </article>
-
-          <article class="panel">
-            <h3>🎯 这页想达到什么效果</h3>
-            <p>
-              长、丰富、好玩、有视觉冲击力，打开以后既能“看”，又能“点”，还能“玩”。
-              同时又必须是 GitHub Pages 友好的单文件结构，方便你自己今后继续改。
-            </p>
-          </article>
-
-          <article class="panel">
-            <h3>🧩 已完成替换字段</h3>
-            <p>姓名：小吴大神</p>
-            <p>邮箱：1731145034@qq.com</p>
-            <p>QQ：1731145034</p>
-            <p>头像：avatar.png</p>
-            <p>小游戏：15 秒抓星星</p>
-          </article>
-
-          <article class="panel">
-            <h3>🛡️ 安全与版权原则</h3>
-            <p>
-              只做展示、跳转、文本和多媒体播放；不做自动下载、不做可执行文件分发、
-              不托管未授权影视或盗版资源，不鼓励任何侵权传播。
-            </p>
-          </article>
-        </div>
-
-        <div class="split mt-lg">
-          <article class="panel">
-            <h3>🚀 站点升级日志</h3>
-            <div class="timeline">
-              <div class="timeline-item">
-                <strong>版本 A：从纯白空白页升级为科幻单页</strong>
-                <span>加入渐变背景、头像、导航、玻璃面板、动态文字</span>
-              </div>
-              <div class="timeline-item">
-                <strong>版本 B：继续加长内容区</strong>
-                <span>加入图片画廊、视频区、外链传送门、联系方式、安全提示</span>
-              </div>
-              <div class="timeline-item">
-                <strong>版本 C：加入互动</strong>
-                <span>增加 15 秒抓星星小游戏、图片放大层、复制按钮、分享按钮</span>
-              </div>
-              <div class="timeline-item">
-                <strong>版本 D：加入彩蛋噪声</strong>
-                <span>加入宇宙日志生成器、终端流、Logo 彩蛋与本机访问记录</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="panel">
-            <h3>📈 站点评估仪表</h3>
-            <p>
-              下面这些数值是“风格化”的页面仪表，不是后端统计；
-              你以后想换成真实数据，也可以接入第三方服务或自己继续写脚本。
-            </p>
-
-            <div class="meter-list">
-              <div class="meter"><span style="--w: 94%;">科幻度 <b>94%</b></span></div>
-              <div class="meter"><span style="--w: 88%;">内容密度 <b>88%</b></span></div>
-              <div class="meter"><span style="--w: 82%;">可玩性 <b>82%</b></span></div>
-              <div class="meter"><span style="--w: 91%;">可扩展性 <b>91%</b></span></div>
-            </div>
-
-            <ul class="panel-list">
-              <li>当前版本已经适合继续追加作品展示、学习笔记、博客文章。</li>
-              <li>如果你以后上传更多图片，这一页会自然变成“长滚动画廊”。</li>
-              <li>如果你以后上传自己的视频，本地视频槽位会直接顶上。</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- 图片画廊：上传 avatar.png / space1.jpg / space2.jpg / space3.jpg / space4.jpg 即可 -->
-    <section class="section" id="gallery">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">Visual Gallery</span>
-          <h2 class="section-title">视觉展示舱</h2>
-          <p class="section-desc">
-            这一段是专为“页面更长、更丰富”而设计的画廊区域。
-            你只需要把图片上传到仓库同级目录，命名成下面这些文件名，刷新后就能展示。
-            点击图片可以放大查看；如果图片还没上传，则显示占位面板。
-          </p>
-        </div>
-
-        <div class="gallery">
-          <figure class="gallery-card featured" data-caption="头像展示">
-            <div class="gallery-image-wrap">
-              <div class="gallery-placeholder">头像主图<br />avatar.png</div>
-              <img
-                src="avatar.png"
-                alt="小吴大神头像展示"
-                loading="lazy"
-                onload="this.previousElementSibling.style.display='none';"
-                onerror="this.style.display='none';"
-              />
-            </div>
-            <figcaption class="gallery-caption">
-              <strong>头像主图</strong>
-              <span>avatar.png：顶部全息头像与画廊首图</span>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-card" data-caption="画廊图片 1">
-            <div class="gallery-image-wrap">
-              <div class="gallery-placeholder">等待上传<br />space1.jpg</div>
-              <img
-                src="space1.jpg"
-                alt="画廊图片 1"
-                loading="lazy"
-                onload="this.previousElementSibling.style.display='none';"
-                onerror="this.style.display='none';"
-              />
-            </div>
-            <figcaption class="gallery-caption">
-              <strong>未来图片 01</strong>
-              <span>可放风景图 / 作品图 / 游戏截图 / 艺术图</span>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-card" data-caption="画廊图片 2">
-            <div class="gallery-image-wrap">
-              <div class="gallery-placeholder">等待上传<br />space2.jpg</div>
-              <img
-                src="space2.jpg"
-                alt="画廊图片 2"
-                loading="lazy"
-                onload="this.previousElementSibling.style.display='none';"
-                onerror="this.style.display='none';"
-              />
-            </div>
-            <figcaption class="gallery-caption">
-              <strong>未来图片 02</strong>
-              <span>可放学习成果 / 设计稿 / 纪念图 / 摆拍图</span>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-card" data-caption="画廊图片 3">
-            <div class="gallery-image-wrap">
-              <div class="gallery-placeholder">等待上传<br />space3.jpg</div>
-              <img
-                src="space3.jpg"
-                alt="画廊图片 3"
-                loading="lazy"
-                onload="this.previousElementSibling.style.display='none';"
-                onerror="this.style.display='none';"
-              />
-            </div>
-            <figcaption class="gallery-caption">
-              <strong>未来图片 03</strong>
-              <span>继续把页面往下做长时，这里会非常好用</span>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-card" data-caption="画廊图片 4">
-            <div class="gallery-image-wrap">
-              <div class="gallery-placeholder">等待上传<br />space4.jpg</div>
-              <img
-                src="space4.jpg"
-                alt="画廊图片 4"
-                loading="lazy"
-                onload="this.previousElementSibling.style.display='none';"
-                onerror="this.style.display='none';"
-              />
-            </div>
-            <figcaption class="gallery-caption">
-              <strong>未来图片 04</strong>
-              <span>可选扩展图位，用来拉长页面视觉纵深</span>
-            </figcaption>
-          </figure>
-
-          <figure class="gallery-card" data-caption="概念图占位卡">
-            <div class="gallery-image-wrap">
-              <div class="gallery-placeholder">
-                如果你暂时没有更多图片<br />
-                也可以先保留这个占位卡<br />
-                后面再继续慢慢补齐
-              </div>
-            </div>
-            <figcaption class="gallery-caption">
-              <strong>扩展占位卡</strong>
-              <span>占位也有风格，不会让页面显得空</span>
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <!-- 视频区：上方远程示例 + 下方本地视频替换位 -->
-    <section class="section" id="video">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">Media Deck</span>
-          <h2 class="section-title">视频播放舱</h2>
-          <p class="section-desc">
-            这里给你预先放了一个可以直接展示的远程示例视频，同时保留本地 `myvideo.mp4` 的替换槽位。
-            这样即使你还没上传自己视频，页面也不会显得空；等你哪天想放个人剪辑、游戏混剪、旅行片段或作品展示，直接换成本地文件就行。
-          </p>
-        </div>
-
-        <div class="video-grid">
-          <article class="panel">
-            <h3>🎬 远程示例视频</h3>
-            <p>
-              这是一个轻量的远程示例，用来让页面上线后就有“可播放的视频感”。
-              你可以保留它，也可以以后删掉。
-            </p>
-
-            <div class="video-shell">
-              <video
-                controls
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                loading="lazy"
-                poster="avatar.png"
-              >
-                <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
-                <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm" />
-                你的浏览器暂不支持视频播放。
-              </video>
-            </div>
-
-            <ul class="video-info-list">
-              <li>默认静音循环，更适合首页展示，不会突然外放声音。</li>
-              <li>如果你不喜欢循环效果，可以删掉 `autoplay muted loop`。</li>
-              <li>将来换成你自己的视频时，建议控制文件大小，页面会更轻快。</li>
-            </ul>
-          </article>
-
-          <article class="panel">
-            <h3>📦 本地视频槽位</h3>
-            <p>
-              想直接放你自己的视频时，把文件命名为 <span class="mono">myvideo.mp4</span>，
-              上传到和 <span class="mono">index.html</span> 同一级目录即可。
-            </p>
-
-            <div class="video-shell">
-              <video
-                id="localVideo"
-                controls
-                preload="metadata"
-                loading="lazy"
-                poster="avatar.png"
-              >
-                <source src="myvideo.mp4" type="video/mp4" />
-                你的浏览器暂不支持视频播放。
-              </video>
-
-              <div class="video-fallback" id="localVideoFallback">
-                <div>
-                  <strong>未检测到 myvideo.mp4</strong>
-                  <p style="margin-top:10px;">
-                    现在这里只是预留槽位。<br />
-                    上传本地视频后，它会自动取代这里的占位提示。
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <ul class="video-info-list">
-              <li>推荐格式：MP4（H.264），兼容性通常更稳。</li>
-              <li>推荐分辨率：720p 或 1080p，别太大，GitHub Pages 更适合轻量展示。</li>
-              <li>请不要上传未授权影视、侵权混剪或可疑可执行文件伪装的视频资源。</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- 小游戏：15 秒抓星星 -->
-    <section class="section" id="game">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">Mini Game</span>
-          <h2 class="section-title">15 秒抓星星小游戏</h2>
-          <p class="section-desc">
-            这一段不是装饰，它是真的能玩。点击开始后，目标会在区域内随机出现，你需要在 15 秒内尽快点它。
-            分数和本机最高分会记录在浏览器本地，便于你自己反复挑战。
-          </p>
-        </div>
-
-        <div class="game-layout">
-          <article class="panel">
-            <h3>⭐ 抓星星启动台</h3>
-            <p>
-              基本规则：15 秒内尽量多点发光目标。不同图标分值略有不同，连续命中越多，就越容易把分数拉高。
-            </p>
-
-            <div class="game-hud">
-              <div class="hud-box">
-                <strong id="scoreText">0</strong>
-                <span>当前分数</span>
-              </div>
-              <div class="hud-box">
-                <strong id="timeText">15</strong>
-                <span>剩余时间</span>
-              </div>
-              <div class="hud-box">
-                <strong id="bestText">0</strong>
-                <span>本机最高</span>
-              </div>
-              <div class="hud-box">
-                <strong id="comboText">0</strong>
-                <span>连击数</span>
-              </div>
-            </div>
-
-            <div class="game-actions">
-              <button class="game-button" id="startGameBtn" type="button">开始游戏</button>
-              <button class="ghost-button" id="resetBestBtn" type="button">清空本机最高分</button>
-            </div>
-
-            <div class="game-area" id="gameArea" aria-label="15 秒抓星星游戏区域">
-              <div class="game-center-tip" id="gameMessage" aria-live="polite">
-                点击“开始游戏”后进入 15 秒挑战。<br />
-                命中得分目标，试试看你能打到多少分。
-              </div>
-
-              <button class="game-target" id="gameTarget" type="button" aria-label="得分目标">⭐</button>
-            </div>
-          </article>
-
-          <article class="panel">
-            <h3>🕹️ 玩法说明与本机记录</h3>
-            <p>
-              这个小游戏是纯前端的，不需要服务器，也不会上传任何成绩到外部。
-              最高分只保存在你自己当前浏览器里。
-            </p>
-
-            <ol class="panel-list">
-              <li>点击“开始游戏”后立即进入倒计时。</li>
-              <li>目标会随机换位置、换大小、换图标。</li>
-              <li>空点游戏区域会打断连击，但不会扣分。</li>
-              <li>如果你想把它改成 30 秒或更难，只要改脚本里的数字即可。</li>
-            </ol>
-
-            <h3 style="margin-top:20px;">🏆 最近成绩</h3>
-            <ul class="ranking-list" id="historyList">
-              <li><span>暂无记录</span><small>开始玩一局吧</small></li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- 外部跳转：默认使用官方 / 权威入口；不自动下载 -->
-    <section class="section" id="links">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">Portals</span>
-          <h2 class="section-title">外部传送门</h2>
-          <p class="section-desc">
-            这里的按钮全部只是“打开新标签页”，不会自动下载文件，更不会自动执行程序。
-            默认优先放官方或更稳妥的门户入口。你以后如果想改成别的链接，只要改每个按钮的 <span class="mono">href</span> 即可。
-          </p>
-        </div>
-
-        <div class="notice">
-          <strong>安全提示：</strong>
-          本页外链只做跳转，不做自动下载；请优先通过正版商店、官方产品页、平台规则允许的方式获取内容。
-          如果你把某个按钮改成第三方下载站，请自行承担版权与安全风险。
-        </div>
-
-        <div class="portal-grid">
-          <article class="panel portal-card">
-            <div class="portal-topline">AUTODESK / DESIGN</div>
-            <h3>3ds Max 官方</h3>
-            <p>
-              面向建模、动画、渲染与可视化的官方入口。适合把这个主页变成你未来作品展示站的“设计工具入口”。
-            </p>
-            <div class="portal-meta">
-              <span class="portal-pill">官方页</span>
-              <span class="portal-pill">海外站点</span>
-            </div>
-            <a
-              class="portal-button"
-              href="https://www.autodesk.com/products/3ds-max/overview"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-            >前往 3ds Max 官方</a>
-          </article>
-
-          <article class="panel portal-card">
-            <div class="portal-topline">STEAM / STORE</div>
-            <h3>Steam 商店</h3>
-            <p>
-              正版游戏商店入口。比起任何不明下载源，这里更适合作为你页面里的“正版购买与愿望单”外链。
-            </p>
-            <div class="portal-meta">
-              <span class="portal-pill">官方商店</span>
-              <span class="portal-pill">正版优先</span>
-            </div>
-            <a
-              class="portal-button"
-              href="https://store.steampowered.com/"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-            >打开 Steam 商店</a>
-          </article>
-
-          <article class="panel portal-card">
-            <div class="portal-topline">ALI213 / PORTAL</div>
-            <h3>游侠网主页</h3>
-            <p>
-              出于合规与安全考虑，这里默认给的是游侠主门户而不是论坛页。
-              如果你只想做资讯与社区导航，这个入口更稳妥。
-            </p>
-            <div class="portal-meta">
-              <span class="portal-pill">门户入口</span>
-              <span class="portal-pill">请勿未授权下载</span>
-            </div>
-            <a
-              class="portal-button"
-              href="https://www.ali213.net/"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-            >打开游侠网主页</a>
-          </article>
-
-          <article class="panel portal-card">
-            <div class="portal-topline">BILIBILI / VIDEO</div>
-            <h3>哔哩哔哩 B站</h3>
-            <p>
-              如果你未来想把主页做成“个人作品入口 + 视频主页”，B站按钮会非常实用，
-              也适合放到你的动画、剪辑、二创、记录类内容边上。
-            </p>
-            <div class="portal-meta">
-              <span class="portal-pill">官方域名</span>
-              <span class="portal-pill">中文平台</span>
-            </div>
-            <a
-              class="portal-button"
-              href="https://www.bilibili.com/"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-            >打开 B站</a>
-          </article>
-
-          <article class="panel portal-card">
-            <div class="portal-topline">YOUTUBE / VIDEO</div>
-            <h3>YouTube</h3>
-            <p>
-              海外视频平台入口。适合未来放英文内容、海外教程、国际作品展示。
-              部分地区或网络环境下可能无法直接访问。
-            </p>
-            <div class="portal-meta">
-              <span class="portal-pill">官方页</span>
-              <span class="portal-pill">可能受限</span>
-            </div>
-            <a
-              class="portal-button"
-              href="https://www.youtube.com/"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-            >打开 YouTube</a>
-          </article>
-
-          <article class="panel portal-card">
-            <div class="portal-topline">GITHUB / DOCS</div>
-            <h3>GitHub Pages 文档</h3>
-            <p>
-              如果你要继续把这个主页做复杂、做多页、做自定义域名、开 HTTPS，
-              官方文档是最稳的参考入口。
-            </p>
-            <div class="portal-meta">
-              <span class="portal-pill">官方文档</span>
-              <span class="portal-pill">静态站点</span>
-            </div>
-            <a
-              class="portal-button"
-              href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-            >阅读 GitHub Pages 文档</a>
-          </article>
-
-          <article class="panel portal-card">
-            <div class="portal-topline">MDN / HTML</div>
-            <h3>MDN 视频元素文档</h3>
-            <p>
-              以后你如果继续修改视频区、播放按钮、自动播放策略、兼容性处理，
-              这里是很可靠的前端参考入口。
-            </p>
-            <div class="portal-meta">
-              <span class="portal-pill">权威文档</span>
-              <span class="portal-pill">前端开发</span>
-            </div>
-            <a
-              class="portal-button"
-              href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-            >打开 MDN 视频文档</a>
-          </article>
-
-          <article class="panel portal-card">
-            <div class="portal-topline">CONTACT / PERSONAL</div>
-            <h3>快速联系我</h3>
-            <p>
-              如果外链里逛够了，或者你只是单纯想联系站长，这里就是回到站内的“返航入口”。
-            </p>
-            <div class="portal-meta">
-              <span class="portal-pill">站内跳转</span>
-              <span class="portal-pill">复制邮箱 / QQ</span>
-            </div>
-            <a class="portal-button" href="#contact">回到联系方式</a>
-          </article>
-        </div>
-
-        <div class="notice" style="margin-top:18px;">
-          <strong>如你坚持要改成“游侠论坛首页”：</strong>
-          可把上面“游侠网主页”按钮的链接改成 <span class="mono">https://game.ali213.net/</span>。
-          但为了避免把主页默认引向可能含有下载/补丁入口的页面，这份交付物出厂默认仍采用门户页。
-        </div>
-      </div>
-    </section>
-
-    <!-- 彩蛋区：长文本、随机日志、终端噪声，专门让页面更长、更有内容 -->
-    <section class="section" id="easter">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">Easter Eggs</span>
-          <h2 class="section-title">随机彩蛋与终端噪声</h2>
-          <p class="section-desc">
-            这一段的目的很直接：让页面不只是“信息块”，而更像一个有氛围、有故事感、有可探索感的空间。
-            你可以把这里理解成赛博日志墙、幻想台词板、深夜终端噪声发生器。
-          </p>
-        </div>
-
-        <div class="split">
-          <article class="panel">
-            <h3>🪐 随机宇宙日志生成器</h3>
-            <p>
-              点击下面的按钮，会随机生成一组风格化日志文本。
-              它们没有“功能性意义”，但非常适合让主页显得更像一个真正活着的数字空间。
-            </p>
-
-            <div class="hero-actions" style="margin-top:14px;">
-              <button class="button primary" id="regenLore" type="button">生成新的宇宙日志</button>
-              <button class="button ghost" id="regenState" type="button">刷新站点状态语</button>
-            </div>
-
-            <div class="lore-output" id="loreOutput"></div>
-          </article>
-
-          <article class="panel">
-            <h3>💻 终端噪声流</h3>
-            <p>
-              这是一个自动滚动的小终端。它会不断输出风格化提示语，用来强化“系统在线”“站点正在运行”的感觉。
-            </p>
-
-            <div class="terminal" id="terminalFeed" aria-live="polite"></div>
-            <div class="secret-tip">
-              彩蛋提示：连续点击左上角 Logo 3 次，可以切换 Hyper Mode；
-              页面配色会被重写，整个站看起来会更像另一套皮肤。
-            </div>
-          </article>
-        </div>
-
-        <div class="grid cols-3 mt-lg">
-          <article class="panel">
-            <h3>📡 星港公告</h3>
-            <p>
-              如果有一天你突然想把主页做成“半作品集、半幻想设定集”的混合风格，
-              那么这个区块就是最好的试验场。你可以在这里写任何没有明确业务目的、
-              但能让页面更有个性的文字：灵感、梦境、废话、口号、世界观、片段式心情。
-            </p>
-            <p>
-              主页的魅力，往往恰恰来自这些“不一定有必要，但很好玩”的内容。
-              因为别人打开后，会感觉这不是一个模板，而是一个人。
-            </p>
-          </article>
-
-          <article class="panel">
-            <h3>🛠️ 深夜维护备忘</h3>
-            <p>
-              今夜维护项包括：霓虹网格校准、星图粒子轨迹修正、头像全息舱抛光、外部传送门安全提示加粗、
-              图片放大层增稳、游戏排行榜刷写、本地复制逻辑兜底。
-            </p>
-            <p>
-              如果你后面想继续“长代码化”，可以往页面里继续加：作品目录、导航侧栏、角色设定板、
-              音乐播放器、图像叙事区、博客文章卡片、留言墙、时间胶囊等。
-            </p>
-          </article>
-
-          <article class="panel">
-            <h3>🧪 虚构任务列表</h3>
-            <ul class="quest-list">
-              <li>把主页从“个人卡片”升级成“个人空间感页面”。</li>
-              <li>给画廊补齐真正属于自己的图片，而不是一直空着。</li>
-              <li>上传一个自己的短视频，让本地视频槽位真正启用。</li>
-              <li>把抓星星小游戏改造成第二个版本，比如 30 秒模式或多目标模式。</li>
-              <li>考虑是否加背景音乐，但一定要用“点击开启”的方式。</li>
-              <li>未来如果要做成长期主页，可以再接评论或文章系统。</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- 免责声明与安全提示：请保留这一段，它对合规和自我保护都很重要 -->
-    <section class="section" id="safety">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">Safety / Compliance</span>
-          <h2 class="section-title">免责声明与安全提示</h2>
-          <p class="section-desc">
-            这个区块建议你保留，而且建议保留得显眼。它能明确告诉访问者：这是一个展示页，不是下载站，不是资源分发页，也不是任何灰色内容入口。
-          </p>
-        </div>
-
-        <div class="panel warning-panel">
-          <h3>⚠️ 请务必保留的说明</h3>
-          <p>
-            <strong>本页所有外部链接仅为跳转入口，不会自动下载任何文件，也不会自动执行任何程序。</strong>
-            任何外部网站的内容、可用性、地区限制、账号规则与版权政策，均由对应平台自行负责。
-          </p>
-
-          <ul class="panel-list">
-            <li>不要上传未授权影视、盗版游戏、破解补丁、可疑 EXE、批处理脚本、来路不明压缩包或恶意代码。</li>
-            <li>如果你自行替换视频或图片，请确认你有权展示和传播这些内容。</li>
-            <li>如果你未来接入评论系统，也不要允许访客上传可执行文件或下载链接。</li>
-            <li>如果你要保留游戏社区类跳转，建议主页优先链接到门户/资讯区，而不是具体下载页。</li>
-            <li>如果某些外链在你所在网络环境下无法访问，那属于外部平台或地区网络因素，并非本站代码异常。</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- 联系方式：邮箱、QQ、复制按钮、分享入口 -->
-    <section class="section" id="contact">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">Contact</span>
-          <h2 class="section-title">通讯频道与收尾区域</h2>
-          <p class="section-desc">
-            到了这里，这个页面已经足够长，也足够丰富。你可以把它当成一个完整的着陆页来使用：
-            上面负责震住人，中间负责让人逛，下面负责让人联系你。
-          </p>
-        </div>
-
-        <div class="split">
-          <article class="panel">
-            <h3>📮 联系我</h3>
-
-            <div class="contact-grid">
-              <div class="contact-item">
-                <div>
-                  <div class="contact-label">Email</div>
-                  <div class="contact-value">1731145034@qq.com</div>
-                </div>
-                <button
-                  class="copy-btn"
-                  type="button"
-                  data-copy="1731145034@qq.com"
-                  data-label="邮箱"
-                >复制邮箱</button>
-              </div>
-
-              <div class="contact-item">
-                <div>
-                  <div class="contact-label">QQ</div>
-                  <div class="contact-value">1731145034</div>
-                </div>
-                <button
-                  class="copy-btn"
-                  type="button"
-                  data-copy="1731145034"
-                  data-label="QQ"
-                >复制 QQ</button>
-              </div>
-
-              <div class="contact-item">
-                <div>
-                  <div class="contact-label">站点名称</div>
-                  <div class="contact-value">小吴大神的科幻个人主页</div>
-                </div>
-                <button class="copy-btn" type="button" id="copyLinkBtn">复制当前链接</button>
-              </div>
-            </div>
-
-            <p style="margin-top:14px;">
-              如果你以后想把联系方式换成微信、GitHub、B站主页、Steam 个人资料、
-              ArtStation、Sketchfab 或 GitHub 仓库链接，也都可以继续往这里加。
-            </p>
-          </article>
-
-          <article class="panel">
-            <h3>🧭 页尾说明</h3>
-            <p>
-              这份页面是单文件写法，目的是让你后续维护时不用在很多文件之间来回跳。
-              你只要记住三个位置：
-            </p>
-
-            <ol class="panel-list">
-              <li><strong>视觉和颜色</strong>：改 <span class="mono">&lt;style&gt;</span> 里的变量和各区块 CSS。</li>
-              <li><strong>文案和区块</strong>：改对应 section 里的 HTML 内容。</li>
-              <li><strong>游戏和彩蛋逻辑</strong>：改文末 <span class="mono">&lt;script&gt;</span> 的脚本分区。</li>
-            </ol>
-
-            <p>
-              这意味着你可以继续往下追加更多内容，而不会被复杂工程化结构绊住脚。
-              对个人主页来说，这恰恰是最实用的方案。
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- 页脚：可继续加备案、版权、更新时间、版本号 -->
-  <footer>
-    <div class="container">
-      <div class="footer-box">
-        <div>
-          <strong>© <span id="year"></span> 小吴大神的科幻个人主页</strong>
-          <div class="tiny">Made with GitHub Pages · Single File HTML · Sci‑Fi Long Page</div>
-        </div>
-        <div class="tiny">
-          当前模式：<span id="footerMode">Normal Mode</span> ·
-          页面已包含：全息头像 / 画廊 / 视频 / 小游戏 / 彩蛋 / 安全提示
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- 图片 Lightbox：不喜欢这个功能可以整块删除 -->
-  <div class="lightbox" id="lightbox" aria-hidden="true">
-    <div class="lightbox-card">
-      <div class="lightbox-top">
-        <strong id="lightboxCaption">图片预览</strong>
-        <button class="lightbox-close" id="lightboxClose" type="button" aria-label="关闭图片预览">✕</button>
-      </div>
-      <div class="lightbox-image-wrap">
-        <img id="lightboxImage" src="" alt="预览图片" />
       </div>
     </div>
   </div>
 
-  <!-- 返回顶部与 Toast -->
-  <button class="back-to-top" id="backToTop" type="button" aria-label="返回顶部">↑</button>
-  <div class="toast" id="toast" aria-live="polite"></div>
+  <div class="gallery-viewer" id="galleryViewer" aria-hidden="true"></div>
 
   <script>
     /* =========================================================
-       脚本区总说明：
-       本区按功能拆成多个小段，方便你以后单独改：
-       1. 通用工具
-       2. 头部动态字 / 时间 / 访问数
-       3. 头像/视频检测
-       4. 画廊 Lightbox
-       5. 星空粒子背景
-       6. 小游戏
-       7. 彩蛋日志与终端
-       8. 复制与分享
-    ========================================================= */
+       Web Phone Launcher
+       单文件版 / 数据驱动版
+       你后续最常修改的位置：
+       1. APP_CONFIG            -> 修改 App 图标顺序 / 是否放入 Dock / 标题 / 副标题
+       2. YOUTUBE_VIDEOS        -> 修改 YouTube 视频 ID
+       3. DOUYIN_CONFIG         -> 修改抖音 video_id / iframe src / 打开原页面链接
+       4. WALLPAPERS            -> 修改壁纸颜色
+       5. AUTHOR_INFO / VERSION -> 修改关于页信息
+       ========================================================= */
 
     /* =========================
-       通用工具
-    ========================= */
-    const $ = (selector, root = document) => root.querySelector(selector);
-    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
-
-    function pick(list) {
-      return list[Math.floor(Math.random() * list.length)];
-    }
-
-    function toast(message) {
-      const el = $("#toast");
-      el.textContent = message;
-      el.classList.add("show");
-      clearTimeout(toast._timer);
-      toast._timer = setTimeout(() => {
-        el.classList.remove("show");
-      }, 2200);
-    }
-
-    async function copyText(value, label = "内容") {
-      try {
-        await navigator.clipboard.writeText(value);
-        toast(label + "已复制");
-      } catch (err) {
-        const textarea = document.createElement("textarea");
-        textarea.value = value;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
-        toast(label + "已复制");
+       App 配置区
+       - 修改图标位置：直接调整 APP_CONFIG 数组顺序
+       - 放入底部 Dock：把 dock 改为 true
+       ========================= */
+    const APP_CONFIG = [
+      {
+        id: "douyin",
+        title: "抖音",
+        subtitle: "短视频信息流",
+        icon: "♪",
+        dock: false,
+        gradient: "linear-gradient(135deg, #111827 0%, #fe2c55 42%, #25f4ee 100%)",
+        accent: "#fe2c55"
+      },
+      {
+        id: "youtube",
+        title: "YouTube",
+        subtitle: "视频列表 + 播放器",
+        icon: "▶",
+        dock: false,
+        gradient: "linear-gradient(135deg, #ff4d4f 0%, #ff2d55 52%, #ff7a18 100%)",
+        accent: "#ff4d4f"
+      },
+      {
+        id: "gallery",
+        title: "相册",
+        subtitle: "照片与回忆",
+        icon: "✦",
+        dock: false,
+        gradient: "linear-gradient(135deg, #ffb703 0%, #fb8500 48%, #ff5e7a 100%)",
+        accent: "#ff9f1c"
+      },
+      {
+        id: "about",
+        title: "关于",
+        subtitle: "项目介绍",
+        icon: "◎",
+        dock: false,
+        gradient: "linear-gradient(135deg, #0ea5e9 0%, #6366f1 46%, #ec4899 100%)",
+        accent: "#0ea5e9"
+      },
+      {
+        id: "browser",
+        title: "浏览器",
+        subtitle: "内嵌网页",
+        icon: "⌘",
+        dock: true,
+        gradient: "linear-gradient(135deg, #22c55e 0%, #06b6d4 56%, #3b82f6 100%)",
+        accent: "#22c55e"
+      },
+      {
+        id: "music",
+        title: "音乐",
+        subtitle: "播放列表",
+        icon: "♫",
+        dock: true,
+        gradient: "linear-gradient(135deg, #8b5cf6 0%, #6366f1 52%, #14b8a6 100%)",
+        accent: "#8b5cf6"
+      },
+      {
+        id: "chat",
+        title: "聊天",
+        subtitle: "消息对话",
+        icon: "✉",
+        dock: true,
+        gradient: "linear-gradient(135deg, #22c55e 0%, #10b981 48%, #34d399 100%)",
+        accent: "#34c759"
+      },
+      {
+        id: "settings",
+        title: "设置",
+        subtitle: "主题与壁纸",
+        icon: "⚙",
+        dock: true,
+        gradient: "linear-gradient(135deg, #64748b 0%, #475569 48%, #0f172a 100%)",
+        accent: "#64748b"
       }
-    }
-
-    /* =========================
-       头部动态字 / 时间 / 本机访问次数 / 状态切换
-    ========================= */
-    const typeTarget = $("#typeTarget");
-    const siteState = $("#siteState");
-    const footerMode = $("#footerMode");
-
-    const typePhrases = [
-      "GitHub Pages 空间站正在稳定运行",
-      "头像模块：avatar.png 已装载",
-      "蒸汽商店 / 3ds Max / B站 / YouTube 传送门待命",
-      "15 秒抓星星小游戏已部署",
-      "深夜维护模式：继续把页面做长做满"
     ];
 
-    const statePhrases = [
-      "ONLINE",
-      "SYNCING",
-      "PORTALS READY",
-      "NEON STABLE",
-      "HYPER CLEAN"
+    /* =========================
+       YouTube 视频配置区
+       - 直接替换 id 即可
+       - title / desc 可自由修改
+       ========================= */
+    const YOUTUBE_VIDEOS = [
+      {
+        id: "M7lc1UVf-VE",
+        title: "YouTube IFrame API Demo",
+        desc: "官方示例视频 ID，可直接换成你自己的视频 ID。"
+      },
+      {
+        id: "aqz-KE-bpKQ",
+        title: "Big Buck Bunny Trailer",
+        desc: "公开视频示例，方便你直接测试播放器切换。"
+      },
+      {
+        id: "XGSy3_Czz8k",
+        title: "Creative / Demo Clip",
+        desc: "可替换成你自己的频道公开视频。"
+      }
     ];
 
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let deleting = false;
-
-    function typeLoop() {
-      const current = typePhrases[phraseIndex];
-      typeTarget.textContent = current.slice(0, charIndex);
-
-      if (!deleting) {
-        charIndex++;
-        if (charIndex > current.length) {
-          deleting = true;
-          setTimeout(typeLoop, 1050);
-          return;
-        }
-      } else {
-        charIndex--;
-        if (charIndex < 0) {
-          deleting = false;
-          phraseIndex = (phraseIndex + 1) % typePhrases.length;
-          charIndex = 0;
-        }
-      }
-
-      setTimeout(typeLoop, deleting ? 34 : 72);
-    }
-    typeLoop();
-
-    function updateClock() {
-      const now = new Date();
-      $("#clock").textContent = now.toLocaleString("zh-CN", { hour12: false });
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
-
-    const visitKey = "xw_local_visit_count";
-    const localVisits = Number(localStorage.getItem(visitKey) || "0") + 1;
-    localStorage.setItem(visitKey, String(localVisits));
-    $("#visitCount").textContent = localVisits;
-
-    setInterval(() => {
-      const next = pick(statePhrases);
-      siteState.textContent = next;
-    }, 3600);
-
-    $("#year").textContent = new Date().getFullYear();
-
     /* =========================
-       Logo 三击彩蛋：切换 Hyper Mode
-    ========================= */
-    const brandButton = $("#brandButton");
-    let brandTapCount = 0;
-    let brandTapTimer = null;
-
-    brandButton.addEventListener("click", () => {
-      brandTapCount += 1;
-      clearTimeout(brandTapTimer);
-      brandTapTimer = setTimeout(() => {
-        brandTapCount = 0;
-      }, 700);
-
-      if (brandTapCount >= 3) {
-        document.body.classList.toggle("hyper-mode");
-        const isHyper = document.body.classList.contains("hyper-mode");
-        footerMode.textContent = isHyper ? "Hyper Mode" : "Normal Mode";
-        siteState.textContent = isHyper ? "HYPER MODE" : "ONLINE";
-        toast(isHyper ? "Hyper Mode 已开启" : "Hyper Mode 已关闭");
-        brandTapCount = 0;
-      }
-    });
-
-    /* =========================
-       外链分享与复制当前链接
-    ========================= */
-    $("#copyLinkBtn").addEventListener("click", () => {
-      copyText(location.href, "当前链接");
-    });
-
-    $("#shareBtn").addEventListener("click", async () => {
-      const shareData = {
-        title: document.title,
-        text: "来看小吴大神的科幻个人主页",
-        url: location.href
-      };
-
-      if (navigator.share) {
-        try {
-          await navigator.share(shareData);
-          toast("已打开系统分享面板");
-        } catch (err) {
-          // 用户取消时不必弹错
-        }
-      } else {
-        copyText(location.href, "当前链接");
-      }
-    });
-
-    $$("[data-copy]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        copyText(btn.dataset.copy || "", btn.dataset.label || "内容");
-      });
-    });
-
-    /* =========================
-       本地视频占位检测
-    ========================= */
-    const localVideo = $("#localVideo");
-    const localVideoFallback = $("#localVideoFallback");
-    let localVideoReady = false;
-
-    localVideo.addEventListener("loadeddata", () => {
-      localVideoReady = true;
-      localVideoFallback.style.display = "none";
-    });
-
-    localVideo.addEventListener("error", () => {
-      localVideoFallback.style.display = "grid";
-    });
-
-    setTimeout(() => {
-      if (!localVideoReady && localVideo.readyState < 2) {
-        localVideoFallback.style.display = "grid";
-      }
-    }, 1600);
-
-    /* =========================
-       画廊 Lightbox
-    ========================= */
-    const lightbox = $("#lightbox");
-    const lightboxImage = $("#lightboxImage");
-    const lightboxCaption = $("#lightboxCaption");
-
-    function closeLightbox() {
-      lightbox.classList.remove("show");
-      lightbox.setAttribute("aria-hidden", "true");
-      lightboxImage.src = "";
-      document.body.style.overflow = "";
-    }
-
-    $("#lightboxClose").addEventListener("click", closeLightbox);
-    lightbox.addEventListener("click", (event) => {
-      if (event.target === lightbox) closeLightbox();
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeLightbox();
-    });
-
-    $$(".gallery-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        const img = $("img", card);
-        if (!img || !img.currentSrc || img.naturalWidth === 0) {
-          toast("这张图片还没有上传到仓库");
-          return;
-        }
-
-        lightboxImage.src = img.currentSrc;
-        lightboxCaption.textContent = card.dataset.caption || img.alt || "图片预览";
-        lightbox.classList.add("show");
-        lightbox.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
-      });
-    });
-
-    /* =========================
-       返回顶部按钮
-    ========================= */
-    const backToTop = $("#backToTop");
-    window.addEventListener("scroll", () => {
-      backToTop.classList.toggle("show", window.scrollY > 560);
-    });
-
-    backToTop.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-
-    /* =========================
-       星空粒子背景：为页面增加动感
-    ========================= */
-    const starCanvas = $("#starCanvas");
-    const ctx = starCanvas.getContext("2d");
-    let width = 0;
-    let height = 0;
-    let stars = [];
-
-    function resizeStars() {
-      width = starCanvas.width = window.innerWidth;
-      height = starCanvas.height = window.innerHeight;
-      initStars();
-    }
-
-    function initStars() {
-      const count = Math.min(140, Math.max(60, Math.floor(window.innerWidth / 10)));
-      stars = Array.from({ length: count }).map(() => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.18,
-        vy: 0.12 + Math.random() * 0.44,
-        r: 0.7 + Math.random() * 1.9,
-        a: 0.25 + Math.random() * 0.75,
-        tw: Math.random() * Math.PI * 2
-      }));
-    }
-
-    function drawStars() {
-      ctx.clearRect(0, 0, width, height);
-
-      for (let i = 0; i < stars.length; i++) {
-        const s = stars[i];
-        s.x += s.vx;
-        s.y += s.vy;
-        s.tw += 0.02;
-        const alpha = s.a * (0.65 + Math.sin(s.tw) * 0.35);
-
-        if (s.y > height + 10) {
-          s.y = -8;
-          s.x = Math.random() * width;
-        }
-        if (s.x < -10) s.x = width + 10;
-        if (s.x > width + 10) s.x = -10;
-
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,255,255," + alpha.toFixed(3) + ")";
-        ctx.fill();
-      }
-
-      for (let i = 0; i < stars.length; i++) {
-        const a = stars[i];
-        for (let j = i + 1; j < Math.min(stars.length, i + 5); j++) {
-          const b = stars[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 110) {
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = "rgba(112,234,255," + (0.08 * (1 - dist / 110)).toFixed(3) + ")";
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-      }
-
-      requestAnimationFrame(drawStars);
-    }
-
-    resizeStars();
-    drawStars();
-    window.addEventListener("resize", resizeStars);
-
-    /* =========================
-       15 秒抓星星小游戏
-    ========================= */
-    const gameTotalTime = 15;
-    const scoreText = $("#scoreText");
-    const timeText = $("#timeText");
-    const bestText = $("#bestText");
-    const comboText = $("#comboText");
-    const startGameBtn = $("#startGameBtn");
-    const resetBestBtn = $("#resetBestBtn");
-    const gameArea = $("#gameArea");
-    const gameTarget = $("#gameTarget");
-    const gameMessage = $("#gameMessage");
-    const historyList = $("#historyList");
-
-    const bestKey = "xw_best_score_15s";
-    const historyKey = "xw_score_history_15s";
-
-    const gameState = {
-      running: false,
-      timeLeft: gameTotalTime,
-      score: 0,
-      combo: 0,
-      moveTimer: null,
-      countdownTimer: null,
-      best: Number(localStorage.getItem(bestKey) || "0"),
-      history: JSON.parse(localStorage.getItem(historyKey) || "[]")
+       抖音配置区
+       - 修改 videoId：替换成你的公开视频 video_id / vid
+       - 修改 iframeSrcTemplate：如果官方格式变更，只改这里
+       - 修改 openUrlTemplate：点“在新窗口打开”会使用这里
+       ========================= */
+    const DOUYIN_CONFIG = {
+      videoId: "YOUR_DOUYIN_VIDEO_ID",
+      iframeSrcTemplate: "https://open.douyin.com/player/video?vid={id}&autoplay=0",
+      openUrlTemplate: "https://www.douyin.com/video/{id}",
+      title: "这里预留抖音公开视频播放器位置",
+      note: "如果平台不允许 iframe，页面会自动显示优雅 fallback。"
     };
 
-    bestText.textContent = gameState.best;
+    /* =========================
+       浏览器默认书签配置区
+       - 注意：不是所有网站都允许被 iframe 嵌入
+       - 如果被 X-Frame-Options / CSP 拦截，会显示 fallback 提示
+       ========================= */
+    const BROWSER_PRESETS = [
+      { label: "Example", url: "https://example.com/", desc: "通常可被嵌入，适合快速测试 iframe 容器。" },
+      { label: "Wikipedia", url: "https://www.wikipedia.org/", desc: "很多公共网站可能拦截 iframe，用来测试 fallback。" },
+      { label: "MDN", url: "https://developer.mozilla.org/", desc: "文档站常见会有更严格的嵌入策略。" }
+    ];
 
-    function renderHistory() {
-      const history = gameState.history.slice(0, 6);
-      if (!history.length) {
-        historyList.innerHTML = '<li><span>暂无记录</span><small>开始玩一局吧</small></li>';
+    /* =========================
+       壁纸配置区
+       - 修改 css 字段即可改变桌面与系统背景
+       ========================= */
+    const WALLPAPERS = [
+      {
+        id: "aurora",
+        name: "极光紫",
+        css: "radial-gradient(circle at 16% 18%, rgba(255,255,255,.15), transparent 24%), radial-gradient(circle at 80% 22%, rgba(255,255,255,.08), transparent 18%), radial-gradient(circle at 55% 82%, rgba(255,255,255,.08), transparent 24%), linear-gradient(145deg, #1f2758, #5527a7 42%, #00a6c7 86%)"
+      },
+      {
+        id: "sunset",
+        name: "晚霞橙",
+        css: "radial-gradient(circle at 18% 18%, rgba(255,255,255,.16), transparent 24%), radial-gradient(circle at 76% 28%, rgba(255,255,255,.10), transparent 18%), radial-gradient(circle at 50% 76%, rgba(255,255,255,.08), transparent 22%), linear-gradient(145deg, #7c2d12, #ea580c 46%, #fb7185 86%)"
+      },
+      {
+        id: "ocean",
+        name: "海雾蓝",
+        css: "radial-gradient(circle at 18% 15%, rgba(255,255,255,.18), transparent 24%), radial-gradient(circle at 82% 24%, rgba(255,255,255,.09), transparent 18%), radial-gradient(circle at 56% 80%, rgba(255,255,255,.06), transparent 24%), linear-gradient(145deg, #0f172a, #0f766e 44%, #38bdf8 88%)"
+      },
+      {
+        id: "mint",
+        name: "薄荷银",
+        css: "radial-gradient(circle at 20% 18%, rgba(255,255,255,.22), transparent 22%), radial-gradient(circle at 82% 24%, rgba(255,255,255,.12), transparent 18%), radial-gradient(circle at 58% 80%, rgba(255,255,255,.08), transparent 24%), linear-gradient(145deg, #1f2937, #10b981 44%, #a7f3d0 92%)"
+      }
+    ];
+
+    const GALLERY_ITEMS = [
+      { id: "g1", title: "霓虹窗景", desc: "城市夜色 · 21:18", emoji: "✦", gradient: "linear-gradient(145deg, #312e81, #7c3aed 52%, #06b6d4 100%)" },
+      { id: "g2", title: "晨光屏幕", desc: "桌面草图 · 08:32", emoji: "◌", gradient: "linear-gradient(145deg, #f59e0b, #fb7185 58%, #7c3aed 100%)" },
+      { id: "g3", title: "镜头胶片", desc: "记忆存档 · 14:05", emoji: "◎", gradient: "linear-gradient(145deg, #0f766e, #06b6d4 58%, #60a5fa 100%)" },
+      { id: "g4", title: "玻璃海报", desc: "设计练习 · 19:42", emoji: "⬡", gradient: "linear-gradient(145deg, #111827, #475569 56%, #e879f9 100%)" }
+    ];
+
+    const MUSIC_TRACKS = [
+      { id: "m1", title: "Launcher Dream", artist: "Web Phone Mix", duration: "3:28", emoji: "♫", gradient: "linear-gradient(145deg, #8b5cf6, #6366f1 52%, #06b6d4 100%)" },
+      { id: "m2", title: "Glass Sunset", artist: "UI Session", duration: "2:56", emoji: "♪", gradient: "linear-gradient(145deg, #f97316, #fb7185 55%, #8b5cf6 100%)" },
+      { id: "m3", title: "Night Dock", artist: "Dock Studio", duration: "4:11", emoji: "♬", gradient: "linear-gradient(145deg, #0ea5e9, #14b8a6 55%, #22c55e 100%)" }
+    ];
+
+    const INITIAL_CHAT = [
+      { side: "left", text: "欢迎来到 Web Phone Launcher。这个聊天页是纯前端模拟的，适合后续替换成你自己的内容。" },
+      { side: "right", text: "我要一个像手机一样的网页桌面，能打开 App，还要有漂亮动画。" },
+      { side: "left", text: "已安排：桌面、状态栏、Dock、App 页面、视频内嵌、设置、关于页，全部放在一个 index.html。" }
+    ];
+
+    const QUICK_REPLIES = ["做得很酷", "切换深色模式", "换一张壁纸", "返回桌面"];
+
+    const AUTHOR_INFO = {
+      author: "作者占位符 / Your Name",
+      role: "前端设计 / 交互实验",
+      email: "your@email.com",
+      website: "https://example.com"
+    };
+
+    const VERSION = "1.0.0";
+
+    const DEFAULT_STATE = {
+      activeAppId: null,
+      themeMode: "system",    // system | light | dark
+      actualTheme: "dark",     // light | dark
+      wallpaperId: "aurora",
+      animations: true,
+      currentYoutubeId: YOUTUBE_VIDEOS[0].id,
+      currentTrackId: MUSIC_TRACKS[0].id,
+      currentBrowserUrl: BROWSER_PRESETS[0].url,
+      chatMessages: [...INITIAL_CHAT],
+      lastLaunchSource: null
+    };
+
+    const state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+    const elements = {
+      body: document.body,
+      osRoot: document.getElementById("osRoot"),
+      phoneScreen: document.getElementById("phoneScreen"),
+      wallpaperLayer: document.getElementById("wallpaperLayer"),
+      appGrid: document.getElementById("appGrid"),
+      dock: document.getElementById("dock"),
+      appLayer: document.getElementById("appLayer"),
+      statusTime: document.getElementById("statusTime"),
+      desktopBigTime: document.getElementById("desktopBigTime"),
+      desktopDate: document.getElementById("desktopDate"),
+      galleryViewer: document.getElementById("galleryViewer")
+    };
+
+    const APP_MAP = new Map(APP_CONFIG.map(app => [app.id, app]));
+
+    /* =========================
+       Storage 封装
+       - file:// 下 localStorage 行为在不同浏览器里可能不完全一致
+       - 所以这里统一用 try/catch，失败时退回内存态，不影响页面运行
+       ========================= */
+    const memoryStore = {};
+    const STORAGE_KEY = "web-phone-launcher-state-v1";
+
+    function persistState() {
+      const snapshot = {
+        themeMode: state.themeMode,
+        wallpaperId: state.wallpaperId,
+        animations: state.animations,
+        currentYoutubeId: state.currentYoutubeId,
+        currentTrackId: state.currentTrackId,
+        currentBrowserUrl: state.currentBrowserUrl,
+        chatMessages: state.chatMessages
+      };
+      memoryStore[STORAGE_KEY] = snapshot;
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+      } catch (error) {
+        /* 某些 file:// 场景下会抛 SecurityError，这里静默降级 */
+      }
+    }
+
+    function restoreState() {
+      let raw = null;
+      try {
+        raw = localStorage.getItem(STORAGE_KEY);
+      } catch (error) {
+        raw = null;
+      }
+      let parsed = null;
+      if (raw) {
+        try {
+          parsed = JSON.parse(raw);
+        } catch (error) {
+          parsed = null;
+        }
+      } else if (memoryStore[STORAGE_KEY]) {
+        parsed = memoryStore[STORAGE_KEY];
+      }
+      if (!parsed) return;
+      state.themeMode = parsed.themeMode || state.themeMode;
+      state.wallpaperId = parsed.wallpaperId || state.wallpaperId;
+      state.animations = typeof parsed.animations === "boolean" ? parsed.animations : state.animations;
+      state.currentYoutubeId = parsed.currentYoutubeId || state.currentYoutubeId;
+      state.currentTrackId = parsed.currentTrackId || state.currentTrackId;
+      state.currentBrowserUrl = parsed.currentBrowserUrl || state.currentBrowserUrl;
+      state.chatMessages = Array.isArray(parsed.chatMessages) && parsed.chatMessages.length ? parsed.chatMessages : [...INITIAL_CHAT];
+    }
+
+    /* =========================
+       基础工具函数
+       ========================= */
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function getWallpaperById(id) {
+      return WALLPAPERS.find(w => w.id === id) || WALLPAPERS[0];
+    }
+
+    function getTrackById(id) {
+      return MUSIC_TRACKS.find(track => track.id === id) || MUSIC_TRACKS[0];
+    }
+
+    function getYoutubeById(id) {
+      return YOUTUBE_VIDEOS.find(video => video.id === id) || YOUTUBE_VIDEOS[0];
+    }
+
+    function normalizeUrl(rawUrl) {
+      const text = String(rawUrl || "").trim();
+      if (!text) return "about:blank";
+      if (/^https?:\/\//i.test(text) || /^about:/i.test(text)) return text;
+      return `https://${text}`;
+    }
+
+    function formatClockParts(date = new Date()) {
+      const time = new Intl.DateTimeFormat("zh-CN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      }).format(date);
+
+      const dateLabel = new Intl.DateTimeFormat("zh-CN", {
+        weekday: "long",
+        month: "long",
+        day: "numeric"
+      }).format(date);
+
+      return { time, dateLabel };
+    }
+
+    function getSystemTheme() {
+      return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+
+    function applyTheme() {
+      state.actualTheme = state.themeMode === "system" ? getSystemTheme() : state.themeMode;
+      elements.body.dataset.theme = state.actualTheme;
+    }
+
+    function applyWallpaper() {
+      const wallpaper = getWallpaperById(state.wallpaperId);
+      elements.wallpaperLayer.style.background = wallpaper.css;
+    }
+
+    function updateClock() {
+      const { time, dateLabel } = formatClockParts(new Date());
+      elements.statusTime.textContent = time;
+      elements.desktopBigTime.textContent = time;
+      elements.desktopDate.textContent = dateLabel;
+    }
+
+    function buildYoutubeEmbedUrl(videoId, options = {}) {
+      const params = new URLSearchParams({
+        autoplay: options.autoplay ? "1" : "0",
+        rel: "0",
+        modestbranding: "1",
+        playsinline: "1"
+      });
+      return `https://www.youtube-nocookie.com/embed/${videoId}?${params.toString()}`;
+    }
+
+    function buildDouyinIframeUrl(videoId) {
+      return DOUYIN_CONFIG.iframeSrcTemplate.replace("{id}", encodeURIComponent(videoId));
+    }
+
+    function buildDouyinOpenUrl(videoId) {
+      return DOUYIN_CONFIG.openUrlTemplate.replace("{id}", encodeURIComponent(videoId));
+    }
+
+    function renderAppIcon(app) {
+      return `
+        <button class="app-icon" data-app-id="${app.id}" aria-label="打开 ${escapeHtml(app.title)}">
+          <span class="icon-badge" style="background:${app.gradient}">
+            <span>${escapeHtml(app.icon)}</span>
+          </span>
+          <span class="icon-label">${escapeHtml(app.title)}</span>
+        </button>
+      `;
+    }
+
+    function renderLauncher() {
+      const desktopApps = APP_CONFIG.filter(app => !app.dock);
+      const dockApps = APP_CONFIG.filter(app => app.dock);
+      elements.appGrid.innerHTML = desktopApps.map(renderAppIcon).join("");
+      elements.dock.innerHTML = dockApps.map(renderAppIcon).join("");
+    }
+
+    function renderAppShell(app, bodyHtml) {
+      return `
+        <section class="app-screen app-${app.id}" data-app-id="${app.id}">
+          <div class="app-bg-layer"></div>
+          <header class="app-header">
+            <div class="app-header-left">
+              <button class="header-btn" data-action="back" aria-label="返回桌面">←</button>
+            </div>
+            <div class="app-title-wrap">
+              <h2 class="app-title">${escapeHtml(app.title)}</h2>
+              <div class="app-subtitle">${escapeHtml(app.subtitle)}</div>
+            </div>
+            <div class="app-header-right">
+              <button class="header-btn" data-action="close" aria-label="关闭 App">✕</button>
+            </div>
+          </header>
+          <div class="app-body">${bodyHtml}</div>
+          <nav class="app-nav">
+            <button data-action="back" aria-label="返回">
+              ↩
+              <small>桌面</small>
+            </button>
+            <button data-action="home" aria-label="主页">
+              ⌂
+              <small>Home</small>
+            </button>
+            <button data-action="close" aria-label="关闭">
+              ◼
+              <small>关闭</small>
+            </button>
+          </nav>
+        </section>
+      `;
+    }
+
+    function renderDouyinApp() {
+      const videoId = DOUYIN_CONFIG.videoId;
+      const src = buildDouyinIframeUrl(videoId);
+      const openUrl = buildDouyinOpenUrl(videoId);
+
+      return renderAppShell(APP_MAP.get("douyin"), `
+        <div class="app-stack douyin-stage">
+          <section class="hero-app-card">
+            <h3>短视频信息流</h3>
+            <p>${escapeHtml(DOUYIN_CONFIG.title)}。${escapeHtml(DOUYIN_CONFIG.note)}</p>
+            <div class="cta-row">
+              <button class="cta" data-action="open-external" data-url="${escapeHtml(openUrl)}">在新窗口打开</button>
+              <button class="ghost-btn" data-action="copy-douyin">复制 iframe 地址</button>
+            </div>
+            <div class="gradient-line"></div>
+          </section>
+
+          <div class="embed-shell tall is-loading" data-embed-root data-timeout="4200" data-open-url="${escapeHtml(openUrl)}">
+            <div class="embed-skeleton"></div>
+            <iframe
+              title="抖音公开视频播放器"
+              src="${escapeHtml(src)}"
+              loading="lazy"
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowfullscreen
+              referrerpolicy="origin-when-cross-origin"
+              data-embed-iframe
+            ></iframe>
+            <div class="video-overlay-ui">
+              <strong>@douyin_video</strong>
+              <div>欢迎把这里替换成你自己的公开视频 video_id</div>
+              <div class="video-meta">
+                <span>#WebPhoneLauncher</span>
+                <span>#VideoFeed</span>
+                <span>♥ 12.8k</span>
+              </div>
+            </div>
+            <div class="embed-fallback">
+              <strong>该平台可能不允许直接内嵌</strong>
+              <div class="tiny-note">浏览器会遵循平台返回的 iframe / 安全策略。如果播放器空白或加载失败，请改用新窗口打开。</div>
+              <div class="cta-row">
+                <button class="cta" data-action="open-external" data-url="${escapeHtml(openUrl)}">在新窗口打开</button>
+              </div>
+            </div>
+          </div>
+
+          <article class="video-feed-card" style="background:linear-gradient(145deg, #0f172a, #1d4ed8 55%, #06b6d4 100%)">
+            <div>
+              <h3>下一条推荐</h3>
+              <p>这里可以继续做成真正的短视频流：一屏一个视频、上下滑切换、右侧点赞区域。</p>
+            </div>
+          </article>
+
+          <article class="video-feed-card" style="background:linear-gradient(145deg, #18181b, #7c3aed 55%, #ec4899 100%)">
+            <div>
+              <h3>创作者卡片</h3>
+              <p>你也可以在这里放作者头像、简介、话题标签和原视频跳转按钮。</p>
+            </div>
+          </article>
+        </div>
+      `);
+    }
+
+    function renderYoutubeApp() {
+      const current = getYoutubeById(state.currentYoutubeId);
+      const src = buildYoutubeEmbedUrl(current.id, { autoplay: false });
+      const openUrl = `https://www.youtube.com/watch?v=${encodeURIComponent(current.id)}`;
+
+      return renderAppShell(APP_MAP.get("youtube"), `
+        <div class="app-stack">
+          <section class="hero-app-card">
+            <h3>YouTube 播放列表</h3>
+            <p>播放器和右侧视频卡片都来自 JS 配置数组。你只需要改视频 ID，不用改页面结构。</p>
+            <div class="gradient-line"></div>
+          </section>
+
+          <section class="yt-layout">
+            <div class="yt-player-card">
+              <div class="embed-shell is-loading" data-embed-root data-timeout="4800" data-open-url="${escapeHtml(openUrl)}">
+                <div class="embed-skeleton"></div>
+                <iframe
+                  title="YouTube 视频播放器"
+                  src="${escapeHtml(src)}"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+                  allowfullscreen
+                  referrerpolicy="origin-when-cross-origin"
+                  data-embed-iframe
+                  data-youtube-player
+                ></iframe>
+                <div class="embed-fallback">
+                  <strong>播放器未正常显示</strong>
+                  <div class="tiny-note">如果视频被限制嵌入或网络不可用，可以选择直接在新窗口打开。</div>
+                  <div class="cta-row">
+                    <button class="cta" data-action="open-external" data-url="${escapeHtml(openUrl)}">打开原视频</button>
+                  </div>
+                </div>
+              </div>
+
+              <article class="app-card">
+                <h3>${escapeHtml(current.title)}</h3>
+                <p>${escapeHtml(current.desc)}</p>
+                <div class="cta-row">
+                  <button class="ghost-btn" data-action="open-external" data-url="${escapeHtml(openUrl)}">在 YouTube 打开</button>
+                </div>
+              </article>
+            </div>
+
+            <aside class="video-list">
+              ${YOUTUBE_VIDEOS.map(video => `
+                <button class="video-item ${video.id === current.id ? "is-active" : ""}" data-action="youtube-select" data-video-id="${escapeHtml(video.id)}">
+                  <span class="video-thumb">▶</span>
+                  <span>
+                    <h4>${escapeHtml(video.title)}</h4>
+                    <p>${escapeHtml(video.desc)}</p>
+                  </span>
+                </button>
+              `).join("")}
+            </aside>
+          </section>
+        </div>
+      `);
+    }
+
+    function renderBrowserApp() {
+      const safeUrl = normalizeUrl(state.currentBrowserUrl);
+      return renderAppShell(APP_MAP.get("browser"), `
+        <div class="browser-layout">
+          <section class="browser-toolbar">
+            <div>
+              <h3 style="margin:0 0 8px;">浏览器</h3>
+              <p class="muted">这是一个合规的 iframe 浏览器壳。并不是所有网站都允许被嵌入。</p>
+            </div>
+            <div class="browser-bar">
+              <input class="browser-input" id="browserUrlInput" value="${escapeHtml(safeUrl)}" placeholder="输入 https://example.com" />
+              <button class="cta" data-action="browser-go">前往</button>
+            </div>
+            <div class="bookmark-grid">
+              ${BROWSER_PRESETS.map(item => `
+                <button class="bookmark-item" data-action="browser-preset" data-url="${escapeHtml(item.url)}">
+                  <h4>${escapeHtml(item.label)}</h4>
+                  <p>${escapeHtml(item.desc)}</p>
+                </button>
+              `).join("")}
+            </div>
+          </section>
+
+          <div class="embed-shell browser-frame is-loading" data-embed-root data-timeout="4200" data-open-url="${escapeHtml(safeUrl)}">
+            <div class="embed-skeleton"></div>
+            <iframe
+              title="浏览器内嵌网页"
+              src="${escapeHtml(safeUrl)}"
+              loading="lazy"
+              referrerpolicy="origin-when-cross-origin"
+              allow="fullscreen"
+              data-embed-iframe
+              data-browser-frame
+            ></iframe>
+            <div class="embed-fallback">
+              <strong>该网站可能阻止了 iframe 嵌入</strong>
+              <div class="tiny-note">如果目标站点返回了安全头限制，网页不会被前端代码绕过。你可以直接在新窗口打开。</div>
+              <div class="cta-row">
+                <button class="cta" data-action="open-external" data-url="${escapeHtml(safeUrl)}">在新窗口打开</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+    }
+
+    function renderGalleryApp() {
+      return renderAppShell(APP_MAP.get("gallery"), `
+        <div class="gallery-layout">
+          <section class="hero-app-card">
+            <h3>相册</h3>
+            <p>这里用渐变卡片来模拟照片墙。后续你可以把这些卡片换成真实图片 URL，也可以继续做预览、分类和时间轴。</p>
+            <div class="gradient-line"></div>
+          </section>
+          <section class="gallery-grid">
+            ${GALLERY_ITEMS.map(item => `
+              <button class="gallery-tile" data-action="gallery-open" data-gallery-id="${escapeHtml(item.id)}" style="background:${item.gradient}">
+                <div class="gallery-caption">
+                  <h4>${escapeHtml(item.title)}</h4>
+                  <p>${escapeHtml(item.desc)}</p>
+                </div>
+              </button>
+            `).join("")}
+          </section>
+        </div>
+      `);
+    }
+
+    function renderMusicApp() {
+      const current = getTrackById(state.currentTrackId);
+      return renderAppShell(APP_MAP.get("music"), `
+        <div class="music-layout">
+          <section class="hero-app-card music-hero">
+            <div class="album-cover" style="background:${current.gradient}">${escapeHtml(current.emoji)}</div>
+            <div>
+              <h3>${escapeHtml(current.title)}</h3>
+              <p>${escapeHtml(current.artist)} · ${escapeHtml(current.duration)}</p>
+              <div class="progress-shell"><div class="progress-fill"></div></div>
+              <div class="cta-row">
+                <button class="cta">播放中</button>
+                <button class="ghost-btn">收藏</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="track-list">
+            ${MUSIC_TRACKS.map(track => `
+              <button class="track-item ${track.id === current.id ? "is-active" : ""}" data-action="music-select" data-track-id="${escapeHtml(track.id)}">
+                <span class="track-mini-cover" style="background:${track.gradient}">${escapeHtml(track.emoji)}</span>
+                <span>
+                  <h4>${escapeHtml(track.title)}</h4>
+                  <p>${escapeHtml(track.artist)}</p>
+                </span>
+                <strong>${escapeHtml(track.duration)}</strong>
+              </button>
+            `).join("")}
+          </section>
+        </div>
+      `);
+    }
+
+    function renderChatApp() {
+      return renderAppShell(APP_MAP.get("chat"), `
+        <div class="chat-layout">
+          <section class="hero-app-card">
+            <h3>聊天</h3>
+            <p>这是一个前端消息页面示例。点击下面的快捷回复，会在当前页面里即时追加一条消息。</p>
+            <div class="gradient-line"></div>
+          </section>
+          <section class="chat-thread" id="chatThread">
+            ${state.chatMessages.map(message => `
+              <div class="chat-bubble ${message.side}">${escapeHtml(message.text)}</div>
+            `).join("")}
+          </section>
+          <section class="app-card">
+            <h3>快捷回复</h3>
+            <div class="reply-row">
+              ${QUICK_REPLIES.map(text => `
+                <button class="reply-chip" data-action="chat-reply" data-text="${escapeHtml(text)}">${escapeHtml(text)}</button>
+              `).join("")}
+            </div>
+          </section>
+        </div>
+      `);
+    }
+
+    function renderSettingsApp() {
+      return renderAppShell(APP_MAP.get("settings"), `
+        <div class="settings-layout">
+          <section class="hero-app-card">
+            <h3>系统设置</h3>
+            <p>你可以在这里切换深浅色模式、开关动画，以及直接更换桌面壁纸。</p>
+            <div class="gradient-line"></div>
+          </section>
+
+          <div class="settings-panel">
+            <article class="setting-row">
+              <div>
+                <h4>主题模式</h4>
+                <p class="muted">跟随系统 / 浅色 / 深色</p>
+              </div>
+              <div class="segmented" id="themeSegment">
+                <button data-action="theme-switch" data-theme-mode="system" class="${state.themeMode === "system" ? "is-active" : ""}">系统</button>
+                <button data-action="theme-switch" data-theme-mode="light" class="${state.themeMode === "light" ? "is-active" : ""}">浅色</button>
+                <button data-action="theme-switch" data-theme-mode="dark" class="${state.themeMode === "dark" ? "is-active" : ""}">深色</button>
+              </div>
+            </article>
+
+            <article class="setting-row">
+              <div>
+                <h4>开场 / 关闭动画</h4>
+                <p class="muted">关闭后将直接切页，不再做从图标放大的动画。</p>
+              </div>
+              <button class="toggle ${state.animations ? "is-on" : ""}" data-action="toggle-animations" aria-label="切换动画"></button>
+            </article>
+
+            <article class="app-card">
+              <h3>壁纸颜色</h3>
+              <p class="muted">修改 WALLPAPERS 数组即可增加更多壁纸方案。</p>
+              <div class="swatch-row" style="margin-top:12px;">
+                ${WALLPAPERS.map(wallpaper => `
+                  <button
+                    class="setting-swatch ${wallpaper.id === state.wallpaperId ? "is-active" : ""}"
+                    style="background:${wallpaper.css}"
+                    data-action="wallpaper-switch"
+                    data-wallpaper-id="${escapeHtml(wallpaper.id)}"
+                    title="${escapeHtml(wallpaper.name)}"
+                  ></button>
+                `).join("")}
+              </div>
+            </article>
+
+            <article class="setting-row">
+              <div>
+                <h4>当前版本</h4>
+                <p class="muted">Web Phone Launcher · ${escapeHtml(VERSION)}</p>
+              </div>
+              <span class="chip">v${escapeHtml(VERSION)}</span>
+            </article>
+          </div>
+        </div>
+      `);
+    }
+
+    function renderAboutApp() {
+      return renderAppShell(APP_MAP.get("about"), `
+        <div class="about-layout">
+          <section class="hero-app-card">
+            <h3>关于 Web Phone Launcher</h3>
+            <p>这是一个纯前端、单文件、可直接运行的“手机桌面模拟器 / Web Phone Launcher”。它模拟了手机桌面、App 打开关闭、底部 Dock、状态栏与内嵌媒体页面。</p>
+            <div class="stats-row">
+              <div class="stat-box"><div class="stat-value">8</div><div class="tiny-note">内置 App</div></div>
+              <div class="stat-box"><div class="stat-value">1</div><div class="tiny-note">单文件</div></div>
+              <div class="stat-box"><div class="stat-value">0</div><div class="tiny-note">后端依赖</div></div>
+            </div>
+          </section>
+
+          <section class="about-grid">
+            <article class="app-card">
+              <h3>作者占位</h3>
+              <p>${escapeHtml(AUTHOR_INFO.author)}</p>
+              <p class="muted">${escapeHtml(AUTHOR_INFO.role)}</p>
+              <div class="tech-tags">
+                <span>${escapeHtml(AUTHOR_INFO.email)}</span>
+              </div>
+            </article>
+
+            <article class="app-card">
+              <h3>技术栈</h3>
+              <div class="tech-tags">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+                <span>iframe</span>
+                <span>Web Animations</span>
+                <span>Responsive UI</span>
+              </div>
+            </article>
+          </section>
+
+          <article class="app-card">
+            <h3>你可以继续扩展的内容</h3>
+            <p>后续可以继续增加真实壁纸上传、更多 App、应用内 Tab、通知中心、锁屏页、拖拽图标、PWA 安装提示，以及本地音乐/图片数据导入。</p>
+          </article>
+        </div>
+      `);
+    }
+
+    function renderAppContent(appId) {
+      switch (appId) {
+        case "douyin": return renderDouyinApp();
+        case "youtube": return renderYoutubeApp();
+        case "browser": return renderBrowserApp();
+        case "gallery": return renderGalleryApp();
+        case "music": return renderMusicApp();
+        case "chat": return renderChatApp();
+        case "settings": return renderSettingsApp();
+        case "about": return renderAboutApp();
+        default:
+          return renderAppShell({ title: "未知 App", subtitle: "未找到页面定义", id: "unknown" }, `
+            <section class="app-card"><h3>未找到 App</h3><p>请检查 APP_CONFIG 和 renderAppContent 的 app.id 是否一致。</p></section>
+          `);
+      }
+    }
+
+    /* =========================
+       打开 / 关闭 App 动画
+       - 打开：从图标位置放大到整块屏幕
+       - 关闭：从屏幕缩回到图标位置
+       ========================= */
+    function animateLaunch(fromButton, app) {
+      if (!fromButton || !state.animations || !fromButton.isConnected) return Promise.resolve();
+      const badge = fromButton.querySelector(".icon-badge");
+      const startRect = badge.getBoundingClientRect();
+      const endRect = elements.phoneScreen.getBoundingClientRect();
+      const ghost = document.createElement("div");
+      ghost.className = "launch-ghost";
+      ghost.style.left = `${endRect.left}px`;
+      ghost.style.top = `${endRect.top}px`;
+      ghost.style.width = `${endRect.width}px`;
+      ghost.style.height = `${endRect.height}px`;
+      ghost.style.background = app.gradient;
+      ghost.innerHTML = `<div class="ghost-inner">${escapeHtml(app.icon)}</div>`;
+      document.body.appendChild(ghost);
+
+      const startCx = startRect.left + startRect.width / 2;
+      const startCy = startRect.top + startRect.height / 2;
+      const endCx = endRect.left + endRect.width / 2;
+      const endCy = endRect.top + endRect.height / 2;
+      const dx = startCx - endCx;
+      const dy = startCy - endCy;
+      const scaleX = startRect.width / endRect.width;
+      const scaleY = startRect.height / endRect.height;
+
+      const animation = ghost.animate([
+        {
+          transform: `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})`,
+          borderRadius: "24px",
+          opacity: 1
+        },
+        {
+          transform: "translate(0px, 0px) scale(1, 1)",
+          borderRadius: getComputedStyle(elements.phoneScreen).borderRadius,
+          opacity: .08,
+          offset: .72
+        },
+        {
+          transform: "translate(0px, 0px) scale(1, 1)",
+          borderRadius: getComputedStyle(elements.phoneScreen).borderRadius,
+          opacity: 0
+        }
+      ], {
+        duration: 540,
+        easing: "cubic-bezier(.2, .9, .2, 1)",
+        fill: "forwards"
+      });
+
+      return animation.finished.catch(() => undefined).finally(() => ghost.remove());
+    }
+
+    function animateClose(toButton, app) {
+      if (!toButton || !state.animations || !toButton.isConnected) return Promise.resolve();
+      const badge = toButton.querySelector(".icon-badge");
+      const endRect = badge.getBoundingClientRect();
+      const startRect = elements.phoneScreen.getBoundingClientRect();
+      const ghost = document.createElement("div");
+      ghost.className = "launch-ghost";
+      ghost.style.left = `${startRect.left}px`;
+      ghost.style.top = `${startRect.top}px`;
+      ghost.style.width = `${startRect.width}px`;
+      ghost.style.height = `${startRect.height}px`;
+      ghost.style.background = app.gradient;
+      ghost.innerHTML = `<div class="ghost-inner">${escapeHtml(app.icon)}</div>`;
+      document.body.appendChild(ghost);
+
+      const startCx = startRect.left + startRect.width / 2;
+      const startCy = startRect.top + startRect.height / 2;
+      const endCx = endRect.left + endRect.width / 2;
+      const endCy = endRect.top + endRect.height / 2;
+      const dx = endCx - startCx;
+      const dy = endCy - startCy;
+      const scaleX = endRect.width / startRect.width;
+      const scaleY = endRect.height / startRect.height;
+
+      const animation = ghost.animate([
+        {
+          transform: "translate(0px, 0px) scale(1, 1)",
+          borderRadius: getComputedStyle(elements.phoneScreen).borderRadius,
+          opacity: .18
+        },
+        {
+          transform: `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})`,
+          borderRadius: "24px",
+          opacity: .96
+        }
+      ], {
+        duration: 420,
+        easing: "cubic-bezier(.4, 0, .2, 1)",
+        fill: "forwards"
+      });
+
+      return animation.finished.catch(() => undefined).finally(() => ghost.remove());
+    }
+
+    function mountApp(appId, fromButton) {
+      const app = APP_MAP.get(appId);
+      if (!app) return;
+      state.activeAppId = appId;
+      state.lastLaunchSource = appId;
+      elements.appLayer.innerHTML = renderAppContent(appId);
+      const screen = elements.appLayer.querySelector(".app-screen");
+      hydrateCurrentApp();
+      elements.osRoot.classList.add("has-app");
+      requestAnimationFrame(() => {
+        screen.classList.add("active");
+      });
+      animateLaunch(fromButton, app);
+      persistState();
+    }
+
+    async function closeActiveApp() {
+      if (!state.activeAppId) return;
+      const app = APP_MAP.get(state.activeAppId);
+      const screen = elements.appLayer.querySelector(".app-screen");
+      const targetButton = document.querySelector(`.app-icon[data-app-id="${CSS.escape(state.activeAppId)}"]`);
+
+      if (screen) {
+        screen.classList.remove("active");
+      }
+
+      elements.osRoot.classList.remove("has-app");
+      await Promise.all([
+        state.animations ? animateClose(targetButton, app) : Promise.resolve(),
+        new Promise(resolve => setTimeout(resolve, state.animations ? 260 : 0))
+      ]);
+
+      state.activeAppId = null;
+      elements.appLayer.innerHTML = "";
+      persistState();
+    }
+
+    function openAppByButton(button) {
+      const appId = button?.dataset?.appId;
+      if (!appId) return;
+      if (state.activeAppId === appId) return;
+      mountApp(appId, button);
+    }
+
+    /* =========================
+       iframe 骨架屏 + fallback 逻辑
+       - 如果 iframe 及时 load -> 隐藏骨架
+       - 如果超时未加载 -> 显示 fallback 按钮
+       - 不尝试绕过平台或网站的安全限制
+       ========================= */
+    function wireEmbedRoot(root) {
+      const iframe = root.querySelector("[data-embed-iframe]");
+      if (!iframe) return;
+      const timeout = Number(root.dataset.timeout || 4200);
+      let finished = false;
+
+      const complete = () => {
+        if (finished) return;
+        finished = true;
+        root.classList.remove("is-loading");
+        root.classList.remove("show-fallback");
+      };
+
+      const fail = () => {
+        if (finished) return;
+        finished = true;
+        root.classList.remove("is-loading");
+        root.classList.add("show-fallback");
+      };
+
+      const timer = window.setTimeout(fail, timeout);
+
+      iframe.addEventListener("load", () => {
+        window.clearTimeout(timer);
+        complete();
+      }, { once: true });
+
+      iframe.addEventListener("error", () => {
+        window.clearTimeout(timer);
+        fail();
+      }, { once: true });
+    }
+
+    function hydrateCurrentApp() {
+      const screen = elements.appLayer.querySelector(".app-screen");
+      if (!screen) return;
+      screen.querySelectorAll("[data-embed-root]").forEach(wireEmbedRoot);
+    }
+
+    /* =========================
+       相册预览
+       ========================= */
+    function openGalleryViewer(itemId) {
+      const item = GALLERY_ITEMS.find(entry => entry.id === itemId);
+      if (!item) return;
+      elements.galleryViewer.innerHTML = `
+        <div class="viewer-card">
+          <div class="viewer-stage" style="background:${item.gradient}">
+            <div>
+              <h3 style="margin:0 0 6px; font-size:22px;">${escapeHtml(item.title)}</h3>
+              <p style="margin:0; color:rgba(255,255,255,.84);">${escapeHtml(item.desc)}</p>
+            </div>
+          </div>
+          <div class="cta-row">
+            <button class="cta" data-action="viewer-close">关闭预览</button>
+          </div>
+        </div>
+      `;
+      elements.galleryViewer.classList.add("is-open");
+      elements.galleryViewer.setAttribute("aria-hidden", "false");
+    }
+
+    function closeGalleryViewer() {
+      elements.galleryViewer.classList.remove("is-open");
+      elements.galleryViewer.setAttribute("aria-hidden", "true");
+      elements.galleryViewer.innerHTML = "";
+    }
+
+    /* =========================
+       交互事件
+       ========================= */
+    function handleGlobalClick(event) {
+      const appButton = event.target.closest(".app-icon[data-app-id]");
+      if (appButton && !elements.appLayer.contains(appButton)) {
+        openAppByButton(appButton);
         return;
       }
-      historyList.innerHTML = history
-        .map(item => `<li><span>${item.score} 分</span><small>${item.time}</small></li>`)
-        .join("");
-    }
-    renderHistory();
 
-    function updateHUD() {
-      scoreText.textContent = gameState.score;
-      timeText.textContent = gameState.timeLeft;
-      bestText.textContent = gameState.best;
-      comboText.textContent = gameState.combo;
-    }
+      const actionButton = event.target.closest("[data-action]");
+      if (!actionButton) return;
+      const action = actionButton.dataset.action;
 
-    function randomTarget() {
-      if (!gameState.running) return;
+      switch (action) {
+        case "back":
+        case "home":
+        case "close":
+          closeActiveApp();
+          break;
 
-      const icons = ["⭐", "🌟", "✨", "☄️", "🪐"];
-      const scores = [1, 1, 2, 2, 3];
-      const index = Math.floor(Math.random() * icons.length);
-      const points = scores[index];
-
-      const size = 52 + Math.floor(Math.random() * 22);
-      const maxX = Math.max(10, gameArea.clientWidth - size - 10);
-      const maxY = Math.max(10, gameArea.clientHeight - size - 10);
-
-      const x = 5 + Math.random() * maxX;
-      const y = 5 + Math.random() * maxY;
-
-      gameTarget.dataset.points = String(points);
-      gameTarget.textContent = icons[index];
-      gameTarget.style.width = size + "px";
-      gameTarget.style.height = size + "px";
-      gameTarget.style.left = x + "px";
-      gameTarget.style.top = y + "px";
-      gameTarget.style.display = "grid";
-    }
-
-    function addScorePop(text, x, y) {
-      const pop = document.createElement("div");
-      pop.className = "score-pop";
-      pop.textContent = text;
-      pop.style.left = x + "px";
-      pop.style.top = y + "px";
-      gameArea.appendChild(pop);
-      setTimeout(() => pop.remove(), 800);
-    }
-
-    function endGame() {
-      gameState.running = false;
-      clearInterval(gameState.countdownTimer);
-      clearInterval(gameState.moveTimer);
-      gameTarget.style.display = "none";
-
-      if (gameState.score > gameState.best) {
-        gameState.best = gameState.score;
-        localStorage.setItem(bestKey, String(gameState.best));
-      }
-
-      gameState.history.unshift({
-        score: gameState.score,
-        time: new Date().toLocaleString("zh-CN", { hour12: false })
-      });
-      gameState.history = gameState.history.slice(0, 10);
-      localStorage.setItem(historyKey, JSON.stringify(gameState.history));
-
-      gameMessage.innerHTML =
-        "任务结束！你的成绩是 <strong>" + gameState.score + " 分</strong><br />" +
-        (gameState.score >= gameState.best ? "你刷新了本机最高分。" : "再来一次，继续挑战更高分。");
-      gameMessage.style.display = "grid";
-
-      startGameBtn.textContent = "重新开始";
-      updateHUD();
-      renderHistory();
-    }
-
-    function startGame() {
-      gameState.running = true;
-      gameState.timeLeft = gameTotalTime;
-      gameState.score = 0;
-      gameState.combo = 0;
-      updateHUD();
-
-      gameMessage.innerHTML = "挑战进行中…";
-      gameMessage.style.display = "none";
-      startGameBtn.textContent = "游戏进行中";
-
-      randomTarget();
-
-      clearInterval(gameState.countdownTimer);
-      clearInterval(gameState.moveTimer);
-
-      gameState.countdownTimer = setInterval(() => {
-        gameState.timeLeft -= 1;
-        updateHUD();
-
-        if (gameState.timeLeft <= 0) {
-          endGame();
+        case "open-external": {
+          const url = actionButton.dataset.url;
+          if (url) window.open(url, "_blank", "noopener,noreferrer");
+          break;
         }
-      }, 1000);
 
-      gameState.moveTimer = setInterval(() => {
-        randomTarget();
-      }, 760);
-    }
+        case "youtube-select": {
+          state.currentYoutubeId = actionButton.dataset.videoId || YOUTUBE_VIDEOS[0].id;
+          persistState();
+          remountActiveApp();
+          break;
+        }
 
-    startGameBtn.addEventListener("click", () => {
-      if (gameState.running) return;
-      startGame();
-    });
+        case "browser-preset": {
+          state.currentBrowserUrl = normalizeUrl(actionButton.dataset.url);
+          persistState();
+          remountActiveApp();
+          break;
+        }
 
-    resetBestBtn.addEventListener("click", () => {
-      localStorage.removeItem(bestKey);
-      localStorage.removeItem(historyKey);
-      gameState.best = 0;
-      gameState.history = [];
-      updateHUD();
-      renderHistory();
-      toast("本机最高分与记录已清空");
-    });
+        case "browser-go": {
+          const input = document.getElementById("browserUrlInput");
+          state.currentBrowserUrl = normalizeUrl(input ? input.value : state.currentBrowserUrl);
+          persistState();
+          remountActiveApp();
+          break;
+        }
 
-    gameArea.addEventListener("click", (event) => {
-      if (!gameState.running) return;
-      if (event.target === gameTarget) return;
-      gameState.combo = 0;
-      comboText.textContent = "0";
-    });
+        case "gallery-open":
+          openGalleryViewer(actionButton.dataset.galleryId);
+          break;
 
-    gameTarget.addEventListener("pointerdown", (event) => {
-      event.stopPropagation();
-      if (!gameState.running) return;
+        case "viewer-close":
+          closeGalleryViewer();
+          break;
 
-      const points = Number(gameTarget.dataset.points || "1");
-      gameState.score += points;
-      gameState.combo += 1;
+        case "music-select": {
+          state.currentTrackId = actionButton.dataset.trackId || MUSIC_TRACKS[0].id;
+          persistState();
+          remountActiveApp();
+          break;
+        }
 
-      if (gameState.combo > 0 && gameState.combo % 5 === 0) {
-        gameState.score += 1;
-        addScorePop("连击+1", event.offsetX + gameTarget.offsetLeft, event.offsetY + gameTarget.offsetTop);
-      } else {
-        const rect = gameArea.getBoundingClientRect();
-        addScorePop(
-          "+" + points,
-          event.clientX - rect.left,
-          event.clientY - rect.top
-        );
-      }
+        case "chat-reply": {
+          const text = actionButton.dataset.text || "好";
+          state.chatMessages.push({ side: "right", text });
+          if (text.includes("深色")) {
+            state.themeMode = "dark";
+            applyTheme();
+          }
+          if (text.includes("壁纸")) {
+            const next = WALLPAPERS[(WALLPAPERS.findIndex(w => w.id === state.wallpaperId) + 1) % WALLPAPERS.length];
+            state.wallpaperId = next.id;
+            applyWallpaper();
+          }
+          persistState();
+          remountActiveApp();
+          requestAnimationFrame(() => {
+            const thread = document.getElementById("chatThread");
+            if (thread) thread.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "end" });
+          });
+          break;
+        }
 
-      updateHUD();
-      randomTarget();
-    });
+        case "theme-switch": {
+          state.themeMode = actionButton.dataset.themeMode || "system";
+          applyTheme();
+          persistState();
+          remountActiveApp();
+          break;
+        }
 
-    /* =========================
-       彩蛋日志生成器
-    ========================= */
-    const subjects = [
-      "静音星舰",
-      "夜光维护员",
-      "像素旅客",
-      "迟到的流星收集器",
-      "半透明机械猫",
-      "漂浮的记忆货箱",
-      "被遗忘的 UI 模块"
-    ];
+        case "toggle-animations":
+          state.animations = !state.animations;
+          persistState();
+          remountActiveApp();
+          break;
 
-    const places = [
-      "零号轨道",
-      "伪月面码头",
-      "深蓝星港侧廊",
-      "雾化数据湖",
-      "偏振观测塔",
-      "回声走廊",
-      "低温备份舱"
-    ];
+        case "wallpaper-switch":
+          state.wallpaperId = actionButton.dataset.wallpaperId || WALLPAPERS[0].id;
+          applyWallpaper();
+          persistState();
+          remountActiveApp();
+          break;
 
-    const actions = [
-      "拦截了一段失真的广播",
-      "拾取了一枚掉线的星图碎片",
-      "重新点亮了失眠终端",
-      "回收了正在漂移的登录凭证",
-      "检修了发光网格的边缘节点",
-      "扫描到一串未知的访客足迹",
-      "在墙角发现了一段旧版本旁白"
-    ];
-
-    const objects = [
-      "一张未署名的愿望单",
-      "带有花粉纹理的视频缓存",
-      "一枚写着“继续做长页面”的金属铭牌",
-      "一段只会在凌晨两点出现的注释",
-      "一块会自己发光的头像备份片",
-      "一张写着“不要自动下载”的告示牌"
-    ];
-
-    const endings = [
-      "建议继续追加画廊内容",
-      "建议开启 Hyper Mode 观察颜色变化",
-      "判定该页面仍有扩容空间",
-      "建议优先上传本地视频文件",
-      "建议保留免责声明区块",
-      "检测到创作欲望仍在上升"
-    ];
-
-    function generateLore() {
-      const output = $("#loreOutput");
-      const blocks = [];
-
-      for (let i = 0; i < 5; i++) {
-        const line =
-          `<p><span class="mono">LOG-${100 + i}</span> ` +
-          `${pick(subjects)} 在 <strong>${pick(places)}</strong> ` +
-          `${pick(actions)}，并带回了 ${pick(objects)}；` +
-          `系统评估：${pick(endings)}。</p>`;
-        blocks.push(line);
-      }
-
-      output.innerHTML = blocks.join("");
-    }
-
-    generateLore();
-
-    $("#regenLore").addEventListener("click", () => {
-      generateLore();
-      toast("新的宇宙日志已生成");
-    });
-
-    $("#regenState").addEventListener("click", () => {
-      siteState.textContent = pick(statePhrases);
-      toast("状态语已更新");
-    });
-
-    /* =========================
-       终端噪声流
-    ========================= */
-    const terminalFeed = $("#terminalFeed");
-    const terminalSeeds = [
-      "BOOT > 初始化霓虹边框与粒子场",
-      "AUTH > avatar.png 识别完成，权限等级 = public",
-      "SCAN > 正在检查外部传送门的 noopener / noreferrer",
-      "WARN > 请勿上传未授权视频或可疑可执行文件",
-      "SYNC > GitHub Pages 静态部署模型已锁定",
-      "GAME > 15 秒抓星星小游戏准备就绪",
-      "CACHE > 本机访问次数已递增（仅 localStorage）",
-      "AUDIO > 默认未启用背景音乐，避免打扰访客",
-      "PORTAL > Steam / Autodesk / B站 / YouTube 跳转门待命",
-      "NOTE > 页面很长，这是刻意设计，不是忘了收尾",
-      "SAFE > 所有外链只跳转，不自动下载",
-      "VISUAL > 全息头像舱运作正常"
-    ];
-
-    function pushTerminalLine(text) {
-      const line = document.createElement("div");
-      line.className = "terminal-line";
-      line.innerHTML = `<span class="terminal-prefix">&gt;</span>${text}`;
-      terminalFeed.appendChild(line);
-      terminalFeed.scrollTop = terminalFeed.scrollHeight;
-
-      while (terminalFeed.children.length > 18) {
-        terminalFeed.removeChild(terminalFeed.firstChild);
+        case "copy-douyin": {
+          const value = buildDouyinIframeUrl(DOUYIN_CONFIG.videoId);
+          navigator.clipboard?.writeText(value).catch(() => undefined);
+          actionButton.textContent = "已复制";
+          setTimeout(() => { actionButton.textContent = "复制 iframe 地址"; }, 1200);
+          break;
+        }
       }
     }
 
-    terminalSeeds.slice(0, 7).forEach((text, index) => {
-      setTimeout(() => pushTerminalLine(text), index * 180);
-    });
+    function handleKeydown(event) {
+      if (event.key === "Escape" && elements.galleryViewer.classList.contains("is-open")) {
+        closeGalleryViewer();
+        return;
+      }
+      if (event.key === "Escape" && state.activeAppId) {
+        closeActiveApp();
+      }
+      if (event.key === "Enter" && document.activeElement?.id === "browserUrlInput") {
+        state.currentBrowserUrl = normalizeUrl(document.activeElement.value);
+        persistState();
+        remountActiveApp();
+      }
+    }
 
-    setInterval(() => {
-      const suffix = " #" + Math.floor(Math.random() * 900 + 100);
-      pushTerminalLine(pick(terminalSeeds) + suffix);
-    }, 3400);
+    function remountActiveApp() {
+      if (!state.activeAppId) return;
+      const currentApp = state.activeAppId;
+      elements.appLayer.innerHTML = renderAppContent(currentApp);
+      const screen = elements.appLayer.querySelector(".app-screen");
+      hydrateCurrentApp();
+      requestAnimationFrame(() => screen?.classList.add("active"));
+    }
+
+    function bindEvents() {
+      document.addEventListener("click", handleGlobalClick);
+      document.addEventListener("keydown", handleKeydown);
+      elements.galleryViewer.addEventListener("click", (event) => {
+        if (event.target === elements.galleryViewer || event.target.closest("[data-action='viewer-close']")) {
+          closeGalleryViewer();
+        }
+      });
+
+      if (window.matchMedia) {
+        const mq = window.matchMedia("(prefers-color-scheme: dark)");
+        const listener = () => {
+          if (state.themeMode === "system") applyTheme();
+        };
+        if (typeof mq.addEventListener === "function") {
+          mq.addEventListener("change", listener);
+        } else if (typeof mq.addListener === "function") {
+          mq.addListener(listener);
+        }
+      }
+    }
+
+    function init() {
+      restoreState();
+      renderLauncher();
+      applyTheme();
+      applyWallpaper();
+      updateClock();
+      bindEvents();
+      window.setInterval(updateClock, 1000 * 30);
+    }
+
+    init();
   </script>
 </body>
 </html>
